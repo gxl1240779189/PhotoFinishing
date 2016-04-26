@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+<ImageView
+    android:layout_marginTop="40px"
+    android:layout_width="108px"
+    android:layout_height="75px"
+    android:layout_centerHorizontal="true"
+    android:src="@drawable/xingxiangcei"
+    />
+
+    <EditText
+        android:id="@+id/path"
+        android:layout_centerHorizontal="true"
+        android:layout_width="292px"
+        android:layout_height="29px"
+        android:layout_marginTop="185px"
+        android:hint="2015.06.01河南"
+        android:gravity="center"
+        android:textColorHint="#C2C2C2"
+        android:textColor="#717171"
+        android:textSize="20px"
+        android:textCursorDrawable="@null"
+        android:background="@null"
+        />
+
+    <View
+        android:layout_marginTop="214px"
+        android:layout_width="292px"
+        android:layout_height="1px"
+        android:layout_centerHorizontal="true"
+        android:background="#000000"
+        />
+
+    <Button
+        android:id="@+id/dialog_ok"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="267px"
+        android:layout_width="94px"
+        android:layout_height="40px"
+        android:text="确认"
+       android:gravity="center"
+        android:textSize="18px"
+        android:textColor="#FFFFFF"
+        android:background="#000000"
+        />
+
+
+</RelativeLayout>

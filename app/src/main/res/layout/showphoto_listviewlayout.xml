@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="58px">
+
+<RelativeLayout
+    android:id="@+id/fanhui"
+    android:layout_marginLeft="13px"
+    android:layout_marginTop="12px"
+    android:layout_width="30px"
+    android:layout_height="30px"
+    android:visibility="gone"
+    >
+                <ImageView
+                    android:layout_marginTop="10px"
+                    android:layout_marginLeft="10px"
+                    android:layout_width="9px"
+                    android:layout_height="16px"
+                    android:src="@drawable/fanhui"
+                    />
+</RelativeLayout>
+
+                <TextView
+                    android:id="@+id/xuanze_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="44px"
+                    android:layout_marginTop="20px"
+                    android:text="请选择"
+                    android:textColor="#4E4E4E"
+                    android:textSize="16px"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/show_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="相册夹"
+                    android:textColor="#4E4E4E"
+                    android:textSize="22px" />
+
+                <RelativeLayout
+                    android:id="@+id/delete"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16px"
+                    android:layout_marginLeft="10px"
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:visibility="gone"
+                    >
+                <ImageView
+                    android:layout_width="15px"
+                    android:layout_height="20px"
+                    android:src="@drawable/delete"
+                 />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wancheng"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="13px"
+                    android:layout_marginTop="22px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#4E4E4E"
+                        android:textSize="16px"
+                        android:text="完成"
+                        />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="#DEDEDE" />
+            </RelativeLayout>
+
+
+            <ListView
+                android:id="@+id/showphoto_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                ></ListView>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/baize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/baize"
+            android:visibility="gone"
+            >
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>

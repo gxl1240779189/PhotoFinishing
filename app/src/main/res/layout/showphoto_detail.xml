@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="58px">
+
+        <RelativeLayout
+            android:id="@+id/fanhui"
+            android:layout_marginLeft="13px"
+            android:layout_marginTop="12px"
+            android:layout_width="30px"
+            android:layout_height="30px"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_marginTop="10px"
+                android:layout_marginLeft="10px"
+                android:layout_width="9px"
+                android:layout_height="16px"
+                android:src="@drawable/fanhui"
+                />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/xuanze_text"
+            android:layout_marginLeft="44px"
+            android:layout_marginTop="20px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16px"
+            android:textColor="#4E4E4E"
+            android:text="请选择"
+            android:visibility="gone"
+            />
+        <EditText
+            android:id="@+id/show_title"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2016.06.01上海"
+            android:textSize="22px"
+            android:textColor="#4E4E4E"
+            android:cursorVisible="@null"
+            android:background="@null"
+            />
+
+        <RelativeLayout
+            android:id="@+id/delete"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16px"
+            android:layout_marginLeft="10px"
+            android:layout_width="30px"
+            android:layout_height="30px"
+            android:visibility="gone"
+            >
+            <ImageView
+                android:layout_width="15px"
+                android:layout_height="20px"
+                android:src="@drawable/delete"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#DEDEDE"
+            />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
+        <GridView
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7px"
+            android:background="@color/white"
+            android:id="@+id/gridview"
+            android:layout_width="336px"
+            android:layout_height="match_parent"
+            android:numColumns="3"
+            android:scrollbars="none"
+            >
+        </GridView>
+    </RelativeLayout>
+
+</LinearLayout>

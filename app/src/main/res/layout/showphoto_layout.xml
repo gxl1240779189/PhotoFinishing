@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+
+    >
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            
+            <ImageView
+                android:id="@+id/houtui"
+                android:paddingLeft="10px"
+                android:paddingRight="10px"
+                android:paddingTop="10px"
+                android:paddingBottom="10px"
+                android:layout_marginLeft="13px"
+                android:layout_marginTop="5px"
+                android:layout_width="29px"
+                android:layout_height="36px"
+                android:src="@drawable/houtui"
+                />
+
+            <TextView
+                android:id="@+id/show_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="10/18"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:paddingLeft="10px"
+                android:paddingRight="10px"
+                android:paddingTop="10px"
+                android:paddingBottom="10px"
+                android:layout_marginTop="4px"
+                android:layout_marginRight="13px"
+                android:id="@+id/chose_detail"
+                android:layout_width="38px"
+                android:layout_height="38px"
+                android:src="@drawable/check_unchoose"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/show_move_detail"
+            android:layout_width="match_parent"
+            android:layout_height="48px"
+            android:layout_alignParentBottom="true"
+            android:background="#CE000000"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:id="@+id/chose_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="14px"
+                android:text="已选18张 "
+                android:textColor="@color/white"
+                android:textSize="20px" />
+
+            <ImageView
+                android:id="@+id/xian"
+                android:layout_width="wrap_content"
+                android:layout_height="15px"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6px"
+                android:layout_marginTop="18px"
+                android:layout_toRightOf="@+id/chose_text"
+                android:src="@drawable/linecopy20" />
+
+            <TextView
+                android:id="@+id/quit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6px"
+                android:layout_marginTop="14px"
+                android:layout_toRightOf="@+id/xian"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="20px" />
+
+            <TextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="31px"
+                android:layout_marginTop="14px"
+                android:text="刪除"
+                android:textColor="@color/red"
+                android:textSize="20px" />
+
+            <ImageView
+                android:id="@+id/diandian"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12px"
+                android:layout_width="3px"
+                android:layout_height="15px"
+                android:background="@drawable/diandian"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

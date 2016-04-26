@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="23px"
+        >
+
+        <RelativeLayout
+            android:layout_marginTop="27px"
+            android:paddingBottom="9px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:paddingTop="5px"
+                android:paddingBottom="5px"
+                android:paddingLeft="5px"
+                android:paddingRight="5px"
+                android:layout_marginTop="14px"
+                android:id="@+id/select"
+                android:layout_width="24px"
+                android:layout_height="24px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8px"
+                android:src="@drawable/unchoose" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/select"
+                android:paddingLeft="7px"
+                android:text="2016.03.15"
+                android:textColor="#B7B7B7"
+                android:textSize="18px" />
+
+        </RelativeLayout>
+
+        <myView.myGridview
+            android:id="@+id/mygridview"
+            android:layout_width="352px"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="4.5px"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            ></myView.myGridview>
+    </LinearLayout>
+
+</LinearLayout>

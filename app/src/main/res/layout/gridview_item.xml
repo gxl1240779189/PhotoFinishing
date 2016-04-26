@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="87px"
+    android:layout_height="88px" >
+
+    <FrameLayout
+        android:layout_width="87px"
+        android:layout_height="87px" >
+
+        <myView.myImageview
+            android:layout_marginLeft="1px"
+            android:layout_marginTop="2px"
+            android:id="@+id/imageview"
+            android:layout_width="86px"
+            android:layout_height="86px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher" />
+
+
+        <ImageView
+            android:layout_marginTop="2px"
+            android:id="@+id/ImageView_tip"
+            android:layout_width="88px"
+            android:layout_height="86px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/item_choose"
+            android:alpha="255"
+            />
+
+        <ImageView
+            android:id="@+id/chakan_photo"
+            android:layout_width="16px"
+            android:layout_height="16px"
+            android:layout_marginTop="69px"
+            android:layout_marginLeft="69px"
+            android:src="@drawable/chakan"
+            />
+    </FrameLayout>
+
+</LinearLayout>

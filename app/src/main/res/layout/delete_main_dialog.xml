@@ -1,0 +1,88 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="214px"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/rl_dialog_content"
+    android:layout_width="272px"
+    android:layout_height="170px"
+    android:background="@color/black"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="删除文件"
+        android:layout_marginTop="14px"
+        android:layout_marginLeft="14px"
+        android:textSize="22px"
+        android:textColor="#FFFFFF"
+        />
+
+    <TextView
+        android:id="@+id/shanchutext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定删除2个文件？"
+        android:layout_marginTop="64px"
+        android:layout_marginLeft="14px"
+        android:textSize="18px"
+        android:textColor="#FFFFFF"
+        />
+
+
+    <View
+        android:layout_marginTop="132px"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#FFFFFF"
+        />
+
+    <View
+        android:layout_marginTop="132px"
+        android:layout_centerHorizontal="true"
+        android:layout_width="1px"
+        android:layout_height="38px"
+        android:background="#FFFFFF"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="132px"
+        android:layout_width="match_parent"
+        android:layout_height="38px">
+
+        <RelativeLayout
+            android:id="@+id/quxiao"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:textSize="14px"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/queding"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="确定"
+                android:textSize="14px"
+                android:layout_centerInParent="true"
+                android:textColor="#8BE663"
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
