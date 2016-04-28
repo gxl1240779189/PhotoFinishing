@@ -22,6 +22,7 @@
                 android:layout_height="match_parent">
 
                 <RelativeLayout
+                    android:id="@+id/top_area"
                     android:layout_width="match_parent"
                     android:layout_height="135px"
                     android:background="#E8E8E8">
@@ -62,6 +63,7 @@
                     android:orientation="vertical">
 
                     <FrameLayout
+                        android:id="@+id/listview_framelayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20px"

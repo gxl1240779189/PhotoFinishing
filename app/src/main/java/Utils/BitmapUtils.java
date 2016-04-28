@@ -57,7 +57,11 @@ public class BitmapUtils {
 		opts.inSampleSize = calculateInSampleSize(opts, reqWidth, reqheight);
 		opts.inJustDecodeBounds = false;
 		Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
-		Bitmap bmp2 = ImageCrop(bmp,reqWidth,reqheight);
+		if((opts.outHeight<reqheight) || (opts.outWidth < reqWidth))
+		{
+			return bmp;
+		}
+		Bitmap bmp2 = ImageCrop(bmp, reqWidth, reqheight);
 		return bmp2;
 	}
 
@@ -97,6 +101,10 @@ public class BitmapUtils {
 		opts.inSampleSize = calculateInSampleSize(opts, reqWidth, reqheight);
 		opts.inJustDecodeBounds = false;
 		Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.wenjianjia_background, opts);
+		if((opts.outHeight<reqheight)||(opts.outWidth<reqWidth))
+		{
+			return bmp;
+		}
 		Bitmap bmp2 = ImageCrop(bmp,reqWidth,reqheight);
 		return bmp2;
 	}

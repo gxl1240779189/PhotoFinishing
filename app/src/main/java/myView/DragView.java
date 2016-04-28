@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.gxl.photofinishing.R;
 
+import Utils.LogUtils;
 import Utils.ScreenUtils;
 
 public class DragView extends LinearLayout {
@@ -29,6 +30,13 @@ public class DragView extends LinearLayout {
     int[] pos = {-1, -1, -1, -1};
     //用来保存移动到当前文件夹Imageview的四个顶点的坐标
     int[] chakanPos = {-1, -1, -1, -1};
+
+    int top=0;
+    int left=0;
+
+    int first=0;
+
+
 
     public void setMlistener(createFilelistener mlistener) {
         this.mlistener = mlistener;
@@ -46,14 +54,19 @@ public class DragView extends LinearLayout {
 
         //移动到已经建好的文件夹中
         void move_exist_file();
+
+        //ImageView缩小和放大
+        void change_imageview();
     }
 
 
-    public DragView(Context context, Bitmap bitmap, int[] pos, int[] chakanPos) {
+    public DragView(Context context, Bitmap bitmap, int[] pos, int[] chakanPos,int top,int left) {
         this(context, null);
         this.mBitmap = bitmap;
         this.pos = pos;
         this.chakanPos = chakanPos;
+        this.top=top;
+        this.left=left;
     }
 
     public DragView(Context context, AttributeSet attrs) {
@@ -63,36 +76,70 @@ public class DragView extends LinearLayout {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
+        LogUtils.loggxl("test");
+        LogUtils.loggxl("Top+left" + this.getTop() + " " + this.getLeft());
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        int x = (int) event.getX();
-        int y = (int) event.getY();
+        LogUtils.loggxl("width+height"+width+height);
+        int x = (int) event.getRawX();
+        int y = (int) event.getRawY();
+        LogUtils.loggxl("zuobiao"+x+" "+y);
         int Rawx = (int) event.getRawX();
         int Rawy = (int) event.getRawY();
         //左上
-        int top_left_x = Rawx - x;
-        int top__left_y = Rawy - y;
+        int top_left_x = this.getLeft();
+        int top__left_y = this.getTop();
         //右上
-        int top_right_x = top_left_x + width;
-        int top_right_y = top__left_y;
+        int top_right_x =this.getRight();
+        int top_right_y = this.getTop();
         //左下
-        int botton_left_x = top_left_x;
-        int botton_left_y = top__left_y + height;
+        int botton_left_x = this.getLeft();
+        int botton_left_y = this.getBottom();
         //右下
-        int botton_right_x = top_left_x + width;
-        int botton_right_y = top__left_y + height;
-        int imagepos[][] = {{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
-        View viewGroup = (View) getParent();
+        int botton_right_x = this.getRight();
+        int botton_right_y = this.getBottom();
+        int imagepos[][]={{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
+        LogUtils.loggxl("juxing"+top_left_x+" "+top__left_y+" "+botton_right_x+" "+botton_right_y);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 lastX = x;
                 lastY = y;
+                LogUtils.loggxl("lastX+lastY"+lastX+lastY);
                 break;
             case MotionEvent.ACTION_MOVE:
+                if(first==0)
+                {
+                    first=1;
+                    lastX = x;
+                    lastY = y;
+                    return true;
+                }
                 int offX = x - lastX;
                 int offY = y - lastY;
-                ((View) getParent()).scrollBy(-offX, -offY);
-                if (panduan(pos, imagepos)) {
+                LogUtils.loggxl("offX+oFFY"+offX+offX);
+                lastX = x;
+                lastY = y;
+                layout(getLeft()+offX,getTop()+offY,getRight()+offX,getBottom()+offY);
+                //左上
+                 top_left_x = this.getLeft();
+                 top__left_y = this.getTop();
+                //右上
+                 top_right_x =this.getRight();
+                 top_right_y = this.getTop();
+                //左下
+                 botton_left_x = this.getLeft();
+                 botton_left_y = this.getBottom();
+                //右下
+                 botton_right_x = this.getRight();
+                 botton_right_y = this.getBottom();
+                LogUtils.loggxl("getTop"+" "+getTop()+"top"+" "+top);
+                if(getTop()<top)
+                {
+                    mlistener.change_imageview();
+                }
+                 int imagepos2[][]={{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
+                  Log.i("movepath", top_left_x + "#" + top__left_y + "#" +top_right_x + "#" + top_right_y);
+                if (panduan(pos, imagepos2)) {
                     mlistener.betrue_createFile(1);
                 } else {
                     mlistener.betrue_createFile(0);

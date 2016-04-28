@@ -12,7 +12,7 @@ public class LogUtils {
     //gxl工程师打出来的log
     public static void loggxl(String msg) {
         if (isShow) {
-            Log.i("gxl", msg);
+            Log.i("gxltest", msg);
         }
     }
 }

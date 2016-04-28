@@ -1,5 +1,7 @@
 package com.example.gxl.photofinishing;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.Dialog;
@@ -59,6 +61,7 @@ import Adapter.ListviewAdapter;
 import Adapter.showphoto_listviewAdapter;
 import Data.needMoveFile;
 import Utils.BitmapUtils;
+import Utils.LogUtils;
 import Utils.ScreenUtils;
 import Utils.fileUtils;
 import Utils.sdUtils;
@@ -131,6 +134,14 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
      */
     private GoogleApiClient client;
 
+
+    //顶部的relationlayout
+    RelativeLayout top_area;
+    LinearLayout listviewlinearlayout;
+    FrameLayout listview_framelayout;
+
+    int top_area_height;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +155,10 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
         layout = (FrameLayout) findViewById(R.id.myFrameLayout);
         mjianliImageview = (ImageView) findViewById(R.id.jianli);
         listview = (ListView) findViewById(R.id.mylistview);
+        top_area= (RelativeLayout) findViewById(R.id.top_area);
+        listviewlinearlayout= (LinearLayout) findViewById(R.id.listviewlinearlayout);
         show_move_detail = (RelativeLayout) findViewById(R.id.show_move_detail);
+        listview_framelayout= (FrameLayout) findViewById(R.id.listview_framelayout);
         chose_text = (TextView) findViewById(R.id.chose_text);
         quit = (TextView) findViewById(R.id.quit);
         delete = (TextView) findViewById(R.id.delete);
@@ -331,8 +345,15 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                                 ScreenUtils.dip2px(MainActivity.this, 108));
                         lp.topMargin = x - 25;
                         lp.leftMargin = y - 50;
+
+                        int listviewlinearlayout_top=listviewlinearlayout.getTop();
+                        int listview_top=listview.getTop();
+                        int listviewframelayout_top=listview_framelayout.getTop();
+                        top_area_height=listview_top+listviewlinearlayout_top+listviewframelayout_top;
+//                        LogUtils.loggxl("top_area"+top_area_height+"listviewlinearlayout_top"+listviewlinearlayout_top+"listview_top"+listview_top);
+
                         final DragView view = new DragView(MainActivity.this,
-                                BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos);
+                                BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos,top_area_height,listview.getLeft());
                         view.setLayoutParams(lp);
                         view.setMlistener(new DragView.createFilelistener() {
 
@@ -371,22 +392,26 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                                 intent.putExtra("flag", 1);
                                 startActivityForResult(intent, 1);
                             }
+
+                            @Override
+                            public void change_imageview() {
+                                LogUtils.loggxl("test animation");
+                                PropertyValuesHolder pvh1=PropertyValuesHolder.ofFloat("scaleX",0.8f);
+                                PropertyValuesHolder pvh2=PropertyValuesHolder.ofFloat("scaleY",0.8f);
+                                ObjectAnimator.ofPropertyValuesHolder(view, pvh1, pvh2).setDuration(100).start();
+                            }
                         });
                         layout.addView(group, lp1);
                         group.addView(view, lp);
                         listview.setClickable(false);
                         listview.setFocusable(false);
+                        final MotionEvent toucheevent;
                         listview.setOnTouchListener(new OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
-                                return true;
-                            }
-                        });
-                        group.setOnTouchListener(new OnTouchListener() {
-
-                            @Override
-                            public boolean onTouch(View v, MotionEvent event) {
-                                // TODO Auto-generated method stub
+                                LogUtils.loggxl("diyici");
+//                                toucheevent=event;
+                                view.onTouchEvent(event);
                                 return true;
                             }
                         });
@@ -399,6 +424,8 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
         @Override
         protected void onProgressUpdate(Integer... values) {
         }
+
+
 
 
         @Override
@@ -429,6 +456,7 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
             return null;
         }
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -566,7 +594,7 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                     lp.topMargin = x;
                     lp.leftMargin = y - 50;
                     final DragView view = new DragView(MainActivity.this,
-                            BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos);
+                            BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos,top_area_height,listview.getLeft());
                     view.setMlistener(new DragView.createFilelistener() {
 
                         @Override
@@ -603,6 +631,13 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                             Intent intent = new Intent(MainActivity.this, showPhoto.class);
                             intent.putExtra("flag", 1);
                             startActivityForResult(intent, 1);
+                        }
+
+                        @Override
+                        public void change_imageview() {
+                            PropertyValuesHolder pvh1=PropertyValuesHolder.ofFloat("scaleX",1f,0,1f);
+                            PropertyValuesHolder pvh2=PropertyValuesHolder.ofFloat("scaleY",1f,0,1f);
+                            ObjectAnimator.ofPropertyValuesHolder(view, pvh1, pvh2).setDuration(100).start();
                         }
                     });
                     group.addView(view, lp);
@@ -818,7 +853,7 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                     lp.topMargin = x;
                     lp.leftMargin = y - 50;
                     final DragView view = new DragView(MainActivity.this,
-                            BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos);
+                            BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos,top_area_height,listview.getLeft());
                     view.setMlistener(new DragView.createFilelistener() {
 
                         @Override
@@ -855,6 +890,14 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                             Intent intent = new Intent(MainActivity.this, showPhoto.class);
                             intent.putExtra("flag", 1);
                             startActivityForResult(intent, 1);
+                        }
+
+                        @Override
+                        public void change_imageview() {
+
+                            PropertyValuesHolder pvh1=PropertyValuesHolder.ofFloat("scaleX",1f,0,1f);
+                            PropertyValuesHolder pvh2=PropertyValuesHolder.ofFloat("scaleY",1f,0,1f);
+                            ObjectAnimator.ofPropertyValuesHolder(view, pvh1, pvh2).setDuration(100).start();
                         }
                     });
                     group.addView(view, lp);
