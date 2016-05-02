@@ -52,10 +52,10 @@ public class GridviewAdapter extends BaseAdapter {
                 .cacheOnDisc(true)
                 .cacheInMemory(false)
                 .bitmapConfig(Bitmap.Config.RGB_565)
-                .showStubImage(R.drawable.ic_launcher)
+                .showStubImage(R.drawable.yujiazai)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher).cacheInMemory()
+                .showImageForEmptyUri(R.drawable.yujiazai)
+                .showImageOnFail(R.drawable.yujiazai).cacheInMemory()
                 .cacheOnDisc().displayer(new RoundedBitmapDisplayer(20))
                 .displayer(new FadeInBitmapDisplayer(300)).build();
     }
@@ -105,7 +105,7 @@ public class GridviewAdapter extends BaseAdapter {
         } else {
             viewholder.imageviewtip.setVisibility(View.GONE);
         }
-//		viewholder.imageviewtip.setId(position);
+		viewholder.imageviewtip.setId(position);
         viewholder.chakanphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -33,16 +33,34 @@
                         android:layout_height="17px"
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="15px"
-                        android:layout_marginTop="36px"
+                        android:layout_marginTop="38px"
                         android:src="@drawable/menu" />
+                    
+                    <FrameLayout
+                        android:id="@+id/FrameLayout_jianli"
+                        android:layout_width="146px"
+                        android:layout_height="119px"
+                        android:layout_centerHorizontal="true"
+                       >
 
                     <ImageView
                         android:id="@+id/jianli"
+                        android:layout_marginTop="19px"
+                        android:layout_marginLeft="20px"
                         android:layout_width="106px"
                         android:layout_height="80px"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="19px"
                         android:src="@drawable/jianli" />
+                        
+                        <ImageView
+                            android:id="@+id/jiantou"
+                            android:layout_marginTop="48px"
+                            android:layout_width="19px"
+                            android:layout_height="27px"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/jiantou"
+                            android:visibility="gone"
+                            />
+                    </FrameLayout>
 
                     <ImageView
                         android:id="@+id/chakan"

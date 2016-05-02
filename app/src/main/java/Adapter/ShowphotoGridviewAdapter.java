@@ -43,9 +43,9 @@ public class ShowphotoGridviewAdapter extends BaseAdapter  implements  DragGridB
         this.listfilepath = list;
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         options = new DisplayImageOptions.Builder()
-                .showStubImage(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher).cacheInMemory()
+                .showStubImage(R.drawable.yujiazai)
+                .showImageForEmptyUri(R.drawable.yujiazai)
+                .showImageOnFail(R.drawable.yujiazai).cacheInMemory()
                 .cacheOnDisc().displayer(new RoundedBitmapDisplayer(20))
                 .displayer(new FadeInBitmapDisplayer(300)).build();
     }
@@ -73,7 +73,7 @@ public class ShowphotoGridviewAdapter extends BaseAdapter  implements  DragGridB
                     null);
         if(listfilepath.get(position)=="创建")
         {
-            ((ImageView)view.findViewById(R.id.show_image)).setImageResource(R.drawable.ic_launcher);
+            ((ImageView)view.findViewById(R.id.show_image)).setImageResource(R.drawable.yujiazai);
             ((TextView)view.findViewById(R.id.show_text)).setText("创建");
         }else {
             String imageviewpath = fileUtils.getExistFileBitmap(listfilepath.get(position));

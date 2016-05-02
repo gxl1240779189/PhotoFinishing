@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_view"
+    android:layout_width="272px"
+    android:layout_height="90px"
+    android:gravity="center"
+    android:padding="10dp"
+    android:background="@color/black">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="24px"
+        android:layout_height="24px"
+        android:src="@drawable/loading"
+        />
+    <TextView
+        android:id="@+id/tipTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="16px"
+        android:layout_marginLeft="40px"
+        android:text="正在移动照片" />
+
+    </RelativeLayout>
+</LinearLayout>  

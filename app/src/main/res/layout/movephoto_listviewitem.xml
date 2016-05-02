@@ -7,7 +7,6 @@
     >
 
     <LinearLayout
-        android:layout_marginTop="8px"
         android:background="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_width="346px"
@@ -50,57 +49,27 @@
                 android:layout_centerVertical="true"
                 android:orientation="vertical"
                 >
-            <TextView
-                android:id="@+id/wenjianjia_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2016.04.02天津"
-                android:textSize="20px"
-                android:textColor="#868686"
-                />
+                <TextView
+                    android:id="@+id/wenjianjia_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2016.04.02天津"
+                    android:textSize="20px"
+                    android:textColor="#868686"
+                    />
 
-            <TextView
-                android:id="@+id/wenjianjia_number"
-                android:layout_marginTop="1px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="16"
-                android:textSize="14px"
-                android:textColor="#8BE663"
-                />
+                <TextView
+                    android:id="@+id/wenjianjia_number"
+                    android:layout_marginTop="1px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16"
+                    android:textSize="14px"
+                    android:textColor="#8BE663"
+                    />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/show_detail"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20px"
-                android:paddingLeft="5px"
-                android:paddingRight="5px"
-                android:paddingBottom="5px"
-                android:paddingTop="5px"
-                android:layout_width="13px"
-                android:layout_height="25.5px"
-                android:src="@drawable/diandian_grey"
-                />
-
-            <ImageView
-                android:id="@+id/check_choose"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="14px"
-                android:layout_width="15px"
-                android:layout_height="15px"
-                android:background="@drawable/check_unchoose"
-                android:visibility="gone"
-                />
-
-
-
         </RelativeLayout>
-
-
-
     </LinearLayout>
 
 </LinearLayout>

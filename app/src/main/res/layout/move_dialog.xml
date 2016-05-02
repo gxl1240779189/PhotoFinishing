@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="7px"
+        android:layout_marginLeft="7px"
+        android:layout_marginRight="7px"
+        android:layout_marginTop="7px"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19px"
+            android:layout_marginTop="14px"
+            android:text="请选择一个已有相册"
+            android:textColor="#7A7A7A"
+            android:textSize="16px" />
+
+        <ImageView
+            android:id="@+id/cancle"
+            android:layout_width="24px"
+            android:layout_height="24px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="19px"
+            android:layout_marginTop="19px"
+            android:paddingBottom="5px"
+            android:paddingLeft="5px"
+            android:paddingRight="5px"
+            android:paddingTop="5px"
+            android:src="@drawable/cancle" />
+
+        <View
+            android:layout_marginTop="57px"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#DEDEDE" />
+
+        <ListView
+            android:id="@+id/showphoto_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:dividerHeight="1px"
+            android:divider="#DEDEDE"
+            android:layout_marginTop="58px"></ListView>
+
+    </RelativeLayout>
+</RelativeLayout>

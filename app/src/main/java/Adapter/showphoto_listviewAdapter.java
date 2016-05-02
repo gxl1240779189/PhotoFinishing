@@ -58,9 +58,9 @@ public class showphoto_listviewAdapter extends BaseAdapter {
         delete_type=type;
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
         options = new DisplayImageOptions.Builder()
-                .showStubImage(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher).cacheInMemory()
+                .showStubImage(R.drawable.yujiazai)
+                .showImageForEmptyUri(R.drawable.yujiazai)
+                .showImageOnFail(R.drawable.yujiazai).cacheInMemory()
                 .cacheOnDisc().displayer(new RoundedBitmapDisplayer(20))
                 .displayer(new FadeInBitmapDisplayer(300)).build();
     }

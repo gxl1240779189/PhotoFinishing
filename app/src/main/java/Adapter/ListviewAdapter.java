@@ -154,12 +154,12 @@ public class ListviewAdapter extends BaseAdapter {
 
                     if (!needMoveFile.isinNeedmovefile(filelist
                             .get(position))) {
-                        view.findViewById(R.id.ImageView_tip).setVisibility(
+                        view.findViewById(position).setVisibility(
                                 View.VISIBLE);
                         needMoveFile.addNeedmovefile(filelist.get(
                                 position));
                     } else {
-                        view.findViewById(R.id.ImageView_tip).setVisibility(
+                        view.findViewById(position).setVisibility(
                                 View.GONE);
                         needMoveFile.removefile(filelist.get(
                                 position));
@@ -206,7 +206,10 @@ public class ListviewAdapter extends BaseAdapter {
                     if (!needMoveFile.getPositemap(position)) {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.addNeedmovefileList(listfile);
-                        viewholder1.gridview.setAdapter(adapter);
+                        for(int i=viewholder1.gridview.getFirstVisiblePosition();i<=viewholder1.gridview.getLastVisiblePosition();i++)
+                        {
+                            viewholder1.gridview.findViewById(i).setVisibility(View.VISIBLE);
+                        }
 //                        adapter.notifyDataSetChanged();
                         Integer integer = new Integer(1);
                         needMoveFile.putPositemap(position1, integer);
@@ -221,7 +224,11 @@ public class ListviewAdapter extends BaseAdapter {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.removeNeedmovefileList(listfile);
 //                        adapter.notifyDataSetChanged();
-                        viewholder1.gridview.setAdapter(adapter);
+//                        viewholder1.gridview.setAdapter(adapter);
+                        for(int i=viewholder1.gridview.getFirstVisiblePosition();i<=viewholder1.gridview.getLastVisiblePosition();i++)
+                        {
+                            viewholder1.gridview.findViewById(i).setVisibility(View.GONE);
+                        }
                         Integer integer = new Integer(0);
                         needMoveFile.putPositemap(position1, integer);
                         viewholder1.choseall.setImageResource(R.drawable.unchoose);
@@ -238,7 +245,7 @@ public class ListviewAdapter extends BaseAdapter {
                 Integer integer = new Integer(1);
                 needMoveFile.putPositemap(position1, integer);
             } else {
-                viewholder1.choseall.setImageResource(R.drawable.ic_launcher);
+                viewholder1.choseall.setImageResource(R.drawable.yujiazai);
                 Integer integer = new Integer(0);
                 needMoveFile.putPositemap(position1, integer);
             }
@@ -264,14 +271,14 @@ public class ListviewAdapter extends BaseAdapter {
 
                     if (!needMoveFile.isinNeedmovefile(filelist
                             .get(position))) {
-                        view.findViewById(R.id.ImageView_tip).setVisibility(
+                        view.findViewById(position).setVisibility(
                                 View.VISIBLE);
                         needMoveFile.addNeedmovefile(filelist.get(
                                 position));
                         Log.i("tiaoshi", position + "不存在" + filelist
                                 .get(position));
                     } else {
-                        view.findViewById(R.id.ImageView_tip).setVisibility(
+                        view.findViewById(position).setVisibility(
                                 View.GONE);
                         needMoveFile.removefile(filelist.get(
                                 position));
@@ -319,7 +326,11 @@ public class ListviewAdapter extends BaseAdapter {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.addNeedmovefileList(listfile);
 //                        adapter.notifyDataSetChanged();
-                        Viewholder_first1.gridview.setAdapter(adapter);
+//                        Viewholder_first1.gridview.setAdapter(adapter);
+                        for(int i=Viewholder_first1.gridview.getFirstVisiblePosition();i<=Viewholder_first1.gridview.getLastVisiblePosition();i++)
+                        {
+                            Viewholder_first1.gridview.findViewById(i).setVisibility(View.GONE);
+                        }
                         Integer integer = new Integer(1);
                         needMoveFile.putPositemap(position1, integer);
                         Viewholder_first1.choseall.setImageResource(R.drawable.check_choose);
@@ -333,7 +344,11 @@ public class ListviewAdapter extends BaseAdapter {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.removeNeedmovefileList(listfile);
 //                        adapter.notifyDataSetChanged();
-                        Viewholder_first1.gridview.setAdapter(adapter);
+//                        Viewholder_first1.gridview.setAdapter(adapter);
+                        for(int i=Viewholder_first1.gridview.getFirstVisiblePosition();i<=Viewholder_first1.gridview.getLastVisiblePosition();i++)
+                        {
+                            Viewholder_first1.gridview.findViewById(i).setVisibility(View.VISIBLE);
+                        }
                         Integer integer = new Integer(0);
                         needMoveFile.putPositemap(position1, integer);
                         Viewholder_first1.choseall.setImageResource(R.drawable.unchoose);
@@ -350,7 +365,7 @@ public class ListviewAdapter extends BaseAdapter {
                 Integer integer = new Integer(1);
                 needMoveFile.putPositemap(position1, integer);
             } else {
-                Viewholder_first1.choseall.setImageResource(R.drawable.ic_launcher);
+                Viewholder_first1.choseall.setImageResource(R.drawable.yujiazai);
                 Integer integer = new Integer(0);
                 needMoveFile.putPositemap(position1, integer);
             }

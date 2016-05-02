@@ -31,11 +31,15 @@ public class DragView extends LinearLayout {
     //用来保存移动到当前文件夹Imageview的四个顶点的坐标
     int[] chakanPos = {-1, -1, -1, -1};
 
-    int top=0;
-    int left=0;
+    int top = 0;
+    int left = 0;
 
-    int first=0;
+    int first = 0;
 
+    int changeToNormal=0;//界面返回正常状态
+    int changeToCreate=1;//界面变成创建状态:具体表现，白色箭头开始闪烁
+    int changeTobackground=3;//toparea的背景变颜色
+    int changeToDragview=4;//Dragview开始缩放
 
 
     public void setMlistener(createFilelistener mlistener) {
@@ -56,17 +60,17 @@ public class DragView extends LinearLayout {
         void move_exist_file();
 
         //ImageView缩小和放大
-        void change_imageview();
+        void change_imageview(int flag);
     }
 
 
-    public DragView(Context context, Bitmap bitmap, int[] pos, int[] chakanPos,int top,int left) {
+    public DragView(Context context, Bitmap bitmap, int[] pos, int[] chakanPos, int top, int left) {
         this(context, null);
         this.mBitmap = bitmap;
         this.pos = pos;
         this.chakanPos = chakanPos;
-        this.top=top;
-        this.left=left;
+        this.top = top;
+        this.left = left;
     }
 
     public DragView(Context context, AttributeSet attrs) {
@@ -80,17 +84,17 @@ public class DragView extends LinearLayout {
         LogUtils.loggxl("Top+left" + this.getTop() + " " + this.getLeft());
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        LogUtils.loggxl("width+height"+width+height);
+        LogUtils.loggxl("width+height" + width + height);
         int x = (int) event.getRawX();
         int y = (int) event.getRawY();
-        LogUtils.loggxl("zuobiao"+x+" "+y);
+        LogUtils.loggxl("zuobiao" + x + " " + y);
         int Rawx = (int) event.getRawX();
         int Rawy = (int) event.getRawY();
         //左上
         int top_left_x = this.getLeft();
         int top__left_y = this.getTop();
         //右上
-        int top_right_x =this.getRight();
+        int top_right_x = this.getRight();
         int top_right_y = this.getTop();
         //左下
         int botton_left_x = this.getLeft();
@@ -98,52 +102,59 @@ public class DragView extends LinearLayout {
         //右下
         int botton_right_x = this.getRight();
         int botton_right_y = this.getBottom();
-        int imagepos[][]={{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
-        LogUtils.loggxl("juxing"+top_left_x+" "+top__left_y+" "+botton_right_x+" "+botton_right_y);
+        int imagepos[][] = {{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
+        LogUtils.loggxl("juxing" + top_left_x + " " + top__left_y + " " + botton_right_x + " " + botton_right_y);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 lastX = x;
                 lastY = y;
-                LogUtils.loggxl("lastX+lastY"+lastX+lastY);
+                LogUtils.loggxl("lastX+lastY" + lastX + lastY);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(first==0)
-                {
-                    first=1;
+//                if(!isNeedmove(x,y,top_left_x,top_right_x,top_right_y,botton_right_y))
+//                {
+//                    return true;
+//                }else {
+
+                    if (first == 0) {
+                        first = 1;
+                        lastX = x;
+                        lastY = y;
+                        return true;
+                    }
+                    setBackgroundResource(R.drawable.image_move);
+                    int offX = x - lastX;
+                    int offY = y - lastY;
+                    LogUtils.loggxl("offX+oFFY" + offX + offX);
                     lastX = x;
                     lastY = y;
-                    return true;
-                }
-                int offX = x - lastX;
-                int offY = y - lastY;
-                LogUtils.loggxl("offX+oFFY"+offX+offX);
-                lastX = x;
-                lastY = y;
-                layout(getLeft()+offX,getTop()+offY,getRight()+offX,getBottom()+offY);
-                //左上
-                 top_left_x = this.getLeft();
-                 top__left_y = this.getTop();
-                //右上
-                 top_right_x =this.getRight();
-                 top_right_y = this.getTop();
-                //左下
-                 botton_left_x = this.getLeft();
-                 botton_left_y = this.getBottom();
-                //右下
-                 botton_right_x = this.getRight();
-                 botton_right_y = this.getBottom();
-                LogUtils.loggxl("getTop"+" "+getTop()+"top"+" "+top);
-                if(getTop()<top)
-                {
-                    mlistener.change_imageview();
-                }
-                 int imagepos2[][]={{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
-                  Log.i("movepath", top_left_x + "#" + top__left_y + "#" +top_right_x + "#" + top_right_y);
-                if (panduan(pos, imagepos2)) {
-                    mlistener.betrue_createFile(1);
-                } else {
-                    mlistener.betrue_createFile(0);
-                }
+                    layout(getLeft() + offX, getTop() + offY, getRight() + offX, getBottom() + offY);
+                    //左上
+                    top_left_x = this.getLeft();
+                    top__left_y = this.getTop();
+                    //右上
+                    top_right_x = this.getRight();
+                    top_right_y = this.getTop();
+                    //左下
+                    botton_left_x = this.getLeft();
+                    botton_left_y = this.getBottom();
+                    //右下
+                    botton_right_x = this.getRight();
+                    botton_right_y = this.getBottom();
+                    LogUtils.loggxl("getTop" + " " + getTop() + "top" + " " + top);
+                    if (getTop() < top) {
+                        mlistener.change_imageview(changeTobackground);
+                    }else{
+                        mlistener.change_imageview(changeToCreate);
+                    }
+                    int imagepos2[][] = {{top_left_x, top__left_y}, {top_right_x, top_right_y}, {botton_left_x, botton_left_y}, {botton_right_x, botton_right_y}};
+                    Log.i("movepath", top_left_x + "#" + top__left_y + "#" + top_right_x + "#" + top_right_y);
+                    if (panduan(pos, imagepos2)) {
+                        mlistener.betrue_createFile(1);
+                    } else {
+                        mlistener.betrue_createFile(0);
+                    }
+//                }
                 break;
             case MotionEvent.ACTION_UP:
                 Log.e("Rawx+Rawy", Rawx + " " + Rawy);
@@ -154,6 +165,7 @@ public class DragView extends LinearLayout {
                     mlistener.move_exist_file();
                 } else {
                     mlistener.remove_view();
+                    mlistener.change_imageview(changeToNormal);
                 }
                 break;
         }
@@ -196,6 +208,14 @@ public class DragView extends LinearLayout {
     }
 
 
+    public Boolean isNeedmove(int rawX, int rawY, int left, int right, int top, int bottom) {
+        if (left < rawX && rawX < right && top < rawY && rawY < bottom)
+            return true;
+        else
+            return false;
+    }
+
+
     public void computeScroll() {
         super.computeScroll();
         if (mScroller.computeScrollOffset()) {
@@ -221,7 +241,9 @@ public class DragView extends LinearLayout {
                 getmeasuredWidthSize(heightMeasureSpec));
         final ImageView view = new ImageView(context);
         view.setImageBitmap(mBitmap);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ScreenUtils.dip2px(context, 100), ScreenUtils.dip2px(context, 100));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ScreenUtils.dip2px(context, 103), ScreenUtils.dip2px(context, 103));
+        lp.topMargin = ScreenUtils.dip2px(context, 3);
+        lp.leftMargin = ScreenUtils.dip2px(context, 3);
         addView(view, lp);
         measureChild(view, widthMeasureSpec, heightMeasureSpec);
         setBackgroundResource(R.drawable.image_unmove);

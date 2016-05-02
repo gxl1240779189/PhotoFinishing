@@ -24,15 +24,14 @@
             android:layout_height="86px"
             android:scaleType="centerCrop"
             android:src="@drawable/item_choose"
-            android:alpha="255"
             />
 
         <ImageView
             android:id="@+id/chakan_photo"
             android:layout_width="16px"
             android:layout_height="16px"
-            android:layout_marginTop="69px"
-            android:layout_marginLeft="69px"
+            android:layout_marginTop="67px"
+            android:layout_marginLeft="67px"
             android:src="@drawable/chakan"
             />
     </FrameLayout>

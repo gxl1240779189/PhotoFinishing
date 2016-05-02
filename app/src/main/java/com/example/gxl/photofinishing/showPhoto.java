@@ -41,23 +41,28 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
     private ListView showphoto_listview;
     private showphoto_listviewAdapter adapter;
     int delete_type = 0;
-    RelativeLayout fanhui;
+
+    RelativeLayout fanhui;//返回
+    RelativeLayout xuanze;//选择
+    RelativeLayout quxiao;//取消
+    RelativeLayout quanxuan;//全选
+
     TextView xuanze_text;
     TextView show_title;
     RelativeLayout delete;
     RelativeLayout wancheng;
-    int gaibian_flag=0;
+    int gaibian_flag = 0;
+
+    int quanxuan_flag = 0;//当前是否全选
+    TextView quanxuan_text;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-    int Type_fanhuidaoyuanchu=0;
-    int Type_zhijiedelete=1;
-    int flag=Type_zhijiedelete;
-
-    int qidong_flag=0;
-
+    int Type_fanhuidaoyuanchu = 0;
+    int Type_zhijiedelete = 1;
+    int flag = Type_zhijiedelete;
 
 
     @Override
@@ -66,63 +71,63 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//用来取消状态栏
         setContentView(R.layout.showphoto_listviewlayout);
-        qidong_flag = getIntent().getIntExtra("flag", 0);
         fanhui = (RelativeLayout) findViewById(R.id.fanhui);
-        wancheng = (RelativeLayout) findViewById(R.id.wancheng);
-        xuanze_text = (TextView) findViewById(R.id.xuanze_text);
-        show_title = (TextView) findViewById(R.id.show_title);
-        delete = (RelativeLayout) findViewById(R.id.delete);
+        xuanze = (RelativeLayout) findViewById(R.id.xuanze);
+        quxiao = (RelativeLayout) findViewById(R.id.quxiao);
+        quanxuan = (RelativeLayout) findViewById(R.id.quanxuan);
+        quanxuan_text= (TextView) findViewById(R.id.quanxuan_text);
         showphoto_listview = (ListView) findViewById(R.id.showphoto_listview);
         fanhui.setOnClickListener(this);
-        delete.setOnClickListener(this);
-        wancheng.setOnClickListener(this);
+        xuanze.setOnClickListener(this);
+        quanxuan.setOnClickListener(this);
+        quxiao.setOnClickListener(this);
         filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
-        if (qidong_flag == 1) {
-            chagetomovefile_jiemian();
-            adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 3);
-            showphoto_listview.setAdapter(adapter);
-            showphoto_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(needMoveFile.choose_item==-1)
-                    {
-                        needMoveFile.choose_item=position;
-                        view.findViewById(position).setBackgroundResource(R.drawable.check_choose);
-                    }else if(needMoveFile.choose_item==position)
-                    {
-                        needMoveFile.choose_item=-1;
-                        view.findViewById(position).setBackgroundResource(R.drawable.check_unchoose);
-                    }else
-                    {
-                        view.findViewById(position).setBackgroundResource(R.drawable.check_choose);
-                        if(((parent.getFirstVisiblePosition()-1)<needMoveFile.choose_item)&&((parent.getLastVisiblePosition()+1)>needMoveFile.choose_item)) {
-                            findViewById(needMoveFile.choose_item).setBackgroundResource(R.drawable.check_unchoose);
-                        }
-                        needMoveFile.choose_item=position;
-                    }
-                }
-            });
-        } else {
-            adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
-            showphoto_listview.setAdapter(adapter);
-            showphoto_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (delete_type == 0) {
-                        Intent intent = new Intent(showPhoto.this, showPhotoDetail.class);
-                        intent.putExtra("filepath", filepathlist.get(position));
-                        startActivityForResult(intent, 1);
+//        if (qidong_flag == 1) {
+//            chagetomovefile_jiemian();
+//            adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 3);
+//            showphoto_listview.setAdapter(adapter);
+//            showphoto_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    if(needMoveFile.choose_item==-1)
+//                    {
+//                        needMoveFile.choose_item=position;
+//                        view.findViewById(position).setBackgroundResource(R.drawable.check_choose);
+//                    }else if(needMoveFile.choose_item==position)
+//                    {
+//                        needMoveFile.choose_item=-1;
+//                        view.findViewById(position).setBackgroundResource(R.drawable.check_unchoose);
+//                    }else
+//                    {
+//                        view.findViewById(position).setBackgroundResource(R.drawable.check_choose);
+//                        if(((parent.getFirstVisiblePosition()-1)<needMoveFile.choose_item)&&((parent.getLastVisiblePosition()+1)>needMoveFile.choose_item)) {
+//                            findViewById(needMoveFile.choose_item).setBackgroundResource(R.drawable.check_unchoose);
+//                        }
+//                        needMoveFile.choose_item=position;
+//                    }
+//                }
+//            });
+//        } else {
+        adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
+        showphoto_listview.setAdapter(adapter);
+        showphoto_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (delete_type == 0) {
+                    Intent intent = new Intent(showPhoto.this, showPhotoDetail.class);
+                    intent.putExtra("filepath", filepathlist.get(position));
+                    startActivityForResult(intent, 1);
+                } else {
+                    if (!needMoveFile.isinNeeddeletefile(filepathlist.get(position))) {
+                        findViewById(position).setBackgroundResource(R.drawable.check_choose);
+                        needMoveFile.addNeeddeletefile(filepathlist.get(position));
                     } else {
-                        if (!needMoveFile.isinNeeddeletefile(filepathlist.get(position))) {
-                            findViewById(position).setBackgroundResource(R.drawable.check_choose);
-                            needMoveFile.addNeeddeletefile(filepathlist.get(position));
-                        } else {
-                           findViewById(position).setBackgroundResource(R.drawable.check_unchoose);
-                            needMoveFile.removedeletefile(filepathlist.get(position));
-                        }
+                        findViewById(position).setBackgroundResource(R.drawable.check_unchoose);
+                        needMoveFile.removedeletefile(filepathlist.get(position));
                     }
                 }
-            });
+            }
+        });
             showphoto_listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -133,71 +138,66 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
                     return true;
                 }
             });
-        }
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     void chagetodelete_jiemian() {
-        fanhui.setVisibility(View.VISIBLE);
-        xuanze_text.setVisibility(View.VISIBLE);
-        delete.setVisibility(View.VISIBLE);
-        show_title.setVisibility(View.GONE);
+        fanhui.setVisibility(View.GONE);
+        xuanze.setVisibility(View.GONE);
+        quxiao.setVisibility(View.VISIBLE);
+        quanxuan.setVisibility(View.VISIBLE);
     }
 
     void chagetonormal_jiemian() {
-        fanhui.setVisibility(View.GONE);
-        xuanze_text.setVisibility(View.GONE);
-        delete.setVisibility(View.GONE);
-        show_title.setVisibility(View.VISIBLE);
+        fanhui.setVisibility(View.VISIBLE);
+        xuanze.setVisibility(View.VISIBLE);
+        quxiao.setVisibility(View.GONE);
+        quanxuan.setVisibility(View.GONE);
     }
 
-    void chagetomovefile_jiemian()
-    {
-        fanhui.setVisibility(View.VISIBLE);
-        xuanze_text.setVisibility(View.VISIBLE);
-        delete.setVisibility(View.GONE);
-        wancheng.setVisibility(View.VISIBLE);
-        show_title.setVisibility(View.GONE);
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fanhui:
-                if(qidong_flag==1)
-                {
-                    Intent intent=new Intent();
-                    setResult(1,intent);
-                    finish();
-                }else {
-                    chagetonormal_jiemian();
-                    delete_type = 0;
-                    adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
-                    showphoto_listview.setAdapter(adapter);
-                    needMoveFile.removealldeletefile();
-                }
+                Intent intent = new Intent();
+                setResult(1, intent);
+                finish();
+                break;
+            case R.id.xuanze:
+                chagetodelete_jiemian();
+                delete_type = 1;
+                adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 1);
+                showphoto_listview.setAdapter(adapter);
                 break;
 
-            case R.id.delete:
-                if (needMoveFile.needdeleteFile.size() != 0) {
-                    Createdialog();
+            case R.id.quxiao:
+                chagetonormal_jiemian();
+                delete_type = 0;
+                adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
+                showphoto_listview.setAdapter(adapter);
+                break;
+            case R.id.quanxuan:
+                if (quanxuan_flag == 0) {
+                    quanxuan_text.setText("全不选");
+                    quanxuan_flag = 1;
+                    for (int i = showphoto_listview.getFirstVisiblePosition(); i <= showphoto_listview.getLastVisiblePosition(); i++) {
+                        showphoto_listview.findViewById(i).setBackgroundResource(R.drawable.check_choose);
+                    }
+                    for (int i=0;i<filepathlist.size();i++)
+                    {
+                        needMoveFile.addNeeddeletefile(filepathlist.get(i));
+                    }
                 } else {
-                    Toast.makeText(showPhoto.this, "请先选择删除项", Toast.LENGTH_LONG).show();
-                }
-                break;
-
-            case R.id.wancheng:
-                if(needMoveFile.choose_item==-1)
-                {
-                    Toast.makeText(showPhoto.this,"请先选择需要移动到的文件夹!",Toast.LENGTH_LONG).show();
-                }else
-                {
-                    new moveNeedfile_task().execute(filepathlist.get(needMoveFile.choose_item));
-                    Intent intent=new Intent();
-                    setResult(2,intent);
-                    finish();
+                    quanxuan_text.setText("全选");
+                    quanxuan_flag = 0;
+                    for (int i = showphoto_listview.getFirstVisiblePosition(); i <= showphoto_listview.getLastVisiblePosition(); i++) {
+                        showphoto_listview.findViewById(i).setBackgroundResource(R.drawable.check_unchoose);
+                    }
+                    needMoveFile.removealldeletefile();
                 }
 
                 break;
@@ -207,26 +207,27 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
     /**
      * 将选好的图片移动到指定的文件夹
      */
-    class moveNeedfile_task extends AsyncTask<String,Void,Void>
-    {
+    class moveNeedfile_task extends AsyncTask<String, Void, Void> {
         ProgressDialog MyDialog;
+
         @Override
         protected void onPreExecute() {
-            MyDialog = ProgressDialog.show(showPhoto.this, " " , "正在移动中", true);
+            MyDialog = ProgressDialog.show(showPhoto.this, " ", "正在移动中", true);
             super.onPreExecute();
         }
+
         @Override
         protected Void doInBackground(String... params) {
-            Log.i("gxl",params[0]);
+            Log.i("gxl", params[0]);
             MoveNeedfile(params[0]);
-            needMoveFile.choose_item=-1;
+            needMoveFile.choose_item = -1;
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
 //            MyDialog.dismiss();
-            Intent intent=new Intent();
+            Intent intent = new Intent();
             setResult(gaibian_flag, intent);
             finish();
             super.onPostExecute(aVoid);
@@ -236,12 +237,12 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
     /**
      * 将整理好的文件夹还原到原来的文件夹中
      */
-    class huanyuanfile_task extends AsyncTask<Void,Void,Void>
-    {
+    class huanyuanfile_task extends AsyncTask<Void, Void, Void> {
         ProgressDialog MyDialog;
+
         @Override
         protected void onPreExecute() {
-            MyDialog = ProgressDialog.show(showPhoto.this, " " , " 正在还原中", true);
+            MyDialog = ProgressDialog.show(showPhoto.this, " ", " 正在还原中", true);
             super.onPreExecute();
         }
 
@@ -263,15 +264,16 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
     /**
      * 将整理好的文件夹直接删除
      */
-    class deletefile_task extends AsyncTask<Void,Void,Void>
-    {
+    class deletefile_task extends AsyncTask<Void, Void, Void> {
 
         ProgressDialog MyDialog;
+
         @Override
         protected void onPreExecute() {
-            MyDialog = ProgressDialog.show(showPhoto.this, " " , "正在删除中 ", true);
+            MyDialog = ProgressDialog.show(showPhoto.this, " ", "正在删除中 ", true);
             super.onPreExecute();
         }
+
         @Override
         protected Void doInBackground(Void... params) {
             fileUtils.deleteFilelist(needMoveFile.getdeletefile());
@@ -285,7 +287,6 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
             MyDialog.dismiss();
         }
     }
-
 
 
     public void MoveNeedfile(final String path) {
@@ -304,27 +305,28 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
             movefile.mkdir();
         }
         for (File file : needmovelistfile) {
-            fileUtils.copyFile(file.getAbsolutePath(),path+ "/" + file.getName());
+            fileUtils.copyFile(file.getAbsolutePath(), path + "/" + file.getName());
         }
         needMoveFile.removeall();
         needMoveFile.clearPositemap();
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (delete_type == 1) {
-                chagetonormal_jiemian();
-                delete_type = 0;
-                adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
-                showphoto_listview.setAdapter(adapter);
-                needMoveFile.removealldeletefile();
-            } else {
-                Intent intent=new Intent();
-                setResult(gaibian_flag,intent);
-                finish();
-            }
-            return true;
-        }
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (delete_type == 1) {
+//                chagetonormal_jiemian();
+//                delete_type = 0;
+//                adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
+//                showphoto_listview.setAdapter(adapter);
+//                needMoveFile.removealldeletefile();
+//            } else {
+//                Intent intent=new Intent();
+//                setResult(gaibian_flag,intent);
+//                finish();
+//            }
+//            return true;
+//        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -341,21 +343,19 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
         dialog.getWindow().setContentView(dialogView);
         final RelativeLayout checkbox = (RelativeLayout) dialogView.findViewById(R.id.checkbox);
         RelativeLayout quxiao = (RelativeLayout) dialogView.findViewById(R.id.quxiao);
-        RelativeLayout queding= (RelativeLayout) dialogView.findViewById(R.id.queding);
-        TextView delete_text= (TextView) dialogView.findViewById(R.id.shanchutext);
-        delete_text.setText("确定删除"+needMoveFile.needdeleteFile.size()+"个文件?");
-        final ImageView check_image= (ImageView)dialogView.findViewById(R.id.checkbox_image);
+        RelativeLayout queding = (RelativeLayout) dialogView.findViewById(R.id.queding);
+        TextView delete_text = (TextView) dialogView.findViewById(R.id.shanchutext);
+        delete_text.setText("确定删除" + needMoveFile.needdeleteFile.size() + "个文件?");
+        final ImageView check_image = (ImageView) dialogView.findViewById(R.id.checkbox_image);
 
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flag==Type_zhijiedelete)
-                {
-                    flag=Type_fanhuidaoyuanchu;
+                if (flag == Type_zhijiedelete) {
+                    flag = Type_fanhuidaoyuanchu;
                     check_image.setBackgroundResource(R.drawable.check_choose);
-                }else
-                {
-                    flag=Type_zhijiedelete;
+                } else {
+                    flag = Type_zhijiedelete;
                     check_image.setBackgroundResource(R.drawable.check_unchoose);
                 }
             }
@@ -371,23 +371,21 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
             public void onClick(View v) {
                 dialog.dismiss();
                 delete_type = 0;
-                if(flag==Type_zhijiedelete) {
-                    Log.i("path","直接删除");
+                if (flag == Type_zhijiedelete) {
+                    Log.i("path", "直接删除");
                     new deletefile_task().execute();
-                }else
-                {
+                } else {
                     Log.i("path", "返回到远处");
                     new huanyuanfile_task().execute();
-                    gaibian_flag=2;
+                    gaibian_flag = 2;
 
                 }
-                for(int i=0;i<needMoveFile.getdeletefile().size();i++)
-                {
+                for (int i = 0; i < needMoveFile.getdeletefile().size(); i++) {
                     filepathlist.remove(needMoveFile.getdeletefile().get(i));
                 }
                 adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
                 showphoto_listview.setAdapter(adapter);
-                chagetonormal_jiemian();
+                // chagetonormal_jiemian();
             }
         });
         dialog.show();
@@ -440,24 +438,21 @@ public class showPhoto extends AutoLayoutActivity implements View.OnClickListene
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      switch (requestCode)
-      {
-          case 1:
-              if(resultCode==1)
-              {
-                  filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
-                  adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
-                  showphoto_listview.setAdapter(adapter);
-              }
-              if(resultCode==2)
-              {
-                  filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() +  myApplication.move_file_path);
-                  adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
-                  showphoto_listview.setAdapter(adapter);
-                  gaibian_flag=2;
-              }
-              break;
-      }
+        switch (requestCode) {
+            case 1:
+                if (resultCode == 1) {
+                    filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
+                    adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
+                    showphoto_listview.setAdapter(adapter);
+                }
+                if (resultCode == 2) {
+                    filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
+                    adapter = new showphoto_listviewAdapter(showPhoto.this, filepathlist, 0);
+                    showphoto_listview.setAdapter(adapter);
+                    gaibian_flag = 2;
+                }
+                break;
+        }
     }
 }
 

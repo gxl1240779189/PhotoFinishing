@@ -1,51 +1,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
-<ImageView
-    android:layout_marginTop="40px"
-    android:layout_width="108px"
-    android:layout_height="75px"
-    android:layout_centerHorizontal="true"
-    android:src="@drawable/xingxiangcei"
-    />
+    android:background="#66000000">
 
-    <EditText
-        android:id="@+id/path"
-        android:layout_centerHorizontal="true"
-        android:layout_width="292px"
-        android:layout_height="29px"
-        android:layout_marginTop="185px"
-        android:hint="2015.06.01河南"
-        android:gravity="center"
-        android:textColorHint="#C2C2C2"
-        android:textColor="#717171"
-        android:textSize="20px"
-        android:textCursorDrawable="@null"
-        android:background="@null"
-        />
-
-    <View
-        android:layout_marginTop="214px"
-        android:layout_width="292px"
-        android:layout_height="1px"
-        android:layout_centerHorizontal="true"
-        android:background="#000000"
-        />
-
-    <Button
-        android:id="@+id/dialog_ok"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="267px"
-        android:layout_width="94px"
-        android:layout_height="40px"
-        android:text="确认"
-       android:gravity="center"
-        android:textSize="18px"
-        android:textColor="#FFFFFF"
-        android:background="#000000"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="7px"
+        android:layout_marginLeft="7px"
+        android:layout_marginRight="7px"
+        android:layout_marginTop="7px"
+        android:background="@color/white">
 
 
+        <ImageView
+            android:id="@+id/cancle"
+            android:paddingTop="5px"
+            android:paddingBottom="5px"
+            android:paddingRight="5px"
+            android:paddingLeft="5px"
+            android:layout_width="24px"
+            android:layout_height="24px"
+            android:layout_marginTop="19px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="19px"
+            android:src="@drawable/cancle"
+            />
+
+        <FrameLayout
+            android:layout_width="104px"
+            android:layout_height="78px"
+            android:layout_marginTop="44px"
+            android:layout_centerHorizontal="true"
+            >
+            <com.meg7.widget.SvgImageView
+                android:id="@+id/wenjianjia_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/sample_1"
+                app:svg_raw_resource="@raw/wenjianjia_svg"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:layout_marginTop="6.5px"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/white"
+                />
+        </FrameLayout>
+
+
+        <EditText
+            android:id="@+id/path"
+            android:layout_width="292px"
+            android:layout_height="29px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="157px"
+            android:background="@null"
+            android:gravity="center"
+            android:text="2015.06.01河南"
+            android:textColor="#7A7A7A"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="false"
+            android:textSize="20px" />
+
+        <View
+            android:layout_width="292px"
+            android:layout_height="1px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="186px"
+            android:background="#000000" />
+
+        <Button
+            android:id="@+id/dialog_ok"
+            android:layout_width="118px"
+            android:layout_height="40px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="237px"
+            android:background="#000000"
+            android:gravity="center"
+            android:text="新建相册夹"
+            android:textColor="#FFFFFF"
+            android:textSize="18px" />
+    </RelativeLayout>
 </RelativeLayout>

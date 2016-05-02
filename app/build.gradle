@@ -33,4 +33,5 @@ dependencies {
     compile project(':autolayout')
     compile files('libs/nineoldanimatin.jar')
     compile project(':CustomShapeImageViewlibrary')
+    compile files('libs/AMap_Location_v2.3.0_20160112.jar')
 }

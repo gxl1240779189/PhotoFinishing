@@ -1,10 +1,15 @@
 package Utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.acl.LastOwnerException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,14 +23,21 @@ import java.util.Map;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+
+import MyInterface.FloatViewParamsListener;
 
 public class fileUtils {
 
@@ -138,8 +150,10 @@ public class fileUtils {
         public int compare(File lhs, File rhs) {
             if (paishedate(lhs).before(paishedate(rhs)))
                 return 1;
-            else
+            else if(paishedate(lhs).after(paishedate(rhs)))
                 return -1;
+            else
+                return 0;
         }
     }
 
@@ -170,6 +184,64 @@ public class fileUtils {
         }
         return dddd;
     }
+
+
+    /**
+     * 获取照片信息的经纬度和拍摄时间
+     * @param list
+     * @return
+     */
+    public static String[] getNeedmoveFileLocation(ArrayList<String> list) {
+        String [] information=new String[3];
+        ExifInterface exif;
+        for(int i=0;i<list.size();i++) {
+            try {
+                exif = new ExifInterface(list.get(i));
+                information[0]=String.valueOf("nothing");
+                information[1]=String.valueOf("nothing");
+                information[2]=lastModifiedTodate(new File(list.get(i)));
+                try {
+                  if(!TextUtils.isEmpty(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)))
+                  {
+                      final float[] jingweidu={-1,-1};
+                      exif.getLatLong(jingweidu);
+                      information[0]=String.valueOf(jingweidu[0]);
+                      information[1]=String.valueOf(jingweidu[1]);
+//                      LogUtils.loggxl("weidu "+exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)+" jindu"+exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE ));
+//                      LogUtils.loggxl("weidu "+jingweidu[0]+" jindu"+jingweidu[1]);
+                      //这里需要根据经纬度变成城市名
+                      return information;
+                  }else
+                  {
+                      LogUtils.loggxl("weidu nothing");
+                      continue;
+                  }
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return information;
+    }
+
+
+
+//
+//    static String getCityname(float jingdu, float weidu)
+//    {
+//         AMapLocationClient mLocationClient = null;
+//         AMapLocationClientOption mLocationOption = null;
+//        return null;
+//    }
+
+
+
+
+
 
     public static Date paishedate(File file) {
         ExifInterface exif = null;

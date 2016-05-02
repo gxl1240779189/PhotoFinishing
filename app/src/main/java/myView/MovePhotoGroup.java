@@ -118,16 +118,16 @@ public class MovePhotoGroup extends LinearLayout {
 		LayoutParams lp = new LayoutParams(300, 300);
 
 		ImageView view1 = new ImageView(context);
-		view1.setBackgroundResource(R.drawable.ic_launcher);
+		view1.setBackgroundResource(R.drawable.yujiazai);
 		addView(view1, lp);
 		ImageView view2 = new ImageView(context);
-		view2.setBackgroundResource(R.drawable.ic_launcher);
+		view2.setBackgroundResource(R.drawable.yujiazai);
 		addView(view2, lp);
 		ImageView view3 = new ImageView(context);
-		view3.setBackgroundResource(R.drawable.ic_launcher);
+		view3.setBackgroundResource(R.drawable.yujiazai);
 		addView(view3, lp);
 		ImageView view4 = new ImageView(context);
-		view4.setBackgroundResource(R.drawable.ic_launcher);
+		view4.setBackgroundResource(R.drawable.yujiazai);
 		addView(view4, lp);
 
 		measureChild(view1, widthMeasureSpec, heightMeasureSpec);

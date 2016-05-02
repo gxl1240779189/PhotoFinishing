@@ -18,33 +18,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="58px">
 
-<RelativeLayout
-    android:id="@+id/fanhui"
-    android:layout_marginLeft="13px"
-    android:layout_marginTop="12px"
-    android:layout_width="30px"
-    android:layout_height="30px"
-    android:visibility="gone"
-    >
-                <ImageView
-                    android:layout_marginTop="10px"
-                    android:layout_marginLeft="10px"
-                    android:layout_width="9px"
-                    android:layout_height="16px"
-                    android:src="@drawable/fanhui"
-                    />
-</RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/fanhui"
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:layout_marginLeft="13px"
+                    android:layout_marginTop="12px"
+                    >
 
-                <TextView
-                    android:id="@+id/xuanze_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="44px"
-                    android:layout_marginTop="20px"
-                    android:text="请选择"
-                    android:textColor="#4E4E4E"
-                    android:textSize="16px"
-                    android:visibility="gone" />
+                    <ImageView
+                        android:layout_width="9px"
+                        android:layout_height="16px"
+                        android:layout_marginLeft="3px"
+                        android:layout_marginTop="10px"
+                        android:src="@drawable/fanhui" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/quxiao"
+                    android:layout_width="60px"
+                    android:layout_height="40px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="9px"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16px"
+                        android:layout_marginTop="9px"
+                        android:text="取消"
+                        android:textColor="#7A7A7A"
+                        android:textSize="16px" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/show_title"
@@ -55,41 +63,47 @@
                     android:textColor="#4E4E4E"
                     android:textSize="22px" />
 
-                <RelativeLayout
-                    android:id="@+id/delete"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="16px"
-                    android:layout_marginLeft="10px"
-                    android:layout_width="30px"
-                    android:layout_height="30px"
-                    android:visibility="gone"
-                    >
-                <ImageView
-                    android:layout_width="15px"
-                    android:layout_height="20px"
-                    android:src="@drawable/delete"
-                 />
-                </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/wancheng"
+                    android:id="@+id/xuanze"
+                    android:layout_width="60px"
+                    android:layout_height="40px"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="13px"
-                    android:layout_marginTop="22px"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="9px"
                     >
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#4E4E4E"
-                        android:textSize="16px"
-                        android:text="完成"
-                        />
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16px"
+                        android:layout_marginTop="9px"
+                        android:text="选择"
+                        android:textColor="#7A7A7A"
+                        android:textSize="16px" />
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/quanxuan"
+                    android:layout_width="60px"
+                    android:layout_height="40px"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="9px"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:id="@+id/quanxuan_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="11px"
+                        android:layout_marginTop="9px"
+                        android:text="全选"
+                        android:textColor="#7A7A7A"
+                        android:textSize="16px" />
+                </RelativeLayout>
+
 
                 <View
                     android:layout_width="match_parent"
@@ -102,18 +116,74 @@
             <ListView
                 android:id="@+id/showphoto_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                ></ListView>
+                android:layout_height="match_parent"></ListView>
+
+
+            <RelativeLayout
+                android:id="@+id/show_move_detail"
+                android:layout_width="match_parent"
+                android:layout_height="48px"
+                android:layout_alignParentBottom="true"
+                android:background="#CE000000"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/chose_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginTop="14px"
+                    android:text="已选18张 "
+                    android:textColor="@color/white"
+                    android:textSize="20px" />
+
+                <ImageView
+                    android:id="@+id/xian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginTop="18px"
+                    android:layout_toRightOf="@+id/chose_text"
+                    android:src="@drawable/linecopy20" />
+
+                <TextView
+                    android:id="@+id/quit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6px"
+                    android:layout_marginTop="14px"
+                    android:layout_toRightOf="@+id/xian"
+                    android:text="取消"
+                    android:textColor="@color/white"
+                    android:textSize="20px" />
+
+                <TextView
+                    android:id="@+id/delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="31px"
+                    android:layout_marginTop="14px"
+                    android:text="刪除"
+                    android:textColor="@color/red"
+                    android:textSize="20px" />
+
+                <ImageView
+                    android:id="@+id/diandian"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12px"
+                    android:layout_width="3px"
+                    android:layout_height="15px"
+                    android:background="@drawable/diandian"
+                    />
+            </RelativeLayout>
+
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/baize"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/baize"
-            android:visibility="gone"
-            >
-        </RelativeLayout>
+
 
     </FrameLayout>
 
