@@ -8,8 +8,7 @@
         android:id="@+id/myFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
         <LinearLayout
             android:id="@+id/linearlayout"
@@ -35,31 +34,29 @@
                         android:layout_marginLeft="15px"
                         android:layout_marginTop="38px"
                         android:src="@drawable/menu" />
-                    
+
                     <FrameLayout
                         android:id="@+id/FrameLayout_jianli"
                         android:layout_width="146px"
                         android:layout_height="119px"
-                        android:layout_centerHorizontal="true"
-                       >
+                        android:layout_centerHorizontal="true">
 
-                    <ImageView
-                        android:id="@+id/jianli"
-                        android:layout_marginTop="19px"
-                        android:layout_marginLeft="20px"
-                        android:layout_width="106px"
-                        android:layout_height="80px"
-                        android:src="@drawable/jianli" />
-                        
+                        <ImageView
+                            android:id="@+id/jianli"
+                            android:layout_width="106px"
+                            android:layout_height="80px"
+                            android:layout_marginLeft="20px"
+                            android:layout_marginTop="19px"
+                            android:src="@drawable/jianli" />
+
                         <ImageView
                             android:id="@+id/jiantou"
-                            android:layout_marginTop="48px"
                             android:layout_width="19px"
                             android:layout_height="27px"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="48px"
                             android:src="@drawable/jiantou"
-                            android:visibility="gone"
-                            />
+                            android:visibility="gone" />
                     </FrameLayout>
 
                     <ImageView
@@ -84,14 +81,13 @@
                         android:id="@+id/listview_framelayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="20px"
-                        >
+                        android:layout_marginTop="20px">
 
                         <ListView
-                            android:layout_marginTop="1.5px"
                             android:id="@+id/mylistview"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="1.5px"
                             android:divider="#F3F3F3"
                             android:dividerHeight="2px"
                             android:scrollbars="none"></ListView>
@@ -107,8 +103,7 @@
                                 android:layout_height="48px"
                                 android:layout_alignParentBottom="true"
                                 android:background="#CE000000"
-                                android:visibility="gone"
-                                >
+                                android:visibility="gone">
 
                                 <TextView
                                     android:id="@+id/chose_text"
@@ -154,13 +149,12 @@
 
                                 <ImageView
                                     android:id="@+id/diandian"
+                                    android:layout_width="3px"
+                                    android:layout_height="15px"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:layout_marginRight="12px"
-                                    android:layout_width="3px"
-                                    android:layout_height="15px"
-                                    android:background="@drawable/diandian"
-                                    />
+                                    android:background="@drawable/diandian" />
                             </RelativeLayout>
                         </RelativeLayout>
                     </FrameLayout>
@@ -170,17 +164,164 @@
     </FrameLayout>
 
 
-    <!-- The navigation drawer -->
-    <ListView
+    <!--     The navigation drawer
+        <ListView
+            android:id="@+id/navdrawer"
+            android:layout_width="260dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:drawSelectorOnTop="false"></ListView>-->
+
+    <LinearLayout
         android:id="@+id/navdrawer"
-        android:layout_width="260dp"
+        android:layout_width="233dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:drawSelectorOnTop="false"></ListView>
+        android:background="#2A2A2A"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:id="@+id/guanli"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/menu_guanli" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="34dp"
+                    android:text="管理相册源"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/menu_beifen" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="34dp"
+                    android:text="同步备份"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/menu_shezhi" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="34dp"
+                    android:text="应用设置"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/menu_guanyu" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="34dp"
+                    android:text="关于我们"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="60dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/menu_zhan" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="34dp"
+                    android:text="给个好评"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
 
 </android.support.v4.widget.DrawerLayout>
 

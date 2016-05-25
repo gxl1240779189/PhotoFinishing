@@ -8,9 +8,10 @@
         android:background="@color/black"
         >
         <TextView
+            android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="删除文件"
+            android:text="确认删除"
             android:layout_marginTop="14px"
             android:layout_marginLeft="14px"
             android:textSize="22px"
@@ -21,37 +22,14 @@
             android:id="@+id/shanchutext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="确定删除2个文件？"
+            android:text="删除将会把相册夹连同照片一同清理"
             android:layout_marginTop="64px"
             android:layout_marginLeft="14px"
             android:textSize="18px"
             android:textColor="#FFFFFF"
             />
 
-        <RelativeLayout
-            android:id="@+id/checkbox"
-            android:layout_marginLeft="19px"
-            android:layout_marginTop="87px"
-            android:layout_width="wrap_content"
-            android:layout_height="20px">
-        <ImageView
-            android:id="@+id/checkbox_image"
-            android:layout_marginTop="5px"
-            android:layout_marginLeft="5px"
-            android:layout_width="10px"
-            android:layout_height="10px"
-            android:background="@drawable/check_unchoose"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="还原到原位置"
-            android:layout_marginTop="3px"
-            android:layout_marginLeft="20px"
-            android:textSize="13px"
-            android:textColor="#B9B9B9"
-            />
-        </RelativeLayout>
+
 
         <View
             android:layout_marginTop="132px"

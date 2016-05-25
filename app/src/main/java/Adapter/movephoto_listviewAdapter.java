@@ -1,14 +1,6 @@
-package Adapter;
+package adapter;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +18,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import java.io.File;
 import java.util.ArrayList;
 
-import Data.needMoveFile;
-import Utils.BitmapUtils;
-import Utils.fileUtils;
+import utils.fileUtils;
 
 /**
  * Created by Administrator on 2016/5/1 0001.

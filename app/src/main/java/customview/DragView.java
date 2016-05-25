@@ -1,4 +1,4 @@
-package myView;
+package customview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,16 +6,14 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
-import android.widget.Toast;
 
 import com.example.gxl.photofinishing.R;
 
-import Utils.LogUtils;
-import Utils.ScreenUtils;
+import utils.LogUtils;
+import utils.ScreenUtils;
 
 public class DragView extends LinearLayout {
     private int lastX;
@@ -33,7 +31,6 @@ public class DragView extends LinearLayout {
 
     int top = 0;
     int left = 0;
-
     int first = 0;
 
     int changeToNormal=0;//界面返回正常状态
@@ -111,11 +108,6 @@ public class DragView extends LinearLayout {
                 LogUtils.loggxl("lastX+lastY" + lastX + lastY);
                 break;
             case MotionEvent.ACTION_MOVE:
-//                if(!isNeedmove(x,y,top_left_x,top_right_x,top_right_y,botton_right_y))
-//                {
-//                    return true;
-//                }else {
-
                     if (first == 0) {
                         first = 1;
                         lastX = x;
@@ -154,7 +146,6 @@ public class DragView extends LinearLayout {
                     } else {
                         mlistener.betrue_createFile(0);
                     }
-//                }
                 break;
             case MotionEvent.ACTION_UP:
                 Log.e("Rawx+Rawy", Rawx + " " + Rawy);
@@ -230,9 +221,9 @@ public class DragView extends LinearLayout {
         View view = getChildAt(0);
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        Log.i("view", height + "height");
-        Log.i("view", width + "width");
-        Log.i("view", view.getMeasuredWidth() + ".getMeasuredWidth()");
+        Log.i("customview", height + "height");
+        Log.i("customview", width + "width");
+        Log.i("customview", view.getMeasuredWidth() + ".getMeasuredWidth()");
         view.layout(ScreenUtils.dip2px(context, 6), ScreenUtils.dip2px(context, 2), width - ScreenUtils.dip2px(context, 6), height - ScreenUtils.dip2px(context, 5));
     }
 
@@ -251,7 +242,7 @@ public class DragView extends LinearLayout {
 
     int getmeasuredWidthSize(int widthMeasureSpec) {
         int size = MeasureSpec.getSize(widthMeasureSpec);
-        Log.i("view", size + "size");
+        Log.i("customview", size + "size");
         return size;
     }
 

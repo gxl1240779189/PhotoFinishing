@@ -1,10 +1,11 @@
-package Utils;
+package utils;
 
-import java.io.File;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
 
 public  class sdUtils {
 	

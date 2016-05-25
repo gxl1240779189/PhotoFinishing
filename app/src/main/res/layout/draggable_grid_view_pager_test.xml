@@ -34,7 +34,7 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <myView.DragGridView
+        <customview.DragGridView
             android:id="@+id/dragGridView"
             android:listSelector="@android:color/transparent"
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:gravity="center"
             android:numColumns="auto_fit">
 
-        </myView.DragGridView>
+        </customview.DragGridView>
     </LinearLayout>
 
 </FrameLayout>

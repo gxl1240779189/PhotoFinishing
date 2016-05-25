@@ -8,7 +8,7 @@ android:background="@color/white" >
     android:layout_width="111px"
     android:layout_height="111px" >
 
-    <myView.myImageview
+    <customview.myImageview
         android:layout_marginTop="2px"
         android:layout_marginLeft="1px"
         android:id="@+id/imageview"
@@ -28,14 +28,6 @@ android:background="@color/white" >
         android:visibility="gone"
         />
 
-    <ImageView
-        android:id="@+id/chakan_photo"
-        android:layout_width="16px"
-        android:layout_height="16px"
-        android:layout_marginTop="93px"
-        android:layout_marginLeft="93px"
-        android:src="@drawable/chakan"
-        />
 </FrameLayout>
 
 </LinearLayout>

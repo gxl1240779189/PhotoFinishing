@@ -1,16 +1,18 @@
-package Adapter;
+package adapter;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.Inflater;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
+import com.example.gxl.photofinishing.ImagePagerActivity;
 import com.example.gxl.photofinishing.R;
-import com.example.gxl.photofinishing.showPhoto;
 import com.example.gxl.photofinishing.test;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -18,22 +20,11 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.ImageView;
+import java.util.ArrayList;
+import java.util.List;
 
-import Data.needMoveFile;
-import myView.myImageview;
+import data.needMoveFile;
+import customview.myImageview;
 
 public class GridviewAdapter extends BaseAdapter {
 
@@ -42,9 +33,11 @@ public class GridviewAdapter extends BaseAdapter {
     List<Boolean> listimageviewtip = new ArrayList<Boolean>();
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private DisplayImageOptions options;
+    private int mListViewPosition;
 
 
-    public GridviewAdapter(Context context, ArrayList<String> list) {
+    public GridviewAdapter(Context context, ArrayList<String> list,int position) {
+        this.mListViewPosition=position;
         this.context = (Activity) context;
         this.listfilepath = list;
         imageLoader.init(ImageLoaderConfiguration.createDefault(context));
@@ -110,8 +103,9 @@ public class GridviewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, test.class);
-                intent.putStringArrayListExtra("listfilepath", listfilepath);
-                intent.putExtra("position", mPosition);
+                intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, listfilepath);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, mPosition);
+                intent.putExtra("mListViewPosition",mListViewPosition);
                 context.startActivityForResult(intent, 1);
             }
         });

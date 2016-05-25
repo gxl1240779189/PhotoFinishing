@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.Window;
 
 /**
@@ -24,7 +22,7 @@ public class WelconeActivity extends Activity {
            switch (msg.what)
            {
                case GO_HOME:
-                   Intent HomeIntent=new Intent(WelconeActivity.this,MainActivity.class);
+                   Intent HomeIntent=new Intent(WelconeActivity.this,firstpageActivity.class);
                    startActivity(HomeIntent);
                    finish();
                    break;
@@ -40,7 +38,6 @@ public class WelconeActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome_layout);
-        Log.i("TAG", "onCreate: ");
         if(is_first_in()){
             handler.sendEmptyMessageDelayed(GO_GUIDE, 1000);
         }else
@@ -52,9 +49,9 @@ public class WelconeActivity extends Activity {
     public Boolean is_first_in()
     {
         SharedPreferences sharedPreferences=getSharedPreferences("guide",MODE_PRIVATE);
-        Boolean jiegu=sharedPreferences.getBoolean("first",true);
+        Boolean result=sharedPreferences.getBoolean("first",true);
         change_first_in();
-        return jiegu;
+        return result;
     }
 
     public void change_first_in()
@@ -64,7 +61,4 @@ public class WelconeActivity extends Activity {
         editor.putBoolean("first",false);
         editor.commit();
     }
-
-
-
 }

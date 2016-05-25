@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0">
+
+    <LinearLayout
+        android:layout_marginTop="7px"
+        android:background="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="346px"
+        android:layout_height="86px">
+
+        <FrameLayout
+            android:layout_marginTop="14px"
+            android:layout_marginLeft="7px"
+            android:layout_width="75px"
+            android:layout_height="58px"
+
+            >
+            <ImageView
+                android:id="@+id/wenjianjia_photo"
+                android:layout_width="75px"
+                android:layout_height="58px"
+                android:src="@drawable/wenjianjia_background"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:layout_marginTop="6.5px"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/white"
+                />
+
+
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30px"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/wenjianjia_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="相机相册"
+                    android:textSize="18px"
+                    android:textColor="#4E4E4E"
+                    />
+
+                <TextView
+                    android:id="@+id/wenjianjia_path"
+                    android:layout_marginTop="2px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DCIM"
+                    android:textSize="12px"
+                    android:textColor="#ACACAC"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/check_choose"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="14px"
+                android:layout_width="15px"
+                android:layout_height="15px"
+                android:background="@drawable/check_unchoose"
+                />
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

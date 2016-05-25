@@ -11,7 +11,7 @@
         android:background="@color/white"
         >
 
-        <myView.myImageview
+        <customview.myImageview
             android:id="@+id/show_image"
             android:layout_width="60dp"
             android:layout_height="60dp"

@@ -5,11 +5,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -37,12 +42,14 @@ import com.zhy.autolayout.AutoLayoutActivity;
 import java.io.File;
 import java.util.ArrayList;
 
-import Adapter.showphoto_listviewAdapter;
-import Data.needMoveFile;
-import Utils.BitmapUtils;
-import Utils.CacheUtils;
-import Utils.fileUtils;
+
+import data.needMoveFile;
+import de.greenrobot.event.EventBus;
+import eventbustype.FirstEventType;
+import eventbustype.TestEventType;
+import fragment.ImageDetailFragment;
 import uk.co.senab.photoview.PhotoView;
+import utils.fileUtils;
 
 /**
  * Created by gxl on 2016/4/1.
@@ -63,7 +70,11 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
     TextView delete;
     RelativeLayout show_move_detail;
     viewpaperAdapter adapter;
-     Dialog dialog;
+    Dialog dialog;
+
+    int gaibian_flag=0;
+
+    int mListViewPosition;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -73,27 +84,44 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
 
     other.ImageLoader mImageLoader;
 
+    private ImageLoader imageLoader = ImageLoader.getInstance();
+    private DisplayImageOptions options;
+
+    private static final String STATE_POSITION = "STATE_POSITION";
+    public static final String EXTRA_IMAGE_INDEX = "image_index";
+    public static final String EXTRA_IMAGE_URLS = "image_urls";
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//用来取消状态栏
+        imageLoader.init(ImageLoaderConfiguration.createDefault(test.this));
+        options = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true)
+                .cacheInMemory(false)
+                .showStubImage(R.drawable.yujiazai)
+                .showImageForEmptyUri(R.drawable.yujiazai)
+                .showImageOnFail(R.drawable.yujiazai).cacheInMemory()
+                .cacheOnDisc().displayer(new RoundedBitmapDisplayer(20))
+                .bitmapConfig(Bitmap.Config.ARGB_8888)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
         setContentView(R.layout.showphoto_layout);
         show_move_detail = (RelativeLayout) findViewById(R.id.show_move_detail);
-        chose_text = (TextView) findViewById(R.id.chose_text);
-        quit = (TextView) findViewById(R.id.quit);
         delete = (TextView) findViewById(R.id.delete);
-        quit.setOnClickListener(this);
         delete.setOnClickListener(this);
         houtui = (ImageView) findViewById(R.id.houtui);
         show_detail = (TextView) findViewById(R.id.show_detail);
         chose_detail = (ImageView) findViewById(R.id.chose_detail);
-        init();
         chose_detail.setOnClickListener(this);
         houtui.setOnClickListener(this);
         mImageLoader = other.ImageLoader.build(test.this);
-        filepathlist = getIntent().getStringArrayListExtra("listfilepath");
-        position = getIntent().getIntExtra("position", 0);
+        filepathlist = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
+        position = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
+        mListViewPosition=getIntent().getIntExtra("mListViewPosition",0);
         viewpaper = (ViewPager) findViewById(R.id.viewPager);
-        adapter=new viewpaperAdapter(filepathlist);
+        adapter=new viewpaperAdapter(getSupportFragmentManager(),filepathlist);
+        viewpaper.setOffscreenPageLimit(2);
         viewpaper.setAdapter(adapter);
         viewpaper.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -119,7 +147,6 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
         });
         viewpaper.setCurrentItem(position);
         int index = position + 1;
-        show_detail.setText(index + "/" + filepathlist.size());
         if (needMoveFile.isinNeedmovefile(filepathlist.get(position))) {
             chose_detail.setImageResource(R.drawable.check_choose);
         } else {
@@ -130,76 +157,35 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    class viewpaperAdapter extends PagerAdapter {
-        ArrayList<View> list = new ArrayList<View>();
-        public viewpaperAdapter(
-                ArrayList<String> filepathlist) {
-            for (int i = 0; i < filepathlist.size(); i++) {
-                PhotoView imageview = new PhotoView(test.this);
-                ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.MATCH_PARENT);
-                imageview.setLayoutParams(lp);
-                list.add(imageview);
-            }
-        }
+    private class viewpaperAdapter extends FragmentStatePagerAdapter {
 
-        public boolean isViewFromObject(View arg0, Object arg1) {
-            return arg0 == arg1;
-        }
+        public ArrayList<String> fileList;
 
-        public int getCount() {
-            return filepathlist.size();
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-        @Override
-        public void notifyDataSetChanged() {
-            super.notifyDataSetChanged();
+        public viewpaperAdapter(FragmentManager fm, ArrayList<String> fileList) {
+            super(fm);
+            this.fileList = fileList;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+            super.destroyItem(container, position, object);
         }
 
-        public Object instantiateItem(ViewGroup container, int position) {
-            PhotoView imageView = (PhotoView) list.get(position);
-            mImageLoader.bindBitmap(filepathlist.get(position), imageView, 400, 400);
-            if (position < list.size() - 3) {
-                PhotoView imageView_later = (PhotoView) list.get(position + 1);
-                mImageLoader.bindBitmap(filepathlist.get(position + 1), imageView_later, 400, 400);
-            }
-            if (position > 0) {
-                PhotoView imageView_pre = (PhotoView) list.get(position - 1);
-                mImageLoader.bindBitmap(filepathlist.get(position - 1), imageView_pre, 400, 400);
-            }
-            container.addView(imageView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            return list.get(position);
+
+        @Override
+        public int getCount() {
+            return fileList == null ? 0 : fileList.size();
         }
-    }
 
-    /**
-     * 用来判断是否显示底部detail
-     */
-    void init() {
-        if (needMoveFile.needmoveFile.size() > 0) {
-            show_move_detail.setVisibility(View.VISIBLE);
-            chose_text.setText("已选" + needMoveFile.needmoveFile.size() + "张");
-
-        } else {
-            show_move_detail.setVisibility(View.GONE);
+        @Override
+        public Fragment getItem(int position) {
+            String url = fileList.get(position);
+            return ImageDetailFragment.newInstance(url);
         }
-    }
-
-    /**
-     * 改变删除之后的viewpaper的显示
-     */
-    void change_viewpaper() {
 
     }
+
+
 
     @Override
     public void onStart() {
@@ -248,23 +234,18 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
                 if (!needMoveFile.isinNeedmovefile(filepathlist.get(dangqian_index))) {
                     chose_detail.setImageResource(R.drawable.check_choose);
                     needMoveFile.addNeedmovefile(filepathlist.get(dangqian_index));
+                    EventBus.getDefault().post(new TestEventType(mListViewPosition,dangqian_index,true));
                 } else {
                     chose_detail.setImageResource(R.drawable.check_unchoose);
                     needMoveFile.removefile(filepathlist.get(dangqian_index));
+                    EventBus.getDefault().post(new TestEventType(mListViewPosition, dangqian_index, false));
                 }
-                init();
                 break;
 
             case R.id.houtui:
                 Intent intent=new Intent();
-                setResult(2,intent);
+                setResult(gaibian_flag,intent);
                 finish();
-                break;
-
-            case R.id.quit:
-                needMoveFile.removeall();
-                chose_detail.setImageResource(R.drawable.check_unchoose);
-                show_move_detail.setVisibility(View.GONE);
                 break;
 
             case R.id.delete:
@@ -283,21 +264,11 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
         lp.width = (int) (display.getWidth());
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setContentView(dialogView);
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (needMoveFile.needmoveFile.size() != 0) {
-                    show_move_detail.setVisibility(View.VISIBLE);
-                } else {
-                    show_move_detail.setVisibility(View.GONE);
-                }
-            }
-        });
         final RelativeLayout checkbox = (RelativeLayout) dialogView.findViewById(R.id.checkbox);
         RelativeLayout quxiao = (RelativeLayout) dialogView.findViewById(R.id.quxiao);
         RelativeLayout queding = (RelativeLayout) dialogView.findViewById(R.id.queding);
         TextView delete_text = (TextView) dialogView.findViewById(R.id.shanchutext);
-        delete_text.setText("确定删除" + needMoveFile.needmoveFile.size() + "个文件?");
+        delete_text.setText("确定要删除该照片吗?");
         quxiao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -308,6 +279,8 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 new deletefile_task().execute();
+                gaibian_flag=2;
+                EventBus.getDefault().post(new FirstEventType(1));
             }
         });
         dialog.show();
@@ -321,18 +294,15 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
 
         @Override
         protected Void doInBackground(Void... params) {
-            fileUtils.deleteFilelist(needMoveFile.getNeedmoveFile());
+            fileUtils.deleteFile(new File(filepathlist.get(dangqian_index)));
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            for(int i=0;i<needMoveFile.getNeedmoveFile().size();i++)
-            {
-                filepathlist.remove(needMoveFile.getNeedmoveFile().get(i));
-            }
-            needMoveFile.removeall();
-            adapter=new viewpaperAdapter(filepathlist);
+            filepathlist.remove(new File(filepathlist.get(dangqian_index)));
+            needMoveFile.removefile(filepathlist.get(dangqian_index));
+            adapter=new viewpaperAdapter(getSupportFragmentManager(),filepathlist);
             viewpaper.setAdapter(adapter);
             viewpaper.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -357,7 +327,6 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
                 }
             });
             chose_detail.setImageResource(R.drawable.check_unchoose);
-            show_move_detail.setVisibility(View.GONE);
             dialog.dismiss();
             super.onPostExecute(aVoid);
         }
@@ -367,7 +336,7 @@ public class test extends AutoLayoutActivity implements View.OnClickListener {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent intent=new Intent();
-            setResult(2,intent);
+            setResult(gaibian_flag,intent);
             finish();
             return true;
         }

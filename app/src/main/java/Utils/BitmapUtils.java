@@ -1,16 +1,14 @@
-package Utils;
+package utils;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.example.gxl.photofinishing.R;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
-
-import com.example.gxl.photofinishing.R;
 
 public class BitmapUtils {
 

@@ -2,7 +2,6 @@ package com.example.gxl.photofinishing;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.view.Window;
 import java.util.ArrayList;
 import java.util.List;
 
-import Adapter.GuideViewpaper;
+import adapter.GuideViewpaper;
 
 /**
  * Created by gxl on 2016/4/3.

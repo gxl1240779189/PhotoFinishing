@@ -1,7 +1,6 @@
-package Adapter;
+package adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.example.gxl.photofinishing.R;
-import com.example.gxl.photofinishing.test;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -19,8 +17,8 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import java.util.ArrayList;
 import java.util.List;
 
-import Data.needMoveFile;
-import myView.myImageview;
+import data.needMoveFile;
+import customview.myImageview;
 
 /**
  * Created by gxl on 2016/4/15.
@@ -30,7 +28,6 @@ public class showPhotoDetailGridviewAdapter extends BaseAdapter {
     ArrayList<String> listfilepath = new ArrayList<String>();
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private DisplayImageOptions options;
-
 
 
     public showPhotoDetailGridviewAdapter(Context context, ArrayList<String> list) {
@@ -74,12 +71,19 @@ public class showPhotoDetailGridviewAdapter extends BaseAdapter {
             viewholder = new Viewholder();
             viewholder.imageview = (myImageview) view
                     .findViewById(R.id.imageview);
+            viewholder.ImageView_tip = (ImageView) view.findViewById(R.id.ImageView_tip);
             convertView.setTag(viewholder);
         } else {
             view = convertView;
             viewholder = (Viewholder) view.getTag();
         }
-        imageLoader.displayImage("file:///"+listfilepath.get(position), viewholder.imageview,
+        viewholder.ImageView_tip.setId(position);
+        if (needMoveFile.isinNeeddeletePhoto(listfilepath.get(position))) {
+            viewholder.ImageView_tip.setVisibility(View.VISIBLE);
+        } else {
+            viewholder.ImageView_tip.setVisibility(View.GONE);
+        }
+        imageLoader.displayImage("file:///" + listfilepath.get(position), viewholder.imageview,
                 options);
         return view;
     }
@@ -90,5 +94,6 @@ public class showPhotoDetailGridviewAdapter extends BaseAdapter {
 
     class Viewholder {
         ImageView imageview;
+        ImageView ImageView_tip;
     }
 }

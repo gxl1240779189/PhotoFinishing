@@ -3,30 +3,21 @@ package com.example.gxl.photofinishing;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.ActionBar.LayoutParams;
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -39,14 +30,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,13 +55,9 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -81,19 +65,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
 
-import Adapter.ListviewAdapter;
-import Adapter.movephoto_listviewAdapter;
-import Adapter.showphoto_listviewAdapter;
-import Data.needMoveFile;
-import Utils.BitmapUtils;
-import Utils.LogUtils;
-import Utils.ScreenUtils;
-import Utils.fileUtils;
-import Utils.sdUtils;
-import myView.DragView;
-import myView.MovePhotoGroup;
-import myView.myGridview;
-import myapplication.myApplication;
+import adapter.ListviewAdapter;
+import adapter.movephoto_listviewAdapter;
+import application.myApplication;
+import data.needMoveFile;
+import data.shezhiSharedprefrence;
+import utils.BitmapUtils;
+import utils.LogUtils;
+import utils.ScreenUtils;
+import utils.fileUtils;
+import customview.DragView;
+import customview.MovePhotoGroup;
+import customview.myDialog;
+import customview.myGridview;
+
+/**
+ * 主界面
+ * @author gxl
+ *
+ */
 
 public class MainActivity extends AutoLayoutActivity implements OnClickListener {
     List<File> listfile = new ArrayList<File>();
@@ -111,7 +101,6 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
     float Rawy;
     ImageView mjianliImageview;
     int Pos[] = {-1, -1, -1, -1};
-
     int chakanPos[] = {-1, -1, -1, -1};
 
     //Dragview是否出现，0不出现，1出现
@@ -123,7 +112,7 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
      * 创建侧滑菜单需要使用的参数
      */
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    private LinearLayout mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerArrowDrawable drawerArrow;
     private boolean drawerArrowColor;
@@ -192,12 +181,25 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
     private ArrayList<String> filepathlist;
     private movephoto_listviewAdapter showphoto_adapter;
 
+    private shezhiSharedprefrence shezhiSP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//用来取消状态栏
         setContentView(R.layout.activity_sample);
-        init_LDrawer();
+        initView();//初始化布局
+        init_LDrawer();//初始化菜单
+        initConfig(); //初始化配置信息
+        new moveImages().execute(); //启动异步任务将手机上的图片加载到布局中来
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    /**
+     *  初始化配置信息
+     */
+    private void initConfig() {
+        shezhiSP=new shezhiSharedprefrence(MainActivity.this);
         imageLoader.init(ImageLoaderConfiguration.createDefault(MainActivity.this));
         options = new DisplayImageOptions.Builder()
                 .showStubImage(R.drawable.yujiazai)
@@ -205,8 +207,17 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                 .showImageOnFail(R.drawable.yujiazai).cacheInMemory()
                 .cacheOnDisc().displayer(new RoundedBitmapDisplayer(20))
                 .displayer(new FadeInBitmapDisplayer(300)).build();
+    }
+
+    /**
+     * 初始化布局
+     */
+
+    private void initView() {
+        //初始化menu点击事件
         control_menu = (ImageView) findViewById(R.id.menu);
         control_menu.setOnClickListener(this);
+        //初始化查看文件夹按钮点击事件
         chakan_file = (ImageView) findViewById(R.id.chakan);
         chakan_file.setOnClickListener(this);
         layout = (FrameLayout) findViewById(R.id.myFrameLayout);
@@ -224,10 +235,6 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
         delete.setOnClickListener(this);
         relativeLayout = (RelativeLayout) findViewById(R.id.listview_area);
         quit.setOnClickListener(this);
-        new moveImages().execute();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     /**
@@ -235,7 +242,9 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
      */
     void init_LDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.navdrawer);
+        mDrawerList = (LinearLayout) findViewById(R.id.navdrawer);
+        RelativeLayout guanli= (RelativeLayout) mDrawerList.findViewById(R.id.guanli);
+        guanli.setOnClickListener(this);
         drawerArrow = new DrawerArrowDrawable(this) {
             @Override
             public boolean isLayoutRtl() {
@@ -273,6 +282,12 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                     mDrawerLayout.closeDrawer(mDrawerList);
                 } else {
                     mDrawerLayout.openDrawer(mDrawerList);
+                    mDrawerList.setOnTouchListener(new OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return true;
+                        }
+                    });
                 }
                 break;
 
@@ -290,6 +305,11 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
 
             case R.id.delete:
                 Createdeletedialog();
+                break;
+
+            case R.id.guanli:
+                Intent guanliintent=new Intent(MainActivity.this,guanlimenuActivity.class);
+                startActivityForResult(guanliintent, 1);
                 break;
         }
     }
@@ -344,8 +364,8 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
 
         @Override
         protected void onPreExecute() {
-            MyDialog = createLoadingDialog(MainActivity.this, "正在移动照片");
-            finishDialog = createLoadingfinishDialog(MainActivity.this, "已存入相册夹");
+            MyDialog = myDialog.createLoadingDialog(MainActivity.this, "正在分析照片");
+            finishDialog = myDialog.createLoadingfinishDialog(MainActivity.this, "已完成");
             MyDialog.show();
             super.onPreExecute();
         }
@@ -391,24 +411,17 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                 chakanPos[2] = chakan_file.getRight();
                 chakanPos[3] = chakan_file.getBottom();
 
-
-                Log.i("path", Pos[0] + "#" + Pos[1] + "#" + Pos[2] + "#" + Pos[3]);
-
                 listviewadapter.setGroup(new ListviewAdapter.movephotoGroup() {
 
                     @Override
                     public void CreateMoveGroup(int x, int y, String path) {
                         Dragview_flag = 1;
-                        Log.i("screen", ScreenUtils.getScreenWidth(MainActivity.this) + "");
-                        Log.i("scree", ScreenUtils.getScreenHeight(MainActivity.this) + "");
                         show_move_detail.setVisibility(View.GONE);
                         relativeLayout.setBackgroundResource(R.drawable.white_copy);
-
 
                         mjianliImageview.setImageResource(R.drawable.jianli_green);
                         jiantou.setVisibility(View.VISIBLE);
                         setFlickerAnimation(jiantou, 1, 0);
-
 
                         group = new MovePhotoGroup(
                                 MainActivity.this);
@@ -425,7 +438,6 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                         int listview_top = listview.getTop();
                         int listviewframelayout_top = listview_framelayout.getTop();
                         top_area_height = listview_top + listviewlinearlayout_top + listviewframelayout_top;
-//                        LogUtils.loggxl("top_area"+top_area_height+"listviewlinearlayout_top"+listviewlinearlayout_top+"listview_top"+listview_top);
 
                         view = new DragView(MainActivity.this,
                                 BitmapUtils.fileTobitmap(new File(path), 206, 206), Pos, chakanPos, top_area_height, listview.getLeft());
@@ -523,7 +535,16 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
 
         @Override
         protected Void doInBackground(Void... params) {
-            listfile = fileUtils.getSD();
+            try {
+                listfile = fileUtils.getSD(MainActivity.this);
+                LogUtils.loggxl(listfile.size()+"changdu");
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             filemap = new LinkedHashMap<String, ArrayList<String>>();
             if (listfile.size() != 0) {
                 String date = fileUtils.lastModifiedTodate(listfile.get(0));
@@ -582,8 +603,8 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
 
         @Override
         protected void onPreExecute() {
-            MyDialog = createLoadingDialog(MainActivity.this, "正在移动照片");
-            finishDialog = createLoadingfinishDialog(MainActivity.this, "已存入相册夹");
+            MyDialog = myDialog.createLoadingDialog(MainActivity.this, "正在移动照片");
+            finishDialog = myDialog.createLoadingfinishDialog(MainActivity.this, "已存入相册夹");
             MyDialog.show();
             super.onPreExecute();
         }
@@ -619,8 +640,8 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
 
         @Override
         protected void onPreExecute() {
-            MyDialog = createLoadingDialog(MainActivity.this, "正在移动照片");
-            finishDialog = createLoadingfinishDialog(MainActivity.this, "已存入相册夹");
+            MyDialog = myDialog.createLoadingDialog(MainActivity.this, "正在移动照片");
+            finishDialog = myDialog.createLoadingfinishDialog(MainActivity.this, "已存入相册夹");
             MyDialog.show();
             super.onPreExecute();
         }
@@ -908,14 +929,6 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
         ImageView wenjianjia_photo = (ImageView) layout.findViewById(R.id.wenjianjia_photo);
         imageLoader.displayImage("file:///" + needMoveFile.getNeedmoveFile().get(0), wenjianjia_photo,
                 options);
-//此段代码可以用来直接出现输入法界面
-//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-//            @Override
-//            public void onShow(DialogInterface dialog) {
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.showSoftInput(path_edittext, InputMethodManager.SHOW_IMPLICIT);
-//            }
-//        });
         ImageView cancle = (ImageView) layout.findViewById(R.id.cancle);
         cancle.setOnClickListener(new OnClickListener() {
             @Override
@@ -1144,10 +1157,6 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
                         public void move_exist_file() {
                             layout.removeView(group);
                             Movedialog();
-//                            Intent intent = new Intent(MainActivity.this, showPhoto.class);
-//                            intent.putExtra("flag", 1);
-//                            startActivityForResult(intent, 1);
-
                         }
 
                         @Override
@@ -1239,7 +1248,7 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
      */
     private void setFlickerAnimation(ImageView iv_chat_head, float from, float to) {
         final Animation animation = new AlphaAnimation(from, to); // Change alpha from fully visible to invisible
-        animation.setDuration(1000); // duration - half a second
+        animation.setDuration(500); // duration - half a second
         animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
         animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
         animation.setRepeatMode(Animation.REVERSE); //
@@ -1348,64 +1357,6 @@ public class MainActivity extends AutoLayoutActivity implements OnClickListener 
     }
 
 
-    /**
-     * 得到自定义的progressDialog
-     *
-     * @param context
-     * @param msg
-     * @return
-     */
-    public static Dialog createLoadingDialog(Context context, String msg) {
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.loading_dialog, null);// 得到加载view
-        LinearLayout layout = (LinearLayout) v.findViewById(R.id.dialog_view);// 加载布局
-        // main.xml中的ImageView
-        ImageView spaceshipImage = (ImageView) v.findViewById(R.id.img);
-        TextView tipTextView = (TextView) v.findViewById(R.id.tipTextView);// 提示文字
-        // 加载动画
-        Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(
-                context, R.anim.loading_animation);
-        // 使用ImageView显示动画
-        spaceshipImage.startAnimation(hyperspaceJumpAnimation);
-        tipTextView.setText(msg);// 设置加载信息
-
-        Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
-
-        loadingDialog.setCancelable(false);// 不可以用“返回键”取消
-        loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.FILL_PARENT));// 设置布局
-        return loadingDialog;
-    }
-
-
-    /**
-     * 得到自定义的progressDialog
-     *
-     * @param context
-     * @param msg
-     * @return
-     */
-    public static Dialog createLoadingfinishDialog(Context context, String msg) {
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.loading_dialog, null);// 得到加载view
-        LinearLayout layout = (LinearLayout) v.findViewById(R.id.dialog_view);// 加载布局
-        // main.xml中的ImageView
-        ImageView spaceshipImage = (ImageView) v.findViewById(R.id.img);
-        spaceshipImage.setBackgroundResource(R.drawable.load_finishing);
-        TextView tipTextView = (TextView) v.findViewById(R.id.tipTextView);// 提示文字
-        tipTextView.setText(msg);// 设置加载信息
-
-        Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
-
-        loadingDialog.setCancelable(false);// 不可以用“返回键”取消
-        loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.FILL_PARENT));// 设置布局
-        return loadingDialog;
-    }
 }
 
 

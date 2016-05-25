@@ -1,6 +1,5 @@
-package Utils;
+package utils;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.LruCache;
 

@@ -1,4 +1,4 @@
-package Data;
+package data;
 
 import android.util.Log;
 
@@ -11,34 +11,8 @@ public class needMoveFile {
 
     public static int choose_item=-1;
 
+    //当前选中的照片地址
     public static ArrayList<String> needmoveFile = new ArrayList<String>();
-
-    public static Map<String, Integer> positemap = new HashMap<String, Integer>();
-
-    public static ArrayList<String> needdeleteFile=new ArrayList<String>();
-
-    public static ArrayList<String>  needdeletePhoto=new ArrayList<String>();
-
-    public static boolean getPositemap(int posite) {
-        if (positemap.get(String.valueOf(posite)) == null) {
-            return false;
-        } else {
-            int i = positemap.get(String.valueOf(posite));
-            if (i == 1)
-                return true;
-            else
-                return false;
-        }
-    }
-
-    public static void putPositemap(int posite, Integer item) {
-        positemap.put(String.valueOf(posite), item);
-    }
-
-    public static void clearPositemap() {
-        positemap.clear();
-    }
-
 
     public static ArrayList<String> getNeedmoveFile() {
         return needmoveFile;
@@ -79,10 +53,6 @@ public class needMoveFile {
         return false;
     }
 
-    public static void setNeedmoveFile(ArrayList<String> needmoveFile) {
-        needMoveFile.needmoveFile = needmoveFile;
-    }
-
     public static  Boolean isExistinList(ArrayList<String> list) {
         for (int i = 0; i < list.size(); i++) {
             if (needmoveFile.contains(list.get(i))) {
@@ -92,6 +62,32 @@ public class needMoveFile {
             }
         }
         return true;
+    }
+
+    public static Map<String, Integer> positemap = new HashMap<String, Integer>();
+
+    public static ArrayList<String> needdeleteFile=new ArrayList<String>();
+
+    public static ArrayList<String>  needdeletePhoto=new ArrayList<String>();
+
+    public static boolean getPositemap(int posite) {
+        if (positemap.get(String.valueOf(posite)) == null) {
+            return false;
+        } else {
+            int i = positemap.get(String.valueOf(posite));
+            if (i == 1)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    public static void putPositemap(int posite, Integer item) {
+        positemap.put(String.valueOf(posite), item);
+    }
+
+    public static void clearPositemap() {
+        positemap.clear();
     }
 
     /**
@@ -142,7 +138,6 @@ public class needMoveFile {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////删除文件夹中的单个photo
     /**
      * 判断当前需要删除的list是够包含filepath
      * @param filepath

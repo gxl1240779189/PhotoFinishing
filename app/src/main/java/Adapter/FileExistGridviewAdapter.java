@@ -1,7 +1,6 @@
-package Adapter;
+package adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.example.gxl.photofinishing.R;
-import com.example.gxl.photofinishing.test;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import Data.needMoveFile;
-import other.ImageLoader;
 
 /**
  * Created by gxl on 2016/4/4.
@@ -77,6 +71,7 @@ public class FileExistGridviewAdapter extends BaseAdapter{
                 options);
         return view;
     }
+
 
 
     class Viewholder {

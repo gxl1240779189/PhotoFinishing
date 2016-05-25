@@ -75,12 +75,12 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20px"
-                android:paddingLeft="5px"
-                android:paddingRight="5px"
-                android:paddingBottom="5px"
-                android:paddingTop="5px"
-                android:layout_width="13px"
-                android:layout_height="25.5px"
+                android:paddingLeft="10px"
+                android:paddingRight="10px"
+                android:paddingBottom="10px"
+                android:paddingTop="10px"
+                android:layout_width="23px"
+                android:layout_height="35.5px"
                 android:src="@drawable/diandian_grey"
                 />
 

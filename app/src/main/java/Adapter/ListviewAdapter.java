@@ -1,11 +1,6 @@
-package Adapter;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+package adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +9,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.gxl.photofinishing.R;
 
-import Data.needMoveFile;
-import myView.myGridview;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import data.needMoveFile;
+import customview.myGridview;
 
 public class ListviewAdapter extends BaseAdapter {
 
@@ -39,7 +34,6 @@ public class ListviewAdapter extends BaseAdapter {
 
     public interface show_choose_detail_Listener {
         void show_choose_detail_linearlayout(int size);
-
         void hide_choose_detail_linearlayout();
     }
 
@@ -141,7 +135,7 @@ public class ListviewAdapter extends BaseAdapter {
         }
         String date = datelist.get(position);
         final ArrayList<String> filelist = filepathlist.get(date);
-        final GridviewAdapter adapter = new GridviewAdapter(context, filelist);
+        final GridviewAdapter adapter = new GridviewAdapter(context, filelist,position);
 
         if (type == TYPE_NO_First) {
             final Viewholder viewholder1 = viewholder;
@@ -163,7 +157,6 @@ public class ListviewAdapter extends BaseAdapter {
                                 View.GONE);
                         needMoveFile.removefile(filelist.get(
                                 position));
-                        ;
                         Log.i("tiaoshi", position + "存在" + filelist
                                 .get(position));
                     }
@@ -191,7 +184,6 @@ public class ListviewAdapter extends BaseAdapter {
                                                        View view, int position, long id) {
                             if (needMoveFile.isinNeedmovefile(adapter
                                     .getListfilename().get(position))) {
-
                                 int Pos[] = {-1, -1};
                                 view.getLocationOnScreen(Pos);
                                 Log.i("path", Pos[0] + " " + Pos[1]);
@@ -210,7 +202,6 @@ public class ListviewAdapter extends BaseAdapter {
                         {
                             viewholder1.gridview.findViewById(i).setVisibility(View.VISIBLE);
                         }
-//                        adapter.notifyDataSetChanged();
                         Integer integer = new Integer(1);
                         needMoveFile.putPositemap(position1, integer);
                         viewholder1.choseall.setImageResource(R.drawable.check_choose);
@@ -223,8 +214,6 @@ public class ListviewAdapter extends BaseAdapter {
                         Log.i("TAG", "remove: ");
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.removeNeedmovefileList(listfile);
-//                        adapter.notifyDataSetChanged();
-//                        viewholder1.gridview.setAdapter(adapter);
                         for(int i=viewholder1.gridview.getFirstVisiblePosition();i<=viewholder1.gridview.getLastVisiblePosition();i++)
                         {
                             viewholder1.gridview.findViewById(i).setVisibility(View.GONE);
@@ -310,10 +299,8 @@ public class ListviewAdapter extends BaseAdapter {
                                                        View view, int position, long id) {
                             if (needMoveFile.isinNeedmovefile(adapter
                                     .getListfilename().get(position))) {
-
                                 int Pos[] = {-1, -1};
                                 view.getLocationOnScreen(Pos);
-                                Log.i("path", Pos[0] + " " + Pos[1]);
                                 group.CreateMoveGroup(Pos[0], Pos[1], adapter.getListfilename().get(position));
                             }
                             return true;
@@ -325,11 +312,9 @@ public class ListviewAdapter extends BaseAdapter {
                     if (!needMoveFile.getPositemap(position)) {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.addNeedmovefileList(listfile);
-//                        adapter.notifyDataSetChanged();
-//                        Viewholder_first1.gridview.setAdapter(adapter);
                         for(int i=Viewholder_first1.gridview.getFirstVisiblePosition();i<=Viewholder_first1.gridview.getLastVisiblePosition();i++)
                         {
-                            Viewholder_first1.gridview.findViewById(i).setVisibility(View.GONE);
+                            Viewholder_first1.gridview.findViewById(i).setVisibility(View.VISIBLE);
                         }
                         Integer integer = new Integer(1);
                         needMoveFile.putPositemap(position1, integer);
@@ -343,11 +328,9 @@ public class ListviewAdapter extends BaseAdapter {
                         Log.i("TAG", "remove: ");
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.removeNeedmovefileList(listfile);
-//                        adapter.notifyDataSetChanged();
-//                        Viewholder_first1.gridview.setAdapter(adapter);
                         for(int i=Viewholder_first1.gridview.getFirstVisiblePosition();i<=Viewholder_first1.gridview.getLastVisiblePosition();i++)
                         {
-                            Viewholder_first1.gridview.findViewById(i).setVisibility(View.VISIBLE);
+                            Viewholder_first1.gridview.findViewById(i).setVisibility(View.GONE);
                         }
                         Integer integer = new Integer(0);
                         needMoveFile.putPositemap(position1, integer);
@@ -386,13 +369,13 @@ public class ListviewAdapter extends BaseAdapter {
     }
 
     class Viewholder {
-        myView.myGridview gridview;
+        customview.myGridview gridview;
         TextView date;
         ImageView choseall;
     }
 
     class Viewholder_first {
-        myView.myGridview gridview;
+        customview.myGridview gridview;
         TextView date;
         ImageView choseall;
     }

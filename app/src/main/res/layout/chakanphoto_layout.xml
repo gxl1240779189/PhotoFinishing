@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+
+    >
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/houtui"
+                android:paddingLeft="10px"
+                android:paddingRight="10px"
+                android:paddingTop="10px"
+                android:paddingBottom="10px"
+                android:layout_marginLeft="13px"
+                android:layout_marginTop="5px"
+                android:layout_width="29px"
+                android:layout_height="36px"
+                android:src="@drawable/houtui"
+                />
+
+            <TextView
+                android:id="@+id/show_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="10/18"
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/show_move_detail"
+        android:layout_width="match_parent"
+        android:layout_height="48px"
+        android:layout_gravity="bottom"
+        android:background="#CE000000"
+        >
+
+        <TextView
+            android:id="@+id/huanyuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18px"
+            android:layout_marginTop="13px"
+            android:text="还原"
+            android:textColor="@color/white"
+            android:textSize="20px" />
+
+
+
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18px"
+            android:layout_marginTop="13px"
+            android:text="刪除"
+            android:textColor="@color/red"
+            android:textSize="20px" />
+
+    </RelativeLayout>
+
+</FrameLayout>

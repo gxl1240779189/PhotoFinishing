@@ -1,18 +1,17 @@
-package Utils;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.List;
+package utils;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
+
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.List;
 
 public class MyUtils {
 

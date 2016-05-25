@@ -43,7 +43,7 @@
 
         </RelativeLayout>
 
-        <myView.myGridview
+        <customview.myGridview
             android:id="@+id/mygridview"
             android:layout_width="352px"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:numColumns="4"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
-            ></myView.myGridview>
+            ></customview.myGridview>
     </LinearLayout>
 
 </LinearLayout>

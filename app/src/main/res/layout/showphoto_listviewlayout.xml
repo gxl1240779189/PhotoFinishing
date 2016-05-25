@@ -118,70 +118,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></ListView>
 
-
-            <RelativeLayout
-                android:id="@+id/show_move_detail"
-                android:layout_width="match_parent"
-                android:layout_height="48px"
-                android:layout_alignParentBottom="true"
-                android:background="#CE000000"
-                android:visibility="gone"
-                >
-
-                <TextView
-                    android:id="@+id/chose_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10px"
-                    android:layout_marginTop="14px"
-                    android:text="已选18张 "
-                    android:textColor="@color/white"
-                    android:textSize="20px" />
-
-                <ImageView
-                    android:id="@+id/xian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="15px"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginTop="18px"
-                    android:layout_toRightOf="@+id/chose_text"
-                    android:src="@drawable/linecopy20" />
-
-                <TextView
-                    android:id="@+id/quit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6px"
-                    android:layout_marginTop="14px"
-                    android:layout_toRightOf="@+id/xian"
-                    android:text="取消"
-                    android:textColor="@color/white"
-                    android:textSize="20px" />
-
-                <TextView
-                    android:id="@+id/delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="31px"
-                    android:layout_marginTop="14px"
-                    android:text="刪除"
-                    android:textColor="@color/red"
-                    android:textSize="20px" />
-
-                <ImageView
-                    android:id="@+id/diandian"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12px"
-                    android:layout_width="3px"
-                    android:layout_height="15px"
-                    android:background="@drawable/diandian"
-                    />
-            </RelativeLayout>
-
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/show_move_detail"
+            android:layout_width="match_parent"
+            android:layout_height="48px"
+            android:layout_gravity="bottom"
+            android:background="#CE000000"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:id="@+id/huanyuan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18px"
+                android:layout_marginTop="13px"
+                android:text="还原"
+                android:textColor="@color/white"
+                android:textSize="20px" />
+
+
+
+            <TextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="18px"
+                android:layout_marginTop="13px"
+                android:text="刪除"
+                android:textColor="@color/red"
+                android:textSize="20px" />
+
+        </RelativeLayout>
 
 
 

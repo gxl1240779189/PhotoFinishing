@@ -1,47 +1,43 @@
-package Utils;
+package utils;
 
-import java.io.BufferedReader;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.storage.StorageManager;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.acl.LastOwnerException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-
-import MyInterface.FloatViewParamsListener;
+import application.myApplication;
+import data.shezhiSharedprefrence;
 
 public class fileUtils {
 
     public static Map<String, Map<String, Bitmap>> filemap = new LinkedHashMap<String, Map<String, Bitmap>>();
+    public static List<File> filelist = new ArrayList<File>();
+
+    private static StorageManager mStorageManager;
+    private static Method mMethodGetPaths;
 
     public static boolean getImageFile(String fName) {
         boolean re;
@@ -61,38 +57,37 @@ public class fileUtils {
     }
 
 
-    public static List<File> getSD() {
+    public static List<File> getSD(Context activity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        shezhiSharedprefrence sp = new shezhiSharedprefrence(activity);
         List<File> it = new ArrayList<File>();
-        File f = new File(Environment.getExternalStorageDirectory().getPath() + "/dcim/camera");
-        File in = new File("/storage/emulated/0/dcim/camera");
-        if (f.exists()) {
-            Log.i("path", "getSD:目录存在 ");
-            if (f.listFiles() != null) {
-                Log.i("path", "getSD:目录存在照片 ");
-                it = getFileList(f.getAbsolutePath());
-                if (it.size() != 0) {
-                    Collections.sort(it, new FileComparator());
-                    Boolean flag = true;
-                    String date;
-                }
+        List<File> Photo_yuan;
+        if(sp.isFirstin()) {
+            Photo_yuan = myApplication.getPhoto_yuan();
+            sp = new shezhiSharedprefrence(activity);
+            for (File file : Photo_yuan) {
+                sp.save(file.getAbsolutePath());
             }
-        } else if (in.exists()) {
-            Log.i("path", "本地目录存在 ");
-            if (in.listFiles() != null) {
-                Log.i("path", "getSD:目录存在照片 ");
-                it = getFileList(in.getAbsolutePath());
-                if (it.size() != 0) {
-                    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
-                    Collections.sort(it, new FileComparator());
-                    Boolean flag = true;
-                    String date;
-                }
-            } else {
-                Log.i("path", "目录里面内容为空");
-            }
-        } else {
-            Log.i("path", "getSD:目录不存在 ");
+            LogUtils.loggxl("ggggggggggg");
+        }else
+        {
+            LogUtils.loggxl("mmmmmmmmm");
+            Photo_yuan = sp.returnhistroyFile();
         }
+       // LogUtils.loggxl("filename"+Photo_yuan.get(0).getAbsolutePath());
+        for(int i=0;i<Photo_yuan.size();i++)
+        {
+            File file=Photo_yuan.get(i);
+            LogUtils.loggxl("filename"+file.getAbsolutePath());
+            if (file.listFiles() != null) {
+                Log.i("path", "getSD:目录存在照片 ");
+                it.addAll(getFileList(file.getAbsolutePath()));
+                filelist.clear();
+            }
+        }
+        if (it.size() != 0) {
+            Collections.sort(it, new FileComparator());
+        }
+        LogUtils.loggxl(it.size()+"wenjianchangdu");
         return it;
     }
 
@@ -126,11 +121,11 @@ public class fileUtils {
 
     public static List<File> getFileList(String strPath) {
         File dir = new File(strPath);
-        List<File> filelist = new ArrayList<File>();
         File[] files = dir.listFiles();
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
                 String fileName = files[i].getName();
+                LogUtils.loggxl(fileName);
                 if (files[i].isDirectory()) {
                     getFileList(files[i].getAbsolutePath());
                 } else if (getImageFile(files[i].getPath())) {
@@ -324,6 +319,12 @@ public class fileUtils {
             copyFile(new File(list.get(i)).getAbsolutePath(), Environment.getExternalStorageDirectory().getPath() + "/dcim/camera/" + new File(list.get(i)).getName());
         }
         deleteFilelist(list);
+    }
+
+    public static void movePhoto(String path)
+    {
+        copyFile(path, Environment.getExternalStorageDirectory().getPath() + "/dcim/camera/" + new File(path).getName());
+        deleteFile(new File(path));
     }
 
 

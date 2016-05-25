@@ -1,4 +1,4 @@
-package myView;
+package customview;
 
 import android.content.Context;
 import android.util.AttributeSet;
