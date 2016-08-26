@@ -5,13 +5,19 @@
 
 ### 1. 照片整理过程
 
-![image](https://github.com/gxl1240779189/PhotoFinishing/blob/master/screenshot/整理过程.gif)
+
+
+   ![image](https://github.com/gxl1240779189/PhotoFinishing/blob/master/screenshot/整理过程.gif)
 
 
 ### 2. 管理照片文件夹
 
-![image](https://github.com/gxl1240779189/PhotoFinishing/blob/master/screenshot/管理文件夹过程.gif)
+
+
+   ![image](https://github.com/gxl1240779189/PhotoFinishing/blob/master/screenshot/管理文件夹过程.gif)
 
 ### 3. 选择整理相册源
 
-![image](https://github.com/gxl1240779189/PhotoFinishing/blob/master/screenshot/选择整理相册源.gif)
+
+
+   ![image](https://github.com/gxl1240779189/PhotoFinishing/blob/master/screenshot/选择整理相册源.gif)
