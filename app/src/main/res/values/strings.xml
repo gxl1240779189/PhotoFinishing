@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Photo Finishing</string>
+    <string name="app_name">方片相册</string>
     <string name="action_settings">Settings</string>
     <string name="app_description">Android drawer icon with material design animation</string>
     <string name="drawer_open">drawer_open</string>

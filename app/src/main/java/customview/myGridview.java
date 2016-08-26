@@ -4,14 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
-public class myGridview extends GridView{
+public class MyGridview extends GridView{
 
-	public myGridview(Context context, AttributeSet attrs) {
+	public MyGridview(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public myGridview(Context context) {
+	public MyGridview(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
 	}

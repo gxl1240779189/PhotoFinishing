@@ -36,7 +36,7 @@ import fragment.ImageDetailFragment;
 import utils.fileUtils;
 
 /**
- * Created by Administrator on 2016/5/2 0002.
+ * 整理好的照片查看器
  */
 public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements View.OnClickListener {
     ViewPager viewpaper;
@@ -49,13 +49,13 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
     TextView huanyuan_textview;
     TextView shanchu_textview;
 
-    int delete_flag=4;
-    int huanyuan_flag=5;
+    int delete_flag = 4;
+    int huanyuan_flag = 5;
 
     viewpaperAdapter adapter;
     Dialog dialog;
 
-    int gaibian_flag=0;
+    int gaibian_flag = 0;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -69,16 +69,16 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
     public static final String EXTRA_IMAGE_INDEX = "image_index";
     public static final String EXTRA_IMAGE_URLS = "image_urls";
 
-    private final int ReturnDelete=1;
-    private final int ReturnRestore=2;
+    private final int ReturnDelete = 1;
+    private final int ReturnRestore = 2;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//用来取消状态栏
         setContentView(R.layout.chakanphoto_layout);
         show_move_detail = (RelativeLayout) findViewById(R.id.show_move_detail);
-        huanyuan_textview= (TextView) findViewById(R.id.huanyuan);
-        shanchu_textview= (TextView) findViewById(R.id.delete);
+        huanyuan_textview = (TextView) findViewById(R.id.huanyuan);
+        shanchu_textview = (TextView) findViewById(R.id.delete);
         houtui = (ImageView) findViewById(R.id.houtui);
 
         houtui.setOnClickListener(this);
@@ -87,10 +87,10 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
 
         mImageLoader = other.ImageLoader.build(ArrangePhotoViewerActivity.this);
 
-        filepathlist =getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
+        filepathlist = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
         current_position = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
         viewpaper = (ViewPager) findViewById(R.id.viewPager);
-        adapter = new viewpaperAdapter(getSupportFragmentManager(),filepathlist);
+        adapter = new viewpaperAdapter(getSupportFragmentManager(), filepathlist);
         viewpaper.setAdapter(adapter);
         viewpaper.setCurrentItem(current_position);
         viewpaper.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -101,7 +101,7 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
 
             @Override
             public void onPageSelected(int position) {
-                current_position=position;
+                current_position = position;
             }
 
             @Override
@@ -137,7 +137,7 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
         @Override
         public Fragment getItem(int position) {
             String url = fileList.get(position);
-            Log.i("zxcv",url);
+            Log.i("zxcv", url);
             return ImageDetailFragment.newInstance(url);
         }
     }
@@ -193,7 +193,7 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
                 break;
 
             case R.id.huanyuan:
-               Createdialog(huanyuan_flag);
+                Createdialog(huanyuan_flag);
                 break;
 
             case R.id.delete:
@@ -217,12 +217,11 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
         dialog.getWindow().setContentView(dialogView);
         RelativeLayout quxiao = (RelativeLayout) dialogView.findViewById(R.id.quxiao);
         RelativeLayout queding = (RelativeLayout) dialogView.findViewById(R.id.queding);
-        TextView dialog_title= (TextView) dialogView.findViewById(R.id.dialog_title);
+        TextView dialog_title = (TextView) dialogView.findViewById(R.id.dialog_title);
         TextView delete_text = (TextView) dialogView.findViewById(R.id.shanchutext);
         dialog_title.setText("确认删除");
         delete_text.setText("删除的照片将不能再次还原");
-        if(view_flag==huanyuan_flag)
-        {
+        if (view_flag == huanyuan_flag) {
             dialog_title.setText("确认还原");
             delete_text.setText("还原后照片将会回到原位置");
         }
@@ -266,10 +265,10 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
         @Override
         protected void onPostExecute(Void aVoid) {
             filepathlist.remove(filepathlist.get(current_position));
-            adapter = new viewpaperAdapter(getSupportFragmentManager(),filepathlist);
+            adapter = new viewpaperAdapter(getSupportFragmentManager(), filepathlist);
             viewpaper.setAdapter(adapter);
             dialog.dismiss();
-            gaibian_flag=2;
+            gaibian_flag = 2;
             super.onPostExecute(aVoid);
         }
     }
@@ -288,10 +287,10 @@ public class ArrangePhotoViewerActivity extends AutoLayoutActivity implements Vi
         @Override
         protected void onPostExecute(Void aVoid) {
             filepathlist.remove(filepathlist.get(current_position));
-            adapter = new viewpaperAdapter(getSupportFragmentManager(),filepathlist);
+            adapter = new viewpaperAdapter(getSupportFragmentManager(), filepathlist);
             viewpaper.setAdapter(adapter);
             dialog.dismiss();
-            gaibian_flag=1;
+            gaibian_flag = 1;
             super.onPostExecute(aVoid);
         }
     }

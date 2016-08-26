@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 
 import com.example.gxl.photofinishing.R;
 
-
+/**
+ * 用来实现一个从图片从四周汇聚过来的动画效果而创建的一个ViewGroup
+ */
 public class MovePhotoGroup extends LinearLayout {
 
 	Context context;
@@ -34,9 +36,6 @@ public class MovePhotoGroup extends LinearLayout {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
 		final View view = getChildAt(0);
-		
-		// view.setVisibility(View.VISIBLE);
-		Log.i("xxx", "xxx");
 		final View view1 = getChildAt(1);
 		view1.layout(mCentrex, mCentrey - 100,
 				mCentrex + view1.getMeasuredWidth(),

@@ -7,12 +7,12 @@ import android.widget.ImageView;
 /**
  * Created by gxl on 2016/4/1.
  */
-public class myImageview extends ImageView {
-    myImageview(Context context) {
+public class MyImageview extends ImageView {
+    MyImageview(Context context) {
         super(context);
     }
 
-    public myImageview(Context context, AttributeSet attrs) {
+    public MyImageview(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

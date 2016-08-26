@@ -38,7 +38,6 @@
                 android:id="@+id/wenjianjia_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/sample_1"
                 app:svg_raw_resource="@raw/wenjianjia_svg"
                 android:scaleType="centerCrop" />
 

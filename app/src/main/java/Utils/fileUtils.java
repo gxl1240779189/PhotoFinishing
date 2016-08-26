@@ -28,7 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import application.myApplication;
+import application.MyApplication;
 import data.shezhiSharedprefrence;
 
 public class fileUtils {
@@ -58,26 +58,12 @@ public class fileUtils {
 
 
     public static List<File> getSD(Context activity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        shezhiSharedprefrence sp = new shezhiSharedprefrence(activity);
         List<File> it = new ArrayList<File>();
         List<File> Photo_yuan;
-        if(sp.isFirstin()) {
-            Photo_yuan = myApplication.getPhoto_yuan();
-            sp = new shezhiSharedprefrence(activity);
-            for (File file : Photo_yuan) {
-                sp.save(file.getAbsolutePath());
-            }
-            LogUtils.loggxl("ggggggggggg");
-        }else
-        {
-            LogUtils.loggxl("mmmmmmmmm");
-            Photo_yuan = sp.returnhistroyFile();
-        }
-       // LogUtils.loggxl("filename"+Photo_yuan.get(0).getAbsolutePath());
-        for(int i=0;i<Photo_yuan.size();i++)
-        {
-            File file=Photo_yuan.get(i);
-            LogUtils.loggxl("filename"+file.getAbsolutePath());
+        Photo_yuan = DbUtils.GetChoosePhotoSourceList();
+        for (int i = 0; i < Photo_yuan.size(); i++) {
+            File file = Photo_yuan.get(i);
+            LogUtils.loggxl("filename" + file.getAbsolutePath());
             if (file.listFiles() != null) {
                 Log.i("path", "getSD:目录存在照片 ");
                 it.addAll(getFileList(file.getAbsolutePath()));
@@ -87,27 +73,26 @@ public class fileUtils {
         if (it.size() != 0) {
             Collections.sort(it, new FileComparator());
         }
-        LogUtils.loggxl(it.size()+"wenjianchangdu");
+        LogUtils.loggxl(it.size() + "wenjianchangdu");
         return it;
     }
 
     /**
      * 通过ContentProvider获取到系统相册中所有相册的图片文件
+     *
      * @param context
      * @return
      */
     public static ArrayList<File> getContentprovider(Context context) {
         ArrayList<File> it = new ArrayList<File>();
-        Uri mImageUri= MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        ContentResolver contentResolver=context.getContentResolver();
-        Cursor mCursor=contentResolver.query(mImageUri,null,MediaStore.Images.Media.MIME_TYPE+"=? or "+MediaStore.Images.Media.MIME_TYPE+"=?",new String[]{"image/jpeg","image/png"},MediaStore.Images.Media.DATE_MODIFIED);
-        if(mCursor==null)
-        {
+        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver contentResolver = context.getContentResolver();
+        Cursor mCursor = contentResolver.query(mImageUri, null, MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?", new String[]{"image/jpeg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED);
+        if (mCursor == null) {
             return null;
         }
-        while(mCursor.moveToNext())
-        {
-            String path=mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        while (mCursor.moveToNext()) {
+            String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
             it.add(new File(path));
             Log.i("gexuelian", path);
         }
@@ -117,9 +102,28 @@ public class fileUtils {
     }
 
 
+//    public static List<File> getFileList(String strPath) {
+//        File dir = new File(strPath);
+//        File[] files = dir.listFiles();
+//        if (files != null) {
+//            for (int i = 0; i < files.length; i++) {
+//                String fileName = files[i].getName();
+//                LogUtils.loggxl(fileName);
+//                if (files[i].isDirectory()) {
+//                    getFileList(files[i].getAbsolutePath());
+//                } else if (getImageFile(files[i].getPath())) {
+//                    String strFileName = files[i].getAbsolutePath();
+//                    filelist.add(files[i]);
+//                } else {
+//                    continue;
+//                }
+//            }
+//        }
+//        return filelist;
+//    }
 
 
-    public static List<File> getFileList(String strPath) {
+        public static List<File> getFileList(String strPath) {
         File dir = new File(strPath);
         File[] files = dir.listFiles();
         if (files != null) {
@@ -127,7 +131,7 @@ public class fileUtils {
                 String fileName = files[i].getName();
                 LogUtils.loggxl(fileName);
                 if (files[i].isDirectory()) {
-                    getFileList(files[i].getAbsolutePath());
+                    continue;
                 } else if (getImageFile(files[i].getPath())) {
                     String strFileName = files[i].getAbsolutePath();
                     filelist.add(files[i]);
@@ -139,13 +143,12 @@ public class fileUtils {
         return filelist;
     }
 
-
     public static class FileComparator implements Comparator<File> {
         @Override
         public int compare(File lhs, File rhs) {
             if (paishedate(lhs).before(paishedate(rhs)))
                 return 1;
-            else if(paishedate(lhs).after(paishedate(rhs)))
+            else if (paishedate(lhs).after(paishedate(rhs)))
                 return -1;
             else
                 return 0;
@@ -183,34 +186,32 @@ public class fileUtils {
 
     /**
      * 获取照片信息的经纬度和拍摄时间
+     *
      * @param list
      * @return
      */
     public static String[] getNeedmoveFileLocation(ArrayList<String> list) {
-        String [] information=new String[3];
+        String[] information = new String[3];
         ExifInterface exif;
-        for(int i=0;i<list.size();i++) {
+        for (int i = 0; i <Math.sqrt(list.size()); i++) {
             try {
                 exif = new ExifInterface(list.get(i));
-                information[0]=String.valueOf("nothing");
-                information[1]=String.valueOf("nothing");
-                information[2]=lastModifiedTodate(new File(list.get(i)));
+                information[0] = String.valueOf("nothing");
+                information[1] = String.valueOf("nothing");
+                information[2] = lastModifiedTodate(new File(list.get(i)));
                 try {
-                  if(!TextUtils.isEmpty(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)))
-                  {
-                      final float[] jingweidu={-1,-1};
-                      exif.getLatLong(jingweidu);
-                      information[0]=String.valueOf(jingweidu[0]);
-                      information[1]=String.valueOf(jingweidu[1]);
+                    if (!TextUtils.isEmpty(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE))) {
+                        final float[] jingweidu = {-1, -1};
+                        exif.getLatLong(jingweidu);
+                        information[0] = String.valueOf(jingweidu[0]);
+                        information[1] = String.valueOf(jingweidu[1]);
 //                      LogUtils.loggxl("weidu "+exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)+" jindu"+exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE ));
 //                      LogUtils.loggxl("weidu "+jingweidu[0]+" jindu"+jingweidu[1]);
-                      //这里需要根据经纬度变成城市名
-                      return information;
-                  }else
-                  {
-                      LogUtils.loggxl("weidu nothing");
-                      continue;
-                  }
+                        //这里需要根据经纬度变成城市名
+                        return information;
+                    } else {
+                       break;
+                    }
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -222,20 +223,6 @@ public class fileUtils {
         }
         return information;
     }
-
-
-
-//
-//    static String getCityname(float jingdu, float weidu)
-//    {
-//         AMapLocationClient mLocationClient = null;
-//         AMapLocationClientOption mLocationOption = null;
-//        return null;
-//    }
-
-
-
-
 
 
     public static Date paishedate(File file) {
@@ -321,8 +308,7 @@ public class fileUtils {
         deleteFilelist(list);
     }
 
-    public static void movePhoto(String path)
-    {
+    public static void movePhoto(String path) {
         copyFile(path, Environment.getExternalStorageDirectory().getPath() + "/dcim/camera/" + new File(path).getName());
         deleteFile(new File(path));
     }

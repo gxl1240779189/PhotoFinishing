@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 
+import com.activeandroid.ActiveAndroid;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -29,10 +30,9 @@ import utils.LogUtils;
 /**
  * Created by gxl on 2016/3/30.
  */
-public class myApplication extends Application {
+public class MyApplication extends Application {
 
-
-    public static String move_file_path = "/整理好的相册文件";
+    public static String move_file_path = "/0FunPic";
 
     public static Context getContext() {
         return context;
@@ -40,17 +40,13 @@ public class myApplication extends Application {
 
     static Context context;
 
-    public static ArrayList<File> photo_yuan_dizhi = new ArrayList<File>();   //当前图片来源路径
-    private static StorageManager mStorageManager;
-    private static Method mMethodGetPaths;
-
-
-    public static ArrayList<File> getPhoto_yuan_dizhi() {
-        return photo_yuan_dizhi;
-    }
+    private static String[] SourceList = {
+            "/storage/emulated/0/Pictures",
+            "/storage/emulated/0/Snapseed"
+    };
 
     /**
-     * 获取当前手机目录下有DCIM的文件夹
+     * 获取当前手机手机中的默认相册源
      *
      * @return
      * @throws NoSuchMethodException
@@ -58,6 +54,8 @@ public class myApplication extends Application {
      * @throws IllegalAccessException
      */
     public static ArrayList<File> getPhoto_yuan() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        StorageManager mStorageManager;
+        Method mMethodGetPaths;
         ArrayList<File> photo_yuan = new ArrayList<File>();
         mStorageManager = (StorageManager) context
                 .getSystemService(Activity.STORAGE_SERVICE);
@@ -66,17 +64,22 @@ public class myApplication extends Application {
         String[] paths = null;
         paths = (String[]) mMethodGetPaths.invoke(mStorageManager);
         for (int i = 0; i < paths.length; i++) {
-            if (new File(paths[i] + "/DCIM").exists()) {
-                LogUtils.loggxl(paths[i] + "/DCIM");
-                photo_yuan.add(new File(paths[i] + "/DCIM"));
+            if (new File(paths[i] + "/DCIM/Camera").exists()) {
+                photo_yuan.add(new File(paths[i] + "/DCIM/Camera"));
             } else {
                 continue;
             }
         }
-        if (getPath2() != null && (new File(getPath2() + "/DCIM").exists())) {
-            photo_yuan.add(new File(getPath2() + "/DCIM"));
+        if (getPath2() != null && (new File(getPath2() + "/DCIM/Camera").exists())) {
+            photo_yuan.add(new File(getPath2() + "/DCIM/Camera"));
         }
-        photo_yuan_dizhi=photo_yuan;
+        for (String item :
+                SourceList) {
+            File file = new File(item);
+            if (file.exists()) {
+                photo_yuan.add(file);
+            }
+        }
         return photo_yuan;
     }
 
@@ -126,6 +129,7 @@ public class myApplication extends Application {
         return sdcard_path;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -150,5 +154,18 @@ public class myApplication extends Application {
                 .build();//开始构建
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
+
+        File app_dic = new File(Environment.getExternalStorageDirectory()
+                .getPath() + MyApplication.move_file_path);
+        if (!app_dic.exists()) {
+            app_dic.mkdir();
+        }
+        ActiveAndroid.initialize(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();
     }
 }

@@ -66,5 +66,10 @@
     <color name="cell_special_m_night">#b2d46630</color>
     <color name="cell_special_l_night">#7fd46630</color>
 
+    <color name="menu_item_click">#0effffff</color>
+    <color name="menu_item_normal">#2a2a2a</color>
+
+    <color name="menufolder_item_click">#ffd7f7ce</color>
+    <color name="menufolder_item_normal">#F0F0F0</color>
 
 </resources>

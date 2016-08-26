@@ -5,7 +5,7 @@
         android:id="@+id/rl_dialog_content"
         android:layout_width="272px"
         android:layout_height="170px"
-        android:background="@color/black"
+        android:background="@color/white"
         >
         <TextView
             android:id="@+id/dialog_title"
@@ -15,7 +15,7 @@
             android:layout_marginTop="14px"
             android:layout_marginLeft="14px"
             android:textSize="22px"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             />
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_marginTop="64px"
             android:layout_marginLeft="14px"
             android:textSize="18px"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             />
 
 
@@ -35,7 +35,7 @@
             android:layout_marginTop="132px"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="#FFFFFF"
+            android:background="@color/black"
             />
 
         <View
@@ -43,7 +43,7 @@
             android:layout_centerHorizontal="true"
             android:layout_width="1px"
             android:layout_height="38px"
-            android:background="#FFFFFF"
+            android:background="@color/black"
             />
 
         <LinearLayout
@@ -63,7 +63,7 @@
                     android:text="取消"
                     android:textSize="14px"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     />
             </RelativeLayout>
 

@@ -2,12 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F0F0F0"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:background="@color/white"
+        android:background="@drawable/listiviewtem_background"
         android:layout_gravity="center_horizontal"
         android:layout_width="346px"
         android:layout_height="93px">

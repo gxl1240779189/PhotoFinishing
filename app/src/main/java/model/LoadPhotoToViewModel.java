@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import application.MyApplication;
 import data.needMoveFile;
 import utils.fileUtils;
 
@@ -72,7 +73,7 @@ public class LoadPhotoToViewModel implements LoadPhotoToViewModelInterface {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                listfile = fileUtils.getSD(application.myApplication.getContext());
+                listfile = fileUtils.getSD(MyApplication.getContext());
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {

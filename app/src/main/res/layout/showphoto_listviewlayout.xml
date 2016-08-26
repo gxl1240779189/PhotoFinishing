@@ -149,7 +149,7 @@
                 android:layout_marginRight="18px"
                 android:layout_marginTop="13px"
                 android:text="刪除"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 android:textSize="20px" />
 
         </RelativeLayout>

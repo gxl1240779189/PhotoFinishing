@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:layout_height="16px"
                 android:layout_marginLeft="3px"
                 android:layout_marginTop="10px"
-                android:src="@drawable/fanhui" />
+                android:src="@drawable/white_back" />
         </RelativeLayout>
 
         <TextView
@@ -39,8 +39,8 @@
             android:layout_width="60px"
             android:layout_height="40px"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="9px"
-            >
+            android:layout_marginTop="9px">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,9 +61,13 @@
     </RelativeLayout>
 
     <ListView
+        android:layout_marginTop="3px"
         android:id="@+id/showphoto_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="5dp"
+        ></ListView>
 
 
 </LinearLayout>

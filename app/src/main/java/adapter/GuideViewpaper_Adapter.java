@@ -1,5 +1,8 @@
 package adapter;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,27 +12,22 @@ import java.util.List;
 /**
  * Created by gxl on 2016/4/3.
  */
-public class GuideViewpaper_Adapter extends PagerAdapter {
-    private List<View> views;
+public class GuideViewpaper_Adapter extends FragmentPagerAdapter {
+    private List<Fragment> list;
+    public GuideViewpaper_Adapter(FragmentManager fm, List<Fragment> list) {
+        super(fm);
+        this.list=list;
+    }
 
+    @Override
+    public Fragment getItem(int arg0) {
+        return list.get(arg0);
+    }
+
+    @Override
     public int getCount() {
-        return views.size();
+        return list.size();
     }
 
-    public GuideViewpaper_Adapter(List<View> views) {
-        this.views = views;
-    }
-
-    public boolean isViewFromObject(View view, Object object) {
-        return (view==object);
-    }
-
-    public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(views.get(position));
-        return views.get(position);
-    }
-
-    public void destroyItem(ViewGroup container, int position, Object object) {
-       container.removeView(views.get(position));
-    }
 }
+

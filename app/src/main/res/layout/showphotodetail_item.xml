@@ -8,7 +8,7 @@ android:background="@color/white" >
     android:layout_width="111px"
     android:layout_height="111px" >
 
-    <customview.myImageview
+    <customview.MyImageview
         android:layout_marginTop="2px"
         android:layout_marginLeft="1px"
         android:id="@+id/imageview"

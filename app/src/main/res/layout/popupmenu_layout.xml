@@ -2,86 +2,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="94px"
     android:layout_height="146px"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <RelativeLayout
+        android:id="@+id/shanchu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/menufolderitem_background"
+        >
         <TextView
-            android:id="@+id/shanchu"
-            android:layout_width="match_parent"
-            android:layout_height="35px"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="删除"
             android:textSize="18px"
             android:textColor="#7A7A7A"
             />
         <View
-            android:layout_marginTop="35px"
-            android:layout_width="match_parent"
+            android:layout_width="83px"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_height="1px"
             android:background="#DEDEDE" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/huanyuan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/menufolderitem_background"
+        >
         <TextView
-            android:id="@+id/huanyuan"
-            android:layout_width="match_parent"
-            android:layout_height="35px"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="还原"
             android:textSize="18px"
             android:textColor="#7A7A7A"
             />
         <View
-            android:layout_marginTop="35px"
-            android:layout_width="match_parent"
+            android:layout_width="83px"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_height="1px"
             android:background="#DEDEDE" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/chongmingming"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/menufolderitem_background"
+        >
         <TextView
-            android:id="@+id/chongmingming"
-            android:layout_width="match_parent"
-            android:layout_height="35px"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="重命名"
             android:textSize="18px"
             android:textColor="#7A7A7A"
             />
         <View
-            android:layout_marginTop="35px"
-            android:layout_width="match_parent"
+            android:layout_width="83px"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_height="1px"
             android:background="#DEDEDE" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/beifen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@drawable/menufolderitem_background"
+        >
         <TextView
-            android:id="@+id/beifen"
-            android:layout_width="match_parent"
-            android:layout_height="35px"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="备份"
             android:textSize="18px"
             android:textColor="#7A7A7A"
             />
-        <View
-            android:layout_marginTop="35px"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#DEDEDE" />
     </RelativeLayout>
 
 </LinearLayout>

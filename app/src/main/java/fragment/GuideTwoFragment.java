@@ -1,7 +1,5 @@
 package fragment;
 
-import com.android.mooc.R;
-import com.android.mooc.view.MCVideoView;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.gxl.photofinishing.R;
+
+import customview.MCVideoView;
+
 public class GuideTwoFragment extends Fragment{
 
 	private MCVideoView videoView;
@@ -18,7 +20,7 @@ public class GuideTwoFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view=inflater.inflate(R.layout.fragment_guidetwo, null, false);
-		initView(view);
+	//initView(view);
 		return view;
 	}
 

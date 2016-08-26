@@ -71,7 +71,7 @@
                 android:layout_marginRight="31px"
                 android:layout_marginTop="14px"
                 android:text="刪除"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 android:textSize="20px" />
 
         </RelativeLayout>

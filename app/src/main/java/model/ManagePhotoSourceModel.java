@@ -1,7 +1,18 @@
 package model;
 
+import java.util.ArrayList;
+
+import bean.PhotoSourceBean;
+
 /**
- * Created by Administrator on 2016/6/9 0009.
+ * ManagePhotoSourceActivity中数据获取Model层
  */
-public class ManagePhotoSourceModel {
+public class ManagePhotoSourceModel implements ManagePhotoSourceModelInterface {
+    @Override
+    public ArrayList<PhotoSourceBean> GetPhotoSourceList() {
+
+
+
+        return null;
+    }
 }

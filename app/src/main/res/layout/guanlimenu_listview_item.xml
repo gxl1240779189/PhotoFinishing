@@ -3,14 +3,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0">
+   >
 
     <LinearLayout
-        android:layout_marginTop="7px"
-        android:background="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_width="346px"
-        android:layout_height="86px">
+        android:layout_height="86px"
+        android:background="@drawable/listiviewtem_background"
+        >
 
         <FrameLayout
             android:layout_marginTop="14px"
@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:text="DCIM"
                     android:textSize="12px"
+                    android:maxWidth="180px"
                     android:textColor="#ACACAC"
                     />
             </LinearLayout>

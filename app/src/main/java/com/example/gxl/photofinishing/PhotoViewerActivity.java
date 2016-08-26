@@ -294,10 +294,15 @@ public class PhotoViewerActivity extends AutoLayoutActivity implements View.OnCl
             needMoveFile.removefile(filepathlist.get(dangqian_index));
             dangqian_index = 0;
             filepathlist.remove(path);
-            adapter = new viewpaperAdapter(getSupportFragmentManager(), filepathlist);
-            viewpaper.setAdapter(adapter);
-            chose_detail.setImageResource(R.drawable.check_unchoose);
-            dialog.dismiss();
+            if (filepathlist != null && filepathlist.size() != 0) {
+                adapter = new viewpaperAdapter(getSupportFragmentManager(), filepathlist);
+                viewpaper.setAdapter(adapter);
+                chose_detail.setImageResource(R.drawable.check_unchoose);
+                dialog.dismiss();
+            } else {
+                EventBus.getDefault().post(new TestEventType(filepathlist, mListViewPosition));
+                finish();
+            }
             super.onPostExecute(aVoid);
         }
     }

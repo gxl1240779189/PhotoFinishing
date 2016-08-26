@@ -29,7 +29,7 @@ import eventbustype.ChaKanPhotoType;
 import eventbustype.FirstEventType;
 import eventbustype.ShowPhotoDetailType;
 import utils.fileUtils;
-import customview.myDialog;
+import customview.DialogBuilder;
 
 /**
  * Created by gxl on 2016/4/15.
@@ -130,7 +130,7 @@ public class ShowPhotoDetailActivity extends AutoLayoutActivity implements View.
                     }
                 }else
                 {
-                    Intent intent = new Intent(ShowPhotoDetailActivity.this, chakanPhoto.class);
+                    Intent intent = new Intent(ShowPhotoDetailActivity.this, ArrangePhotoViewerActivity.class);
                     intent.putStringArrayListExtra("image_urls", filepathlist);
                     intent.putExtra("image_index", position);
                     startActivityForResult(intent, 1);
@@ -300,8 +300,8 @@ public class ShowPhotoDetailActivity extends AutoLayoutActivity implements View.
 
         @Override
         protected void onPreExecute() {
-            MyDialog = myDialog.createLoadingDialog(ShowPhotoDetailActivity.this, "正在还原照片");
-            finishDialog = myDialog.createLoadingfinishDialog(ShowPhotoDetailActivity.this, "已完成");
+            MyDialog = DialogBuilder.createLoadingDialog(ShowPhotoDetailActivity.this, "正在还原照片");
+            finishDialog = DialogBuilder.createLoadingfinishDialog(ShowPhotoDetailActivity.this, "已完成");
             MyDialog.show();
             super.onPreExecute();
         }
@@ -343,8 +343,8 @@ public class ShowPhotoDetailActivity extends AutoLayoutActivity implements View.
 
         @Override
         protected void onPreExecute() {
-            MyDialog = myDialog.createLoadingDialog(ShowPhotoDetailActivity.this, "正在删除照片");
-            finishDialog = myDialog.createLoadingfinishDialog(ShowPhotoDetailActivity.this, "已完成");
+            MyDialog = DialogBuilder.createLoadingDialog(ShowPhotoDetailActivity.this, "正在删除照片");
+            finishDialog = DialogBuilder.createLoadingfinishDialog(ShowPhotoDetailActivity.this, "已完成");
             MyDialog.show();
             super.onPreExecute();
         }

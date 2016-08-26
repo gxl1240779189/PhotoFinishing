@@ -4,7 +4,7 @@ import android.os.Environment;
 
 import java.util.ArrayList;
 
-import application.myApplication;
+import application.MyApplication;
 import utils.fileUtils;
 
 /**
@@ -15,7 +15,7 @@ public class ShowArrangeFolderModel implements ShowArrangeFolderModelInterface {
     //获取当前已经整理好的照片目录
     @Override
     public ArrayList<String> GetPhotoFileList() {
-        return fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
+        return fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath()+ MyApplication.move_file_path);
     }
 
 }

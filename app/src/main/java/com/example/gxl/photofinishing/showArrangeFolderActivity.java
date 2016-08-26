@@ -1,5 +1,6 @@
 package com.example.gxl.photofinishing;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,18 +44,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import Presenter.ShowPhotoPresenter;
+import Presenter.ShowArrangeFolderPresenter;
 import adapter.showphoto_listviewAdapter;
-import application.myApplication;
+import application.MyApplication;
 import data.needMoveFile;
 import de.greenrobot.event.EventBus;
 import eventbustype.FirstEventType;
 import eventbustype.ShowPhotoDetailType;
 import utils.fileUtils;
-import customview.myDialog;
-import view.ShowPhotoInterface;
+import customview.DialogBuilder;
+import view.ShowArrangeFolderInterface;
 
-public class showArrangeFolderActivity extends AutoLayoutActivity implements View.OnClickListener, ShowPhotoInterface {
+/**
+ * 展示整理好的文件夹
+ */
+
+public class ShowArrangeFolderActivity extends AutoLayoutActivity implements View.OnClickListener, ShowArrangeFolderInterface {
     private ArrayList<String> filepathlist;
     private ListView showphoto_listview;
     private showphoto_listviewAdapter adapter;
@@ -87,11 +92,12 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
     int Type_huanyuan = 2;
     int flag = Type_zhijiedelete;
 
-    private ShowPhotoPresenter mShowPhotoPresenter;
+    private ShowArrangeFolderPresenter mShowArrangeFolderPresenter;
 
     private final int ReturnDelete=1;
     private final int ReturnRestore=2;
     private EventBus mEventBus;
+
 
 
     @Override
@@ -102,8 +108,8 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
         EventBus.getDefault().register(this);
         setContentView(R.layout.showphoto_listviewlayout);
         InitView();
-        mShowPhotoPresenter = new ShowPhotoPresenter(this);
-        mShowPhotoPresenter.InitListview(0);
+        mShowArrangeFolderPresenter = new ShowArrangeFolderPresenter(this);
+        mShowArrangeFolderPresenter.InitListview(0);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -150,7 +156,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
                     flag = Type_huanyuan;
                     Createdialog(huanyuan_flag);
                 } else {
-                    Toast.makeText(showArrangeFolderActivity.this, "请至少选择一项", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowArrangeFolderActivity.this, "请至少选择一项", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -159,7 +165,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
                     flag = Type_zhijiedelete;
                     Createdialog(delete_flag);
                 } else {
-                    Toast.makeText(showArrangeFolderActivity.this, "请至少选择一项", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowArrangeFolderActivity.this, "请至少选择一项", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -168,7 +174,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
     //初始化View和设置监听，资源
     @Override
     public void InitView() {
-        imageLoader.init(ImageLoaderConfiguration.createDefault(showArrangeFolderActivity.this));
+        imageLoader.init(ImageLoaderConfiguration.createDefault(ShowArrangeFolderActivity.this));
         options = new DisplayImageOptions.Builder()
                 .showStubImage(R.drawable.yujiazai)
                 .showImageForEmptyUri(R.drawable.yujiazai)
@@ -202,7 +208,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
         } else {             //变成正常界面
             ChangeToNormal();
         }
-        adapter = new showphoto_listviewAdapter(showArrangeFolderActivity.this, filepathlist, mflag);
+        adapter = new showphoto_listviewAdapter(ShowArrangeFolderActivity.this, filepathlist, mflag);
         showphoto_listview.setAdapter(adapter);
         adapter.setMenuListener(new showphoto_listviewAdapter.MenuListener() {
             @Override
@@ -226,14 +232,15 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
 
             @Override
             public void beifen(int position) {
-
+                Intent syncbackup = new Intent(ShowArrangeFolderActivity.this, SyncBackupActivity.class);
+                startActivity(syncbackup);
             }
         });
         showphoto_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (delete_type == 0) {
-                    Intent intent = new Intent(showArrangeFolderActivity.this, showPhotoDetail.class);
+                    Intent intent = new Intent(ShowArrangeFolderActivity.this, ShowPhotoDetailActivity.class);
                     intent.putExtra("filepath", filepathlist.get(position));
                     startActivityForResult(intent, 1);
                 } else {
@@ -252,7 +259,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 ChangeToDelete();
                 delete_type = 1;
-                adapter = new showphoto_listviewAdapter(showArrangeFolderActivity.this, filepathlist, 1);
+                adapter = new showphoto_listviewAdapter(ShowArrangeFolderActivity.this, filepathlist, 1);
                 showphoto_listview.setAdapter(adapter);
                 return true;
             }
@@ -293,8 +300,8 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
 
         @Override
         protected void onPreExecute() {
-            MyDialog = myDialog.createLoadingDialog(showArrangeFolderActivity.this, "正在还原照片");
-            finishDialog = myDialog.createLoadingfinishDialog(showArrangeFolderActivity.this, "已完成");
+            MyDialog = DialogBuilder.createLoadingDialog(ShowArrangeFolderActivity.this, "正在还原照片");
+            finishDialog = DialogBuilder.createLoadingfinishDialog(ShowArrangeFolderActivity.this, "已完成");
             MyDialog.show();
             super.onPreExecute();
         }
@@ -320,7 +327,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
                 filepathlist.remove(needMoveFile.getdeletefile().get(i));
             }
             needMoveFile.removealldeletefile();
-            adapter = new showphoto_listviewAdapter(showArrangeFolderActivity.this, filepathlist, 0);
+            adapter = new showphoto_listviewAdapter(ShowArrangeFolderActivity.this, filepathlist, 0);
             showphoto_listview.setAdapter(adapter);
             adapter.setMenuListener(new showphoto_listviewAdapter.MenuListener() {
                 @Override
@@ -362,8 +369,8 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
 
         @Override
         protected void onPreExecute() {
-            MyDialog = myDialog.createLoadingDialog(showArrangeFolderActivity.this, "正在删除照片");
-            finishDialog = myDialog.createLoadingfinishDialog(showArrangeFolderActivity.this, "已完成");
+            MyDialog = DialogBuilder.createLoadingDialog(ShowArrangeFolderActivity.this, "正在删除照片");
+            finishDialog = DialogBuilder.createLoadingfinishDialog(ShowArrangeFolderActivity.this, "已完成");
             MyDialog.show();
             super.onPreExecute();
         }
@@ -389,7 +396,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
                 filepathlist.remove(needMoveFile.getdeletefile().get(i));
             }
             needMoveFile.removealldeletefile();
-            adapter = new showphoto_listviewAdapter(showArrangeFolderActivity.this, filepathlist, 0);
+            adapter = new showphoto_listviewAdapter(ShowArrangeFolderActivity.this, filepathlist, 0);
             showphoto_listview.setAdapter(adapter);
             adapter.setMenuListener(new showphoto_listviewAdapter.MenuListener() {
                 @Override
@@ -428,7 +435,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
             needmovelistfile.add(new File(string));
         }
         File app_dic = new File(Environment.getExternalStorageDirectory()
-                .getPath() + myApplication.move_file_path);
+                .getPath() + MyApplication.move_file_path);
         if (!app_dic.exists()) {
             app_dic.mkdir();
         }
@@ -462,8 +469,8 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
      * 弹出提示对话框
      */
     public void Createdialog(int view_flag) {
-        final View dialogView = LayoutInflater.from(showArrangeFolderActivity.this).inflate(R.layout.delete_dialog, null);
-        final Dialog dialog = new Dialog(showArrangeFolderActivity.this);
+        final View dialogView = LayoutInflater.from(ShowArrangeFolderActivity.this).inflate(R.layout.delete_dialog, null);
+        final Dialog dialog = new Dialog(ShowArrangeFolderActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
@@ -477,7 +484,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
         TextView delete_text = (TextView) dialogView.findViewById(R.id.shanchutext);
         if (view_flag == huanyuan_flag) {
             dialog_title.setText("确认还原");
-            delete_text.setText("还原后相册夹里的照片将会回到原位置");
+            delete_text.setText("还原后将会把相册夹里的照片放回原文件夹");
         }
         quxiao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -574,11 +581,11 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
     public void onEventMainThread(ShowPhotoDetailType event) {
         switch (event.getmFlag()) {
             case ReturnDelete:
-                mShowPhotoPresenter.InitListview(0);
+                mShowArrangeFolderPresenter.InitListview(0);
                 break;
 
             case ReturnRestore:
-                mShowPhotoPresenter.InitListview(0);
+                mShowArrangeFolderPresenter.InitListview(0);
                 EventBus.getDefault().post(new FirstEventType(1));
                 break;
         }
@@ -598,7 +605,7 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
         LayoutInflater inflaterDl = LayoutInflater.from(this);
         RelativeLayout layout = (RelativeLayout) inflaterDl.inflate(
                 R.layout.dialog_main_info, null);
-        final Dialog dialog = new Dialog(showArrangeFolderActivity.this, R.style.Dialog_FS);
+        final Dialog dialog = new Dialog(ShowArrangeFolderActivity.this, R.style.Dialog_FS);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         final EditText path_edittext = (EditText) layout
                 .findViewById(R.id.path);
@@ -636,8 +643,8 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
                 if (!path_edittext.getText().toString().equals("")) {
                     //修改文件名
                     renameToNewFile(yuanlai_filename, path_edittext.getText().toString());
-                    filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
-                    adapter = new showphoto_listviewAdapter(showArrangeFolderActivity.this, filepathlist, 0);
+                    filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + MyApplication.move_file_path);
+                    adapter = new showphoto_listviewAdapter(ShowArrangeFolderActivity.this, filepathlist, 0);
                     showphoto_listview.setAdapter(adapter);
                     adapter.setMenuListener(new showphoto_listviewAdapter.MenuListener() {
                         @Override
@@ -706,8 +713,8 @@ public class showArrangeFolderActivity extends AutoLayoutActivity implements Vie
      * @return
      */
     private boolean renameToNewFile(String first_title, String path) {
-        File srcDir = new File(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path + "/" + first_title);  //就文件夹路径
-        boolean isOk = srcDir.renameTo(new File(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path + "/" + path));  //dest新文件夹路径，通过renameto修改
+        File srcDir = new File(Environment.getExternalStorageDirectory().getPath() + MyApplication.move_file_path + "/" + first_title);  //就文件夹路径
+        boolean isOk = srcDir.renameTo(new File(Environment.getExternalStorageDirectory().getPath() + MyApplication.move_file_path + "/" + path));  //dest新文件夹路径，通过renameto修改
         System.out.println("renameToNewFile is OK ? :" + isOk);
         return isOk;
     }

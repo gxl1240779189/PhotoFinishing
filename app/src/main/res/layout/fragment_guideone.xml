@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/guide1"
+    >
 
-    <com.android.mooc.view.MCVideoView
+   <!-- <customview.MCVideoView
         android:id="@+id/videoView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent" />-->
+    
+    <Button
+        android:id="@+id/skip_Bt"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="15dp"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:background="@drawable/skip"
+        />
 
-</LinearLayout>
+</FrameLayout>

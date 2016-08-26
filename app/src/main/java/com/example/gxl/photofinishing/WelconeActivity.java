@@ -9,7 +9,7 @@ import android.os.Message;
 import android.view.Window;
 
 /**
- * Created by gxl on 2016/4/3.
+ * 刚启动进入的Activity界面，用来判断进入哪个页面
  */
 public class WelconeActivity extends Activity {
     private final int GO_HOME=1000;
@@ -22,7 +22,7 @@ public class WelconeActivity extends Activity {
            switch (msg.what)
            {
                case GO_HOME:
-                   Intent HomeIntent=new Intent(WelconeActivity.this,firstpageActivity.class);
+                   Intent HomeIntent=new Intent(WelconeActivity.this,LoadPhotoToViewActivity.class);
                    startActivity(HomeIntent);
                    finish();
                    break;
@@ -39,10 +39,10 @@ public class WelconeActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome_layout);
         if(is_first_in()){
-            handler.sendEmptyMessageDelayed(GO_GUIDE, 1000);
+            handler.sendEmptyMessageDelayed(GO_GUIDE, 100);
         }else
         {
-            handler.sendEmptyMessageDelayed(GO_HOME,1000);
+            handler.sendEmptyMessageDelayed(GO_HOME,100);
         }
     }
 

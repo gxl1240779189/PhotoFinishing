@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.gxl.photofinishing.R;
@@ -28,6 +29,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import java.io.File;
 import java.util.ArrayList;
 
+import Presenter.LoadPhotoToViewPresenter;
 import data.needMoveFile;
 import utils.BitmapUtils;
 import utils.LogUtils;
@@ -46,6 +48,7 @@ public class showphoto_listviewAdapter extends BaseAdapter {
     final int TYPE_First = 1;
     private int delete_type = 0;
     private MenuListener menuListener;
+    private LoadPhotoToViewPresenter mPresenter;
 
     public void setMenuListener(MenuListener menuListener) {
         this.menuListener = menuListener;
@@ -266,26 +269,22 @@ public class showphoto_listviewAdapter extends BaseAdapter {
     private PopupWindow initPopupWindow(int resId, final int posite) {
         View view;
         final PopupWindow mPopupWindow;
-        TextView[] btns;
+        RelativeLayout[] btns;
         view = LayoutInflater.from(context).inflate(resId, null);
-        mPopupWindow = new PopupWindow(view, ScreenUtils.dip2px(context, 94), ScreenUtils.dip2px(context, 146));
-//      mPopupWindow.setBackgroundDrawable(new BitmapDrawable());//必须设置background才能消失
-        mPopupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.baize));
+        mPopupWindow = new PopupWindow(view, ScreenUtils.dip2px(context, 100), ScreenUtils.dip2px(context, 160));
+        mPopupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.popmenubackground));
         mPopupWindow.setOutsideTouchable(true);
-
-        //自定义动画
-//      mPopupWindow.setAnimationStyle(R.style.PopupAnimation);
         //使用系统动画
         mPopupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
         mPopupWindow.update();
         mPopupWindow.setTouchable(true);
         mPopupWindow.setFocusable(true);
 
-        btns = new TextView[4];
-        btns[0] = (TextView) view.findViewById(R.id.shanchu);
-        btns[1] = (TextView) view.findViewById(R.id.huanyuan);
-        btns[2] = (TextView) view.findViewById(R.id.chongmingming);
-        btns[3] = (TextView) view.findViewById(R.id.beifen);
+        btns = new RelativeLayout[4];
+        btns[0] = (RelativeLayout) view.findViewById(R.id.shanchu);
+        btns[1] = (RelativeLayout) view.findViewById(R.id.huanyuan);
+        btns[2] = (RelativeLayout) view.findViewById(R.id.chongmingming);
+        btns[3] = (RelativeLayout) view.findViewById(R.id.beifen);
         btns[0].setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -340,7 +339,7 @@ public class showphoto_listviewAdapter extends BaseAdapter {
         if (!mPopupWindow.isShowing()) {
             int[] location = new int[2];
             view.getLocationOnScreen(location);
-            mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0] - mPopupWindow.getWidth(), location[1]);
+            mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, location[0]-mPopupWindow.getWidth()+60,location[1]+60);
         }
     }
 

@@ -21,7 +21,7 @@
                 android:layout_height="16px"
                 android:layout_marginLeft="3px"
                 android:layout_marginTop="10px"
-                android:src="@drawable/fanhui" />
+                android:src="@drawable/white_back" />
         </RelativeLayout>
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="相册源"
+            android:text="添加相册源"
             android:textColor="@color/white"
             android:textSize="22px" />
 
@@ -59,11 +59,44 @@
             android:layout_alignParentBottom="true"
             android:background="#DEDEDE" />
     </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_marginTop="1px"
+        android:layout_width="match_parent"
+        android:layout_height="20px"
+        android:background="@color/white"
+        >
+        
+        <ProgressBar
+            android:id="@+id/Progress"
+            android:layout_marginTop="3px"
+            android:layout_marginLeft="12px"
+            android:layout_width="14px"
+            android:layout_height="14px"
+            android:src="@drawable/loading"
+            />
+
+        <TextView
+            android:id="@+id/ShowPhotoSourceDetail"
+            android:layout_marginLeft="6px"
+            android:layout_marginTop="3px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已找到0个结果"
+            android:textColor="#B7B7B7"
+            android:textSize="11px"
+            />
+
+    </LinearLayout>
 
     <ListView
+        android:layout_marginTop="3px"
         android:id="@+id/showphoto_listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="5dp"
+        ></ListView>
 
 
 </LinearLayout>

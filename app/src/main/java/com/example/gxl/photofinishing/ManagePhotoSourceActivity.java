@@ -2,59 +2,66 @@ package com.example.gxl.photofinishing;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-import adapter.guanlimenu_adapter;
-import data.shezhiSharedprefrence;
+import adapter.ManagePhotoSourceListviewAdapter;
+import bean.PhotoSourceBean;
+import data.needMoveFile;
+import de.greenrobot.event.EventBus;
+import eventbustype.AddPhotoSourceEventType;
+import eventbustype.FirstEventType;
+import eventbustype.TestEventType;
+import utils.DbUtils;
 
 /**
- * Created by Administrator on 2016/5/4 0004.
+ * 修改照片软件来源的Activity
  */
 
 public class ManagePhotoSourceActivity extends AutoLayoutActivity implements View.OnClickListener {
     RelativeLayout fanhui;
     RelativeLayout tianjia;
     ListView listview;
-    ArrayList<File> filedizhi = new ArrayList<File>();
-    shezhiSharedprefrence shezhisp;
-    int gaibian=0;
+    List<PhotoSourceBean> filedizhi = new ArrayList<PhotoSourceBean>();
+    ManagePhotoSourceListviewAdapter adapter;
+    int gaibian = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//用来取消状态栏
         setContentView(R.layout.guanlimenu_layout);
+        EventBus.getDefault().register(this);
         fanhui = (RelativeLayout) findViewById(R.id.fanhui);
         tianjia = (RelativeLayout) findViewById(R.id.tianjia);
         fanhui.setOnClickListener(this);
         tianjia.setOnClickListener(this);
         listview = (ListView) findViewById(R.id.showphoto_listview);
-        shezhisp = new shezhiSharedprefrence(ManagePhotoSourceActivity.this);
-        filedizhi = (ArrayList<File>) shezhisp.returnhistroyFile();
-        guanlimenu_adapter adapter = new guanlimenu_adapter(ManagePhotoSourceActivity.this, filedizhi);
+        filedizhi = DbUtils.GetPhotoSourceList();
+        adapter = new ManagePhotoSourceListviewAdapter(ManagePhotoSourceActivity.this, filedizhi);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                gaibian=2;
-                Toast.makeText(ManagePhotoSourceActivity.this, filedizhi.get(position).getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                if (shezhisp.isExist(filedizhi.get(position).getAbsolutePath())) {
+                gaibian=1;
+                if (filedizhi.get(position).getChooseState()) {
                     view.findViewById(position).setBackgroundResource(R.drawable.check_unchoose);
-                    shezhisp.delete(filedizhi.get(position).getAbsolutePath());
+                    DbUtils.ChangePhotoSourceState(false, filedizhi.get(position).getSourcePath());
+                    filedizhi.get(position).setChooseState(false);
                 } else {
                     view.findViewById(position).setBackgroundResource(R.drawable.check_choose);
-                    shezhisp.save(filedizhi.get(position).getAbsolutePath());
+                    DbUtils.ChangePhotoSourceState(true, filedizhi.get(position).getSourcePath());
+                    filedizhi.get(position).setChooseState(true);
                 }
             }
         });
@@ -64,14 +71,13 @@ public class ManagePhotoSourceActivity extends AutoLayoutActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fanhui:
-                Intent intent = new Intent();
-                setResult(gaibian, intent);
+                EventBus.getDefault().post(new FirstEventType(gaibian));
                 finish();
                 break;
 
             case R.id.tianjia:
-                Intent tianjiaintent=new Intent(ManagePhotoSourceActivity.this,tianjiamenuActivity.class);
-                startActivityForResult(tianjiaintent,1);
+                Intent tianjiaintent = new Intent(ManagePhotoSourceActivity.this, AddPhotoSourceActivity.class);
+                startActivityForResult(tianjiaintent, 1);
                 break;
         }
     }
@@ -79,25 +85,33 @@ public class ManagePhotoSourceActivity extends AutoLayoutActivity implements Vie
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-                Intent intent=new Intent();
-                setResult(gaibian,intent);
-                finish();
+            EventBus.getDefault().post(new FirstEventType(gaibian));
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-             if (resultCode == 2) {
-                 gaibian=2;
-                 filedizhi = (ArrayList<File>) shezhisp.returnhistroyFile();
-                 guanlimenu_adapter adapter = new guanlimenu_adapter(ManagePhotoSourceActivity.this, filedizhi);
-                 listview.setAdapter(adapter);
-                }
-                break;
+
+    /**
+     * EventBus的事件处理函数
+     *
+     * @param event
+     */
+    public void onEventMainThread(AddPhotoSourceEventType event) {
+        List<String> list = event.getList();
+        for (String item :
+                list) {
+            PhotoSourceBean photoSourceBean = new PhotoSourceBean();
+            photoSourceBean.setSourcePath(item);
+            photoSourceBean.setChooseState(true);
+            if (!DbUtils.IsExist(item)) {
+                photoSourceBean.save();
+            }
+            filedizhi.add(photoSourceBean);
         }
+        adapter.notifyDataSetChanged();
+        gaibian=1;
     }
+
 }

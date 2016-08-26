@@ -23,46 +23,53 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
 
     <application
-        android:hardwareAccelerated="false"
-        android:name="application.myApplication"
+        android:name="application.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+        android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+        >
+
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity
-            android:name=".showPhoto"
+            android:name=".ShowArrangeFolderActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
         <activity
-            android:name=".chakanPhoto"
+            android:name=".ArrangePhotoViewerActivity"
             android:largeHeap="true"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
         <activity
-            android:name=".ImagePagerActivity"
+            android:name=".PhotoViewerActivity"
             android:largeHeap="true"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
         <activity
-            android:name=".showPhotoDetail"
+            android:name=".ShowPhotoDetailActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
         <activity
-            android:name=".guanlimenuActivity"
+            android:name=".ManagePhotoSourceActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
-            android:name=".tianjiamenuActivity"
+            android:name=".AddPhotoSourceActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".test"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            >
-        </activity>
 
-        <activity android:name=".firstpageActivity"
+        <activity
+            android:name=".LoadPhotoToViewActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+
+        <activity
+            android:name=".SyncBackupActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:hardwareAccelerated="true"
+            ></activity>
+
+        <activity
+            android:name=".AboutUsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:hardwareAccelerated="true"
             ></activity>
 
         <activity android:name=".GuideActivity"></activity>
@@ -86,6 +93,13 @@
         <meta-data
             android:name="design_height"
             android:value="640" />
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="photofinishing.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
 
     </application>
 

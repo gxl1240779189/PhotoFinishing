@@ -14,12 +14,14 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -32,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ikimuhendis.ldrawer.ActionBarDrawerToggle;
 import com.ikimuhendis.ldrawer.DrawerArrowDrawable;
@@ -44,18 +47,20 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import Presenter.PhotoLoadPresenter;
+import Presenter.LoadPhotoToViewPresenter;
 import adapter.*;
-import application.myApplication;
+import application.MyApplication;
 import customview.DragView;
 import customview.MovePhotoGroup;
-import customview.myDialog;
+import customview.DialogBuilder;
 import data.needMoveFile;
 import data.shezhiSharedprefrence;
 import de.greenrobot.event.EventBus;
 import eventbustype.FirstEventType;
 import eventbustype.TestEventType;
 import utils.BitmapUtils;
+import utils.MarketUtils;
+import utils.ScaleAnimationHelper;
 import utils.ScreenUtils;
 import utils.fileUtils;
 import view.LoadPhotoToViewInterface;
@@ -107,7 +112,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     private ImageView chakan_file;
 
     ListView mListview;
-    PhotoLoadPresenter mPhotoLoadPresenter;
+    LoadPhotoToViewPresenter mLoadPhotoToViewPresenter;
     FrameLayout layout;
 
     ImageView mjianliImageview;
@@ -115,16 +120,16 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     //Dragview是否出现，0不出现，1出现
     int Dragview_flag = 0;
 
-    /*
-      分析中对话框
-      正在移动中对话框
-      分析完成对话框
+    /**
+     * 分析中对话框
+     * 正在移动中对话框
+     * 分析完成对话框
      */
     Dialog LoadingDialog;
     Dialog MovingDialog;
     Dialog FinishDialog;
 
-    ListviewAdapter listviewadapter;
+    LoadPhotoToViewActivity_ListView_Adapter listviewadapter;
 
     MovePhotoGroup group;
     int top_area_height;
@@ -135,7 +140,6 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     int changeToNormal = 0;//界面返回正常状态
     int changeToCreate = 1;//界面变成创建状态:具体表现，白色箭头开始闪烁
     int changeTobackground = 3;//toparea的背景变颜色
-    int changeToDragview = 4;//Dragview开始缩放
 
     ImageView jiantou;
 
@@ -165,6 +169,22 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     private LinkedHashMap<String, ArrayList<String>> mfilemap;
     private List<String> datelist = new ArrayList<String>();
 
+    /**
+     * 箭头指示是否闪动
+     */
+    private int mJiantouFlickerTrue = 1;
+    private int mJiantouFlickerFalse = 2;
+    private int mJiantouFlag = mJiantouFlickerFalse;
+
+    /**
+     * 建立文件夹图片是否闪动
+     */
+    private int mJianliImageviewFlickerTrue = 1;
+    private int mJianliImagviewFlickerFalse = 2;
+    private int mJianliImageviewFlag = mJianliImagviewFlickerFalse;
+
+    private Boolean ListviewIsFirstUp = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,8 +194,8 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         EventBus.getDefault().register(this);
         InitView();//初始化View和设置监听，资源
         init_LDrawer();//初始化菜单
-        mPhotoLoadPresenter = new PhotoLoadPresenter(this, LoadPhotoToViewActivity.this);
-        mPhotoLoadPresenter.InitListview();
+        mLoadPhotoToViewPresenter = new LoadPhotoToViewPresenter(this, LoadPhotoToViewActivity.this);
+        mLoadPhotoToViewPresenter.InitListview();
     }
 
     //初始化侧滑菜单
@@ -183,7 +203,13 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (LinearLayout) findViewById(R.id.navdrawer);
         RelativeLayout guanli = (RelativeLayout) mDrawerList.findViewById(R.id.guanli);
+        RelativeLayout syncbackup = (RelativeLayout) findViewById(R.id.syncbackup);
+        RelativeLayout aboutus = (RelativeLayout) findViewById(R.id.aboutus);
+        RelativeLayout givegood = (RelativeLayout) findViewById(R.id.givegood);
         guanli.setOnClickListener(this);
+        syncbackup.setOnClickListener(this);
+        aboutus.setOnClickListener(this);
+        givegood.setOnClickListener(this);
         drawerArrow = new DrawerArrowDrawable(this) {
             @Override
             public boolean isLayoutRtl() {
@@ -205,7 +231,6 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
     }
 
     //初始化View和设置监听，资源
@@ -234,9 +259,9 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         relativeLayout = (RelativeLayout) findViewById(R.id.listview_area);
         quit.setOnClickListener(this);
 
-        LoadingDialog = myDialog.createLoadingDialog(LoadPhotoToViewActivity.this, "正在分析照片");
-        MovingDialog = myDialog.createLoadingDialog(LoadPhotoToViewActivity.this, "正在移动中");
-        FinishDialog = myDialog.createLoadingfinishDialog(LoadPhotoToViewActivity.this, "已完成");
+        LoadingDialog = DialogBuilder.createLoadingDialog(LoadPhotoToViewActivity.this, "正在分析照片");
+        MovingDialog = DialogBuilder.createLoadingDialog(LoadPhotoToViewActivity.this, "正在移动中");
+        FinishDialog = DialogBuilder.createLoadingfinishDialog(LoadPhotoToViewActivity.this, "已完成");
     }
 
     /**
@@ -281,11 +306,12 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     public void LoadListviewSuccess(LinkedHashMap<String, ArrayList<String>> filemap) {
         mfilemap = filemap;
         if (mfilemap.size() > 0) {
+            datelist.clear();
             for (String key : mfilemap.keySet()) {
                 datelist.add(key);
             }
         }
-        listviewadapter = new ListviewAdapter(LoadPhotoToViewActivity.this, filemap, new ListviewAdapter.show_choose_detail_Listener() {
+        listviewadapter = new LoadPhotoToViewActivity_ListView_Adapter(LoadPhotoToViewActivity.this, filemap, new LoadPhotoToViewActivity_ListView_Adapter.show_choose_detail_Listener() {
             @Override
             public void show_choose_detail_linearlayout(int size) {
                 show_move_detail.setVisibility(View.VISIBLE);
@@ -307,11 +333,11 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         chakanPos[1] = chakan_file.getTop();
         chakanPos[2] = chakan_file.getRight();
         chakanPos[3] = chakan_file.getBottom();
-        listviewadapter.setGroup(new ListviewAdapter.movephotoGroup() {
+        listviewadapter.setGroup(new LoadPhotoToViewActivity_ListView_Adapter.movephotoGroup() {
 
             @Override
             public void CreateMoveGroup(int x, int y, String path) {
-                mPhotoLoadPresenter.CreateMoveGroup(x, y, path);
+                mLoadPhotoToViewPresenter.CreateMoveGroup(x, y, path);
             }
         });
         mjianliImageview.getLocationOnScreen(Pos);
@@ -408,7 +434,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         queding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPhotoLoadPresenter.DeleteFileTask();
+                mLoadPhotoToViewPresenter.DeleteFileTask();
                 dialog.dismiss();
             }
         });
@@ -456,9 +482,9 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
             @Override
             public void onClick(View v) {
                 if (!path_edittext.getText().toString().equals("")) {
-                    mPhotoLoadPresenter.MovePhotoToNew(path_edittext.getText().toString());
+                    mLoadPhotoToViewPresenter.MovePhotoToNew(path_edittext.getText().toString());
                 } else {
-                    mPhotoLoadPresenter.MovePhotoToNew("无标题");
+                    mLoadPhotoToViewPresenter.MovePhotoToNew("无标题");
                 }
                 if (Backgroud_flag == 0) {
                     relativeLayout.setBackgroundResource(0);
@@ -505,7 +531,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().setContentView(layout);
         ListView listview = (ListView) layout.findViewById(R.id.showphoto_listview);
-        filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + myApplication.move_file_path);
+        filepathlist = fileUtils.getExistFileList(Environment.getExternalStorageDirectory().getPath() + MyApplication.move_file_path);
         showphoto_adapter = new movephoto_listviewAdapter(LoadPhotoToViewActivity.this, filepathlist);
         listview.setAdapter(showphoto_adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -513,7 +539,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 relativeLayout.setBackgroundResource(0);
                 mjianliImageview.setImageResource(R.drawable.jianli);
-                mPhotoLoadPresenter.MovePhotoToExistFile(filepathlist.get(position));
+                mLoadPhotoToViewPresenter.MovePhotoToExistFile(filepathlist.get(position));
                 Dialog_flag = 1;
                 dialog.dismiss();
             }
@@ -539,10 +565,12 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     @Override
     public void CreateMoveGroup(int x, int y, String path) {
         Dragview_flag = 1;
+        ListviewIsFirstUp = false;
         show_move_detail.setVisibility(View.GONE);
         relativeLayout.setBackgroundResource(R.drawable.white_copy);
         mjianliImageview.setImageResource(R.drawable.jianli_green);
         jiantou.setVisibility(View.VISIBLE);
+        mJiantouFlag = mJiantouFlickerTrue;
         setFlickerAnimation(jiantou, 1, 0);
         group = new MovePhotoGroup(
                 LoadPhotoToViewActivity.this);
@@ -552,8 +580,8 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 ScreenUtils.dip2px(LoadPhotoToViewActivity.this, 108),
                 ScreenUtils.dip2px(LoadPhotoToViewActivity.this, 108));
-        lp.topMargin = x - 25;
-        lp.leftMargin = y - 50;
+        lp.topMargin = x - 10;
+        lp.leftMargin = y - 35;
         int listviewlinearlayout_top = listviewlinearlayout.getTop();
         int listview_top = mListview.getTop();
         int listviewframelayout_top = listview_framelayout.getTop();
@@ -565,18 +593,26 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
             @Override
             public void createFile() {
                 layout.removeView(group);
-                mPhotoLoadPresenter.ShowNewDialog();
+                mLoadPhotoToViewPresenter.ShowNewDialog();
             }
 
             @Override
             public void betrue_createFile(int flag) {
                 if (flag == 1) {
-                    setScaleAnimation(view, 0.6f);
-                    setFlickerAnimation(mjianliImageview, 1, 0.5f);
-                    setScaleAnimation(mjianliImageview, 1.05f);
+                    if (mJianliImageviewFlag == mJianliImagviewFlickerFalse) {
+                        mJianliImageviewFlag = mJianliImageviewFlickerTrue;
+                        setFlickerAnimation(mjianliImageview, 1, 0.5f);
+                        setScaleAnimation(mjianliImageview, 1.1f);
+                    }
+                    jiantou.clearAnimation();
+                    mJiantouFlag = mJiantouFlickerFalse;
                 } else {
+                    if (mJiantouFlag == mJiantouFlickerFalse) {
+                        mJiantouFlag = mJiantouFlickerTrue;
+                        setFlickerAnimation(jiantou, 1, 0);
+                    }
+                    mJianliImageviewFlag = mJianliImagviewFlickerFalse;
                     mjianliImageview.clearAnimation();
-                    setScaleAnimation(view, 1f);
                     setScaleAnimation(mjianliImageview, 1f);
                 }
             }
@@ -600,22 +636,21 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
             @Override
             public void move_exist_file() {
                 layout.removeView(group);
-                mPhotoLoadPresenter.ShowMovePhotoToExistFileDialog();
+                mLoadPhotoToViewPresenter.ShowMovePhotoToExistFileDialog();
             }
 
             @Override
             public void change_imageview(int flag) {
                 if (flag == changeTobackground) {
                     top_area.setBackgroundColor(Color.parseColor("#C1F3B4"));
-                } else if (flag == changeToCreate) {
-                    top_area.setBackgroundColor(Color.parseColor("#E8E8E8"));
-                    //上面的图标一闪一闪
+                    view.clearAnimation();
+                    setScaleAnimation(view, 0.6f);
+//                    ScaleAnimationHelper.ScaleInAnimation(view,1.0f,0.6f);
                 } else if (flag == changeToNormal) {
                     top_area.setBackgroundColor(Color.parseColor("#E8E8E8"));
+                    view.clearAnimation();
+                    setScaleAnimation(view, 1.0f);
                     //一闪一闪的动画取消
-                } else if (flag == changeToDragview) {
-                    //Dragview缩放到50%
-                    //建立文件夹图标增大到120%
                 }
             }
         });
@@ -626,21 +661,15 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         final MotionEvent toucheevent;
         measureView(view);
         DragViewPos[0] = lp.leftMargin;
-        DragViewPos[1] = lp.leftMargin+view.getMeasuredWidth();
+        DragViewPos[1] = lp.leftMargin + view.getMeasuredWidth();
         DragViewPos[2] = lp.topMargin;
-        DragViewPos[3] = lp.topMargin+view.getMeasuredHeight();
-        Log.i("DragViewPos",  DragViewPos[0]+" "+DragViewPos[1]+" "+DragViewPos[2]+" "+DragViewPos[3]+" ");
+        DragViewPos[3] = lp.topMargin + view.getMeasuredHeight();
+        Log.i("DragViewPos", DragViewPos[0] + " " + DragViewPos[1] + " " + DragViewPos[2] + " " + DragViewPos[3] + " ");
         mListview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.i("DragViewPos",(int) event.getRawX()+" "+(int) event.getRawY());
-//                if (JudgeEventArea((int) event.getRawX(), (int) event.getRawY(), DragViewPos)) {
-                    view.onTouchEvent(event);
-//                    DragViewPos[0] = view.getLeft();
-//                    DragViewPos[1] = view.getRight();
-//                    DragViewPos[2] = view.getTop();
-//                    DragViewPos[3] = view.getBottom();
-//                }
+                Log.i("DragViewPos", (int) event.getRawX() + " " + (int) event.getRawY());
+                view.onTouchEvent(event);
                 return true;
             }
         });
@@ -648,9 +677,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
 
 
     /**
-     *
-     * @param child
-     *            该函数用来估计child的width和height
+     * @param child 该函数用来估计child的width和height
      */
     private void measureView(View child) {
         ViewGroup.LayoutParams params = child.getLayoutParams();
@@ -673,20 +700,6 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
         child.measure(childWidthSpec, childHeightSpec);
     }
 
-    /**
-     * @param Touch_X 当前点击的X坐标
-     * @param Touch_Y 当前点击的Y坐标
-     * @param Pos     DragView中坐标范围  Pos[0] 横坐标最左边  Pos[1] 横坐标最右边 Pos[2] 纵坐标最上面  Pos[3] 纵
-     * @return 当前的坐标是否在Dragview的坐标范围中
-     */
-
-    Boolean JudgeEventArea(int Touch_X, int Touch_Y, int Pos[]) {
-        if ((Pos[0] <= Touch_X) && (Touch_X <= Pos[1]) && (Pos[2] <= Touch_Y) && (Touch_Y <= Pos[3])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * 将listview中的Gridview中的item变成网格状的格子
@@ -705,7 +718,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
 
             case R.id.chakan:
                 //跳转显示已经存在的文件夹
-                mPhotoLoadPresenter.StartShowPhotoActivity();
+                mLoadPhotoToViewPresenter.StartShowPhotoActivity();
                 break;
 
             case R.id.quit:
@@ -715,12 +728,30 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
                 break;
 
             case R.id.delete:
-                mPhotoLoadPresenter.ShowDeleteDialog();
+                mLoadPhotoToViewPresenter.ShowDeleteDialog();
                 break;
 
             case R.id.guanli:
                 //跳转到管理软件源的界面
-                mPhotoLoadPresenter.StartguanlimenuActivity();
+                mLoadPhotoToViewPresenter.StartguanlimenuActivity();
+                break;
+
+            case R.id.syncbackup:
+                mLoadPhotoToViewPresenter.StartsyncbackupActivity();
+                break;
+
+            case R.id.aboutus:
+                mLoadPhotoToViewPresenter.StartAboutUsActivity();
+                break;
+
+            case R.id.givegood:
+                ArrayList<String> list = MarketUtils.queryInstalledMarketPkgs(LoadPhotoToViewActivity.this);
+                Log.i("baoming", getPackageName());
+                if (list != null && list.size() != 0) {
+                    MarketUtils.launchAppDetail(getPackageName(), list.get(0));
+                } else {
+                    Toast.makeText(LoadPhotoToViewActivity.this, "请先安装应用商店，再给我们评分哦", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -740,7 +771,7 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
     public void onEventMainThread(FirstEventType event) {
         switch (event.getFlag()) {
             case ReturnChanged:
-                mPhotoLoadPresenter.InitListview();
+                mLoadPhotoToViewPresenter.InitListview();
                 break;
         }
     }
@@ -751,7 +782,11 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
      * @param event
      */
     public void onEventMainThread(TestEventType event) {
-        mfilemap.get(datelist.get(event.getPosition())).retainAll(event.getmListViewPosition());
+        if (event.getmListViewPosition() != null && event.getmListViewPosition().size() != 0) {
+            mfilemap.get(datelist.get(event.getPosition())).retainAll(event.getmListViewPosition());
+        } else {
+            mfilemap.remove(datelist.get(event.getPosition()));
+        }
         LoadListviewSuccess(mfilemap);
         mListview.setSelection(event.getPosition());
         if (needMoveFile.needmoveFile.size() == 0) {
@@ -770,8 +805,8 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
      */
     private void setFlickerAnimation(ImageView iv_chat_head, float from, float to) {
         final Animation animation = new AlphaAnimation(from, to); // Change alpha from fully visible to invisible
-        animation.setDuration(500); // duration - half a second
-        animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        animation.setDuration(100); // duration - half a second
+        animation.setInterpolator(new AccelerateInterpolator()); // do not alter animation rate
         animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
         animation.setRepeatMode(Animation.REVERSE); //
         iv_chat_head.setAnimation(animation);
@@ -800,6 +835,16 @@ public class LoadPhotoToViewActivity extends AutoLayoutActivity implements LoadP
             Spannable spanText = (Spannable) text;
             Selection.setSelection(spanText, text.length());
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.i("test","KeyEvent.KEYCODE_BACK");
+            finish();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

@@ -18,6 +18,8 @@ public class needMoveFile {
         return needmoveFile;
     }
 
+
+
     public static void addNeedmovefile(String filepath) {
         if (!isinNeedmovefile(filepath))
             needmoveFile.add(filepath);
@@ -184,5 +186,38 @@ public class needMoveFile {
     public static void removealldeletePhoto() {
         needdeletePhoto.clear();
     }
+
+
+
+
+    //将要添加到相册源
+    public static ArrayList<String> WillAddPhotoSource=new ArrayList<String>();
+
+    public static ArrayList<String> getWillAddPhotoSource() {
+        return WillAddPhotoSource;
+    }
+
+    public static void AddWillAddPhotoSource(String filepath) {
+        if (!IsWillAddPhotoSource(filepath))
+            WillAddPhotoSource.add(filepath);
+    }
+
+    public static void RemoveAllWillAddPhotoSource() {
+        WillAddPhotoSource.clear();
+    }
+
+    public static void RemoveWillAddPhotoSource(String filepath) {
+        if (IsWillAddPhotoSource(filepath))
+            WillAddPhotoSource.remove(filepath);
+    }
+
+    public static Boolean IsWillAddPhotoSource(String filepath) {
+        for (String item : WillAddPhotoSource) {
+            if (filepath.equals(item))
+                return true;
+        }
+        return false;
+    }
+
 
 }

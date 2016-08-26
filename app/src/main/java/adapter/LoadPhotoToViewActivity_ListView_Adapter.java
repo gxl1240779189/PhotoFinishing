@@ -1,6 +1,8 @@
 package adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import data.needMoveFile;
-import customview.myGridview;
+import customview.MyGridview;
 
 public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
 
@@ -34,6 +36,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
 
     public interface show_choose_detail_Listener {
         void show_choose_detail_linearlayout(int size);
+
         void hide_choose_detail_linearlayout();
     }
 
@@ -106,7 +109,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                         null);
                 convertView = view;
                 viewholder = new Viewholder();
-                viewholder.gridview = (myGridview) view
+                viewholder.gridview = (MyGridview) view
                         .findViewById(R.id.mygridview);
                 viewholder.date = (TextView) view.findViewById(R.id.date);
                 viewholder.choseall = (ImageView) view.findViewById(R.id.select);
@@ -116,7 +119,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                         null);
                 convertView = view;
                 viewholder_first = new Viewholder_first();
-                viewholder_first.gridview = (myGridview) view
+                viewholder_first.gridview = (MyGridview) view
                         .findViewById(R.id.mygridview);
                 viewholder_first.date = (TextView) view.findViewById(R.id.date);
                 viewholder_first.choseall = (ImageView) view.findViewById(R.id.select);
@@ -133,9 +136,10 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                 Log.e("convertView !!!!!!= ", "NULL TYPE_First");
             }
         }
-        String date = datelist.get(position);
+        final String date = datelist.get(position);
         final ArrayList<String> filelist = filepathlist.get(date);
-        final GridviewAdapter adapter = new GridviewAdapter(context, filelist,position);
+//        final ArrayList<String> filelist = new ArrayList<String>();
+        final LoadPhotoToViewActivity_Gridview_Adapter adapter = new LoadPhotoToViewActivity_Gridview_Adapter(context, filelist, position);
 
         if (type == TYPE_NO_First) {
             final Viewholder viewholder1 = viewholder;
@@ -198,8 +202,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                     if (!needMoveFile.getPositemap(position)) {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.addNeedmovefileList(listfile);
-                        for(int i=viewholder1.gridview.getFirstVisiblePosition();i<=viewholder1.gridview.getLastVisiblePosition();i++)
-                        {
+                        for (int i = viewholder1.gridview.getFirstVisiblePosition(); i <= viewholder1.gridview.getLastVisiblePosition(); i++) {
                             viewholder1.gridview.findViewById(i).setVisibility(View.VISIBLE);
                         }
                         Integer integer = new Integer(1);
@@ -214,8 +217,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                         Log.i("TAG", "remove: ");
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.removeNeedmovefileList(listfile);
-                        for(int i=viewholder1.gridview.getFirstVisiblePosition();i<=viewholder1.gridview.getLastVisiblePosition();i++)
-                        {
+                        for (int i = viewholder1.gridview.getFirstVisiblePosition(); i <= viewholder1.gridview.getLastVisiblePosition(); i++) {
                             viewholder1.gridview.findViewById(i).setVisibility(View.GONE);
                         }
                         Integer integer = new Integer(0);
@@ -312,8 +314,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                     if (!needMoveFile.getPositemap(position)) {
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.addNeedmovefileList(listfile);
-                        for(int i=Viewholder_first1.gridview.getFirstVisiblePosition();i<=Viewholder_first1.gridview.getLastVisiblePosition();i++)
-                        {
+                        for (int i = Viewholder_first1.gridview.getFirstVisiblePosition(); i <= Viewholder_first1.gridview.getLastVisiblePosition(); i++) {
                             Viewholder_first1.gridview.findViewById(i).setVisibility(View.VISIBLE);
                         }
                         Integer integer = new Integer(1);
@@ -328,8 +329,7 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
                         Log.i("TAG", "remove: ");
                         List<String> listfile = adapter.getListfilename();
                         needMoveFile.removeNeedmovefileList(listfile);
-                        for(int i=Viewholder_first1.gridview.getFirstVisiblePosition();i<=Viewholder_first1.gridview.getLastVisiblePosition();i++)
-                        {
+                        for (int i = Viewholder_first1.gridview.getFirstVisiblePosition(); i <= Viewholder_first1.gridview.getLastVisiblePosition(); i++) {
                             Viewholder_first1.gridview.findViewById(i).setVisibility(View.GONE);
                         }
                         Integer integer = new Integer(0);
@@ -364,19 +364,19 @@ public class LoadPhotoToViewActivity_ListView_Adapter extends BaseAdapter {
             }
             Viewholder_first1.date.setText(date);
         }
-
         return view;
     }
 
     class Viewholder {
-        customview.myGridview gridview;
+        customview.MyGridview gridview;
         TextView date;
         ImageView choseall;
     }
 
     class Viewholder_first {
-        customview.myGridview gridview;
+        customview.MyGridview gridview;
         TextView date;
         ImageView choseall;
     }
+
 }

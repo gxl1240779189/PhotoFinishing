@@ -144,7 +144,7 @@
                                     android:layout_marginRight="31px"
                                     android:layout_marginTop="14px"
                                     android:text="刪除"
-                                    android:textColor="@color/red"
+                                    android:textColor="@color/white"
                                     android:textSize="20px" />
 
                                 <ImageView
@@ -178,7 +178,7 @@
 
     <LinearLayout
         android:id="@+id/navdrawer"
-        android:layout_width="233dp"
+        android:layout_width="235dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#2A2A2A"
@@ -186,7 +186,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp">
+            android:layout_height="180dp">
 
             <ImageView
                 android:layout_width="64dp"
@@ -194,130 +194,160 @@
                 android:layout_centerInParent="true"
                 android:src="@drawable/icon" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="135dp"
+                android:text="@string/app_name"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp" />
+
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#2F2F2F" />
+
+        <RelativeLayout
+            android:id="@+id/guanli"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/menu_item_background">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/menu_guanli" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="71dp"
+                android:layout_marginTop="12dp"
+                android:text="管理相册源"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#2F2F2F" />
+
+        <RelativeLayout
+            android:id="@+id/syncbackup"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/menu_item_background">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/menu_beifen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="71dp"
+                android:layout_marginTop="12dp"
+                android:text="同步备份"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp" />
+        </RelativeLayout>
+
+      <!--  <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#2F2F2F" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp">
-            <RelativeLayout
-                android:id="@+id/guanli"
+            android:layout_height="45dp"
+            android:background="@drawable/menu_item_background">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/menu_shezhi" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="60dp">
+                android:layout_marginLeft="71dp"
+                android:layout_marginTop="12dp"
+                android:text="应用设置"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp" />
+        </RelativeLayout>-->
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/menu_guanli" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="34dp"
-                    android:text="管理相册源"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#2F2F2F" />
 
         <RelativeLayout
+            android:id="@+id/aboutus"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
-            <RelativeLayout
+            android:layout_height="45dp"
+            android:background="@drawable/menu_item_background">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/menu_guanyu" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="60dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/menu_beifen" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="34dp"
-                    android:text="同步备份"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp" />
-            </RelativeLayout>
+                android:layout_marginLeft="71dp"
+                android:layout_marginTop="12dp"
+                android:text="关于我们"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp" />
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#2F2F2F" />
 
         <RelativeLayout
+            android:id="@+id/givegood"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
-            <RelativeLayout
+            android:layout_height="45dp"
+            android:background="@drawable/menu_item_background">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/menu_zhan" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="60dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/menu_shezhi" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="34dp"
-                    android:text="应用设置"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp" />
-            </RelativeLayout>
+                android:layout_marginLeft="71dp"
+                android:layout_marginTop="12dp"
+                android:text="给个好评"
+                android:textColor="#FFFFFF"
+                android:textSize="16dp" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="45dp">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="60dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/menu_guanyu" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="34dp"
-                    android:text="关于我们"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="60dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/menu_zhan" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="34dp"
-                    android:text="给个好评"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-        </RelativeLayout>
+            android:layout_height="1dp"
+            android:background="#2F2F2F" />
 
 
     </LinearLayout>

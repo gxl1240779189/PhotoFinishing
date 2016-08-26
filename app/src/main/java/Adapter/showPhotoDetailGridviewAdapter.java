@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.needMoveFile;
-import customview.myImageview;
+import customview.MyImageview;
 
 /**
  * Created by gxl on 2016/4/15.
@@ -69,7 +69,7 @@ public class showPhotoDetailGridviewAdapter extends BaseAdapter {
                     null);
             convertView = view;
             viewholder = new Viewholder();
-            viewholder.imageview = (myImageview) view
+            viewholder.imageview = (MyImageview) view
                     .findViewById(R.id.imageview);
             viewholder.ImageView_tip = (ImageView) view.findViewById(R.id.ImageView_tip);
             convertView.setTag(viewholder);

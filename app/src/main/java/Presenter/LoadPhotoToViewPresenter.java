@@ -9,8 +9,10 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.Toast;
 
-import com.example.gxl.photofinishing.guanlimenuActivity;
+import com.example.gxl.photofinishing.AboutUsActivity;
+import com.example.gxl.photofinishing.ManagePhotoSourceActivity;
 import com.example.gxl.photofinishing.ShowArrangeFolderActivity;
+import com.example.gxl.photofinishing.SyncBackupActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +35,11 @@ import view.LoadPhotoToViewInterface;
 public class LoadPhotoToViewPresenter {
     Context mContext;
     LoadPhotoToViewInterface mPhotoLoadView;
-    LoadPhotoToViewModelInterface mPhotoLoadModel=new LoadPhotoToViewModel();
+    LoadPhotoToViewModelInterface mPhotoLoadModel = new LoadPhotoToViewModel();
 
     public LoadPhotoToViewPresenter(LoadPhotoToViewInterface mPhotoLoadView, Context context) {
         this.mPhotoLoadView = mPhotoLoadView;
-        mContext=context;
+        mContext = context;
     }
 
     /**
@@ -46,8 +48,7 @@ public class LoadPhotoToViewPresenter {
      * 通过mPhotoLoadModel获取照片的地址信息集合
      * 通过mPhotoLoadView将获取的地址信息集合装载到listview中去
      */
-    public void InitListview()
-    {
+    public void InitListview() {
         mPhotoLoadView.LoadingData();
         mPhotoLoadModel.LoadPhotoPathList(new LoadResultListener() {
             @Override
@@ -68,26 +69,40 @@ public class LoadPhotoToViewPresenter {
     /**
      * 跳转到查看照片文件夹页面中
      */
-    public void StartShowPhotoActivity()
-    {
+    public void StartShowPhotoActivity() {
         Intent intent = new Intent(mContext, ShowArrangeFolderActivity.class);
-        ((Activity)mContext).startActivityForResult(intent, 1);
+        ((Activity) mContext).startActivityForResult(intent, 1);
     }
 
     /**
      * 跳转到管理相册源页面中
      */
-    public void StartguanlimenuActivity()
-    {
-        Intent guanliintent=new Intent(mContext,guanlimenuActivity.class);
-        ((Activity)mContext).startActivityForResult(guanliintent, 1);
+    public void StartguanlimenuActivity() {
+        Intent guanliintent = new Intent(mContext, ManagePhotoSourceActivity.class);
+        ((Activity) mContext).startActivityForResult(guanliintent, 1);
     }
+
+    /**
+     * 跳转到同步备份页面中
+     */
+    public void StartsyncbackupActivity() {
+        Intent syncbackup = new Intent(mContext, SyncBackupActivity.class);
+        ((Activity) mContext).startActivity(syncbackup);
+    }
+
+    /**
+     * 跳转到关于我们页面中
+     */
+    public void StartAboutUsActivity() {
+        Intent intent = new Intent(mContext, AboutUsActivity.class);
+        ((Activity) mContext).startActivity(intent);
+    }
+
 
     /**
      * 删除选择图片的任务
      */
-    public void DeleteFileTask()
-    {
+    public void DeleteFileTask() {
         new DeleteFileTask().execute();
     }
 
@@ -95,41 +110,37 @@ public class LoadPhotoToViewPresenter {
     /**
      * 弹出删除的对话框
      */
-    public void ShowDeleteDialog()
-    {
+    public void ShowDeleteDialog() {
         mPhotoLoadView.CreateDeleteDialog();
     }
 
     /**
      * 弹出新建文件夹的对话框
      */
-    public void ShowNewDialog()
-    {
+    public void ShowNewDialog() {
         new GetCityname_Tack().execute();
     }
 
     /**
      * 移动照片到新的文件夹
      */
-    public void MovePhotoToNew(String FileName)
-    {
+    public void MovePhotoToNew(String FileName) {
         new MoveNeedFileTask().execute(FileName);
     }
 
     /**
      * 将现在选择的照片移动到已经存在的文件夹中
+     *
      * @param FileName
      */
-    public void MovePhotoToExistFile(String FileName)
-    {
+    public void MovePhotoToExistFile(String FileName) {
         new MovePhotoToExistFileTask().execute(FileName);
     }
 
     /**
      * 移动照片到之前存在的文件夹中
      */
-    public void ShowMovePhotoToExistFileDialog()
-    {
+    public void ShowMovePhotoToExistFileDialog() {
         mPhotoLoadView.CreateMoveToFileDialog();
     }
 
@@ -137,9 +148,8 @@ public class LoadPhotoToViewPresenter {
      * 创建一个可以移动的照片集
      */
 
-    public void CreateMoveGroup(int x, int y, String path)
-    {
-        mPhotoLoadView.CreateMoveGroup(x,y,path);
+    public void CreateMoveGroup(int x, int y, String path) {
+        mPhotoLoadView.CreateMoveGroup(x, y, path);
     }
 
 
@@ -153,6 +163,7 @@ public class LoadPhotoToViewPresenter {
         String shijian;
         String cityname;
         String[] information = new String[3];
+
         @Override
         protected String doInBackground(Void... params) {
 
@@ -167,7 +178,7 @@ public class LoadPhotoToViewPresenter {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if (cityname != null) {
-                mPhotoLoadView.CreateNewFileDialog(information[2]+cityname);
+                mPhotoLoadView.CreateNewFileDialog(information[2] + cityname);
             } else {
                 mPhotoLoadView.CreateNewFileDialog(information[2]);
             }
@@ -215,7 +226,7 @@ public class LoadPhotoToViewPresenter {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            LinkedHashMap<String, ArrayList<String>> filemap=mPhotoLoadModel.GetDataChangedFile();
+            LinkedHashMap<String, ArrayList<String>> filemap = mPhotoLoadModel.GetDataChangedFile();
             mPhotoLoadView.LoadListviewSuccess(filemap);
         }
     }
@@ -227,7 +238,7 @@ public class LoadPhotoToViewPresenter {
 
         @Override
         protected void onPreExecute() {
-           mPhotoLoadView.MovingData();
+            mPhotoLoadView.MovingData();
             super.onPreExecute();
         }
 
@@ -241,7 +252,7 @@ public class LoadPhotoToViewPresenter {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mPhotoLoadView.LoadDataFinish();
-            LinkedHashMap<String, ArrayList<String>> filemap=mPhotoLoadModel.GetDataChangedFile();
+            LinkedHashMap<String, ArrayList<String>> filemap = mPhotoLoadModel.GetDataChangedFile();
             mPhotoLoadView.LoadListviewSuccess(filemap);
         }
     }
@@ -257,15 +268,11 @@ public class LoadPhotoToViewPresenter {
         for (String string : list) {
             needmovelistfile.add(new File(string));
         }
-        File app_dic = new File(Environment.getExternalStorageDirectory()
-                .getPath() + MyApplication.move_file_path);
-        if (!app_dic.exists()) {
-            app_dic.mkdir();
-        }
-        File movefile = new File(Environment.getExternalStorageDirectory()
-                .getPath() + MyApplication.move_file_path + "/" + path);
-        if (!movefile.exists()) {
-            movefile.mkdir();
+        File Folder = new File(Environment
+                .getExternalStorageDirectory().getPath()
+                + MyApplication.move_file_path + "/" + path);
+        if (!Folder.exists()) {
+            Folder.mkdir();
         }
         for (File file : needmovelistfile) {
             fileUtils.copyFile(file.getAbsolutePath(), Environment
@@ -296,7 +303,7 @@ public class LoadPhotoToViewPresenter {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mPhotoLoadView.LoadDataFinish();
-            LinkedHashMap<String, ArrayList<String>> filemap=mPhotoLoadModel.GetDataChangedFile();
+            LinkedHashMap<String, ArrayList<String>> filemap = mPhotoLoadModel.GetDataChangedFile();
             mPhotoLoadView.LoadListviewSuccess(filemap);
         }
     }
@@ -313,7 +320,7 @@ public class LoadPhotoToViewPresenter {
             needmovelistfile.add(new File(string));
         }
         File app_dic = new File(Environment.getExternalStorageDirectory()
-                .getPath() + MyApplication.move_file_path);
+                .getPath() + "/" + MyApplication.move_file_path);
         if (!app_dic.exists()) {
             app_dic.mkdir();
         }

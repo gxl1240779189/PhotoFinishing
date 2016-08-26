@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
-import com.example.gxl.photofinishing.ImagePagerActivity;
 import com.example.gxl.photofinishing.R;
-import com.example.gxl.photofinishing.test;
+import com.example.gxl.photofinishing.PhotoViewerActivity;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -24,16 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.needMoveFile;
-import customview.myImageview;
+import customview.MyImageview;
 
 public class LoadPhotoToViewActivity_Gridview_Adapter extends BaseAdapter {
 
-    Activity context;
-    ArrayList<String> listfilepath = new ArrayList<String>();
-    List<Boolean> listimageviewtip = new ArrayList<Boolean>();
+    private Activity context;
+    private ArrayList<String> listfilepath = new ArrayList<String>();
+    private List<Boolean> listimageviewtip = new ArrayList<Boolean>();
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private DisplayImageOptions options;
     private int mListViewPosition;
+    private static final String STATE_POSITION = "STATE_POSITION";
+    public static final String EXTRA_IMAGE_INDEX = "image_index";
+    public static final String EXTRA_IMAGE_URLS = "image_urls";
 
 
     public LoadPhotoToViewActivity_Gridview_Adapter(Context context, ArrayList<String> list, int position) {
@@ -81,7 +82,7 @@ public class LoadPhotoToViewActivity_Gridview_Adapter extends BaseAdapter {
                     null);
             convertView = view;
             viewholder = new Viewholder();
-            viewholder.imageview = (myImageview) view
+            viewholder.imageview = (MyImageview) view
                     .findViewById(R.id.imageview);
             viewholder.imageviewtip = (ImageView) view
                     .findViewById(R.id.ImageView_tip);
@@ -102,10 +103,10 @@ public class LoadPhotoToViewActivity_Gridview_Adapter extends BaseAdapter {
         viewholder.chakanphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, test.class);
-                intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, listfilepath);
-                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, mPosition);
-                intent.putExtra("mListViewPosition",mListViewPosition);
+                Intent intent = new Intent(context, PhotoViewerActivity.class);
+                intent.putStringArrayListExtra(EXTRA_IMAGE_URLS, listfilepath);
+                intent.putExtra(EXTRA_IMAGE_INDEX, mPosition);
+                intent.putExtra(STATE_POSITION,mListViewPosition);
                 context.startActivityForResult(intent, 1);
             }
         });
@@ -118,7 +119,7 @@ public class LoadPhotoToViewActivity_Gridview_Adapter extends BaseAdapter {
     }
 
     class Viewholder {
-        myImageview imageview;
+        MyImageview imageview;
         ImageView imageviewtip;
         ImageView chakanphoto;
     }
